@@ -1,0 +1,108 @@
+<md-dialog aria-label="Change Password" ng-init="Init();">
+	<md-toolbar>
+		<div class="md-toolbar-tools">
+			<h2 class="md-title">My Account</h2>
+			<span flex></span>
+			<md-button class="md-icon-button" ng-click="Close()">
+				<md-icon class="material-icons" aria-label="Close dialog">close</md-icon>
+			</md-button>
+		</div>
+	</md-toolbar>
+	<div ng-hide="isLoaded" class="loading-form">
+		<div class="sk-folding-cube">
+			<div class="sk-cube1 sk-cube"></div>
+			<div class="sk-cube2 sk-cube"></div>
+			<div class="sk-cube4 sk-cube"></div>
+			<div class="sk-cube3 sk-cube"></div>
+		</div>
+	</div>
+
+   <md-dialog-content class="p-3" style="min-width: 350px;">
+      
+      <form name="formParent" ng-submit="Submit_Account()" >
+
+         <md-input-container class="md-block">
+            <label>Name</label>
+            <input ng-model="FORM.NAME" name="NAME" autofocus required>
+            <div ng-messages="formParent.NAME.$error" role="alert" md-auto-hide="false">
+               <div ng-message="required">This is required.</div>
+            </div>
+         </md-input-container>
+
+         <md-input-container class="md-block">
+            <label>Job Title</label>
+            <input ng-model="FORM.JOBTITLE" >
+         </md-input-container>
+
+         <md-input-container ng-show="FORM.isDoctor"  class="md-block" >
+            <label >Specialty</label>
+            <md-select ng-model="FORM.SPECIALISTID" name="SPECIALISTID" nmd-on-close="searchSpecialty='';"  ng-required="FORM.isDoctor">
+               <md-select-header>
+                  <input ng-model="searchSpecialty" ng-keydown="$event.stopPropagation()"  type="text" placeholder="Search Specialty" class="md-select-search">
+               </md-select-header>
+               <md-optgroup label="List of Specialty">
+                  <md-option ng-value="A.ID" ng-bind="A.SPECIALTY" ng-repeat="A in Specialist() |filter: searchSpecialty"></md-option>
+               </md-optgroup>
+            </md-select>
+            <div ng-messages="formParent.SPECIALISTID.$error" role="alert" md-auto-hide="false">
+               <div ng-message="required">This is required.</div>
+            </div>
+         </md-input-container>
+
+
+         <md-input-container  ng-show="FORM.isDoctor" class="md-block" >
+            <label>License No.</label>
+            <input ng-model="FORM.LICENSENO" name="LICENSENO" ng-required="FORM.isDoctor">
+            <div ng-messages="formParent.LICENSENO.$error" role="alert" md-auto-hide="false">
+               <div ng-message="required">This is required.</div>
+            </div>
+         </md-input-container>
+
+
+         <md-input-container ng-show="FORM.isDoctor" class="md-block" >
+            <label>PTR No.</label>
+            <input ng-model="FORM.PTR" name="PTR" type="text" ng-required="FORM.isDoctor">
+            <div ng-messages="formParent.PTR.$error" role="alert" md-auto-hide="false">
+               <div ng-message="required">This is required.</div>
+            </div>
+         </md-input-container>
+
+
+         <md-input-container  ng-show="FORM.isDoctor" class="md-block" >
+            <label>S2 No.</label>
+            <input ng-model="FORM.S2NO" type="text">
+         </md-input-container>
+
+         <md-input-container class="md-block">
+            <label>Email</label>
+            <input ng-model="FORM.EMAIL" type="email" >
+         </md-input-container>
+
+         
+         <md-input-container class="md-block " >
+            <label>Your default clinic</label>
+            <md-select ng-model="FORM.SUBCLINICID" name="SUBCLINICID"  >
+               <md-option value=""></md-option>
+               <md-option ng-repeat="(key, S) in SubClinics()" ng-value="S.ID" ng-bind="S.NAME"></md-option>
+            </md-select>
+            <div ng-messages="formParent.SUBCLINICID.$error" role="alert" md-auto-hide="false">
+               <div ng-message="required">This is required.</div>
+            </div>
+         </md-input-container>
+
+         <div layout="column" layout-gt-xs="row" layout-align="end" class="form-action">
+				<md-button ng-disabled="FORM.isSubmit || formParent.$invalid || !isLoaded"  type="submit" class="md-raised md-primary">
+					<span ng-hide="FORM.isSubmit">Save</span>
+					<div ng-show="FORM.isSubmit" layout="row" layout-align="center">
+						<md-progress-circular md-mode="indeterminate" md-diameter="30"></md-progress-circular>
+					</div>
+				</md-button>
+
+				<md-button ng-click="Close();"  class="" >Cancel</md-button>
+         </div>
+         
+      </form>
+      
+
+   </md-dialog-content>
+</md-dialog>

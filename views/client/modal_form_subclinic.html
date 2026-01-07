@@ -1,0 +1,116 @@
+<md-dialog aria-label="SubClinic Form" ng-init="Init();">
+   <md-toolbar>
+		<div class="md-toolbar-tools">
+			<h2 class="md-title">Sub clinic</h2>
+		</div>
+	</md-toolbar>
+	<md-dialog-content class="md-padding" >
+
+		<div ng-hide="isLoaded" class="loading-form">
+			<md-progress-circular md-mode="indeterminate" md-diameter="40"></md-progress-circular>
+		</div>
+
+		<form  name="formParent" ng-submit="Submit_Form()" role="form" layout="column" >
+
+			
+			<md-input-container class="md-block">
+            <label>Name</label>
+            <input ng-model="FORM.NAME" name="NAME" type="text" required autofocus>
+            <div ng-messages="formParent.NAME.$error" role="alert" md-auto-hide="false">
+               <div ng-message="required">This is required.</div>
+               <div ng-message="md-maxlength">The characters reach the limit.</div>
+            </div>
+         </md-input-container>
+
+
+         <div layout="row" layout-align="center center">
+            <md-input-container flex>
+               <label>Hospital</label>
+               <md-select ng-model="FORM.HOSPITALID" name="HOSPITALID" ng-disabled="HospitalStatus();" md-on-close="searchHospital='';">
+                  <md-select-header>
+                     <input ng-model="searchHospital" ng-keydown="$event.stopPropagation()"  type="text" placeholder="Search Hospital" class="md-select-search">
+                  </md-select-header>
+                  <md-optgroup label="List of Hospitals">
+                     <md-option ng-value="null">N/A</md-option>
+                     <md-option ng-value="A.ID" ng-bind="A.NAME" ng-repeat="A in Hospitals()|filter: searchHospital"></md-option>
+                  </md-optgroup>
+               </md-select>
+               <div ng-messages="formParent.HOSPITALID.$error" role="alert" md-auto-hide="false">
+                  <div ng-message="required">This is required.</div>
+               </div>
+            </md-input-container>
+            <md-progress-circular ng-show="HospitalStatus();" flex="10" md-mode="indeterminate" md-diameter="20"></md-progress-circular>
+         </div>
+
+         <md-input-container class="md-block">
+            <input ng-model="FORM.LOCATION" type="text" placeholder="Address / location">
+         </md-input-container>
+
+         <md-switch ng-model="FORM.ISSIG" aria-label="Include Signature">Include Signature</md-switch>
+                  
+         <!-- <md-switch ng-model="FORM.ISONLINE" aria-label="Online Appointment">Enable for online appointment</md-switch>
+         
+         <div ng-if="FORM.ISONLINE">
+            <label for="">Default Time for Appointment</label>
+         
+            <div layout="column" layout-gt-xs="row">
+               <md-input-container>
+                  <label>Monday</label>
+                  <md-select ng-model="FORM.MONTIME" name="MONTIME" >
+                     <md-option ng-value="A.value" ng-bind="A.label" ng-repeat="A in Day_Time()"></md-option>
+                  </md-select>
+               </md-input-container>
+               <md-input-container>
+                  <label>Tueday</label>
+                  <md-select ng-model="FORM.TUETIME" name="TUETIME" >
+                     <md-option ng-value="A.value" ng-bind="A.label" ng-repeat="A in Day_Time()"></md-option>
+                  </md-select>
+               </md-input-container>
+               <md-input-container>
+                  <label>Wednesday</label>
+                  <md-select ng-model="FORM.WEDTIME" name="WEDTIME" >
+                     <md-option ng-value="A.value" ng-bind="A.label" ng-repeat="A in Day_Time()"></md-option>
+                  </md-select>
+               </md-input-container>
+               <md-input-container>
+                  <label>Thursday</label>
+                  <md-select ng-model="FORM.THUTIME" name="THUTIME" >
+                     <md-option ng-value="A.value" ng-bind="A.label" ng-repeat="A in Day_Time()"></md-option>
+                  </md-select>
+               </md-input-container>
+               <md-input-container>
+                  <label>Friday</label>
+                  <md-select ng-model="FORM.FRITIME" name="FRITIME" >
+                     <md-option ng-value="A.value" ng-bind="A.label" ng-repeat="A in Day_Time()"></md-option>
+                  </md-select>
+               </md-input-container>
+               <md-input-container>
+                  <label>Saturday</label>
+                  <md-select ng-model="FORM.SATTIME" name="SATTIME" >
+                     <md-option ng-value="A.value" ng-bind="A.label" ng-repeat="A in Day_Time()"></md-option>
+                  </md-select>
+               </md-input-container>
+               <md-input-container>
+                  <label>Sunday</label>
+                  <md-select ng-model="FORM.SUNTIME" name="SUNTIME" >
+                     <md-option ng-value="A.value" ng-bind="A.label" ng-repeat="A in Day_Time()"></md-option>
+                  </md-select>
+               </md-input-container>
+            </div>
+         </div>
+
+
+          -->
+
+         <div layout="column" layout-gt-xs="row" layout-align="end" class="mt-3">
+				<md-button ng-disabled="FORM.isSubmit || formParent.$invalid || !isLoaded"  type="submit" class="md-raised md-primary">
+					<span ng-hide="FORM.isSubmit">Save</span>
+					<md-progress-circular ng-show="FORM.isSubmit" md-mode="indeterminate" md-diameter="20" class="mx-auto"></md-progress-circular>
+				</md-button>
+
+				<md-button ng-click="close();"  class="" >Cancel</md-button>
+			</div>
+
+		</form>
+	</md-dialog-content>
+</md-dialog>

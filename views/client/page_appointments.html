@@ -1,0 +1,141 @@
+
+<section ng-controller="Appointments"  ng-init="Init();" >
+	<md-progress-linear ng-hide="isLoaded" md-mode="indeterminate"></md-progress-linear>
+
+	<div class="search-form">
+      <form ng-submit="Submit_Search();">
+         <div layout="row" layout-align="space-between center" class="container-xl">
+				<span flex="50" hide="" show-gt-sm=""></span>
+				<div flex="auto" layout="row">
+					<div flex="shrink" layout="column" layout-gt-xs="row" >
+						<input flex="shrink" ng-model="search.name" ng-disabled="search.isSubmit" type="text" placeholder="Search Name">
+						<div layout="row">
+							<input ng-model="search.dateFrom" ng-disabled="search.isSubmit" type="date" placeholder="From ">
+							<input ng-model="search.dateTo" ng-disabled="search.isSubmit" type="date" placeholder="To">
+						</div>
+					</div>
+					<div layout="column" layout-gt-xs="row" >
+						<md-button class="md-primary" type="submit" ng-disabled="search.isSubmit">
+							<md-icon ng-hide="search.isSubmit" class="material-icons">search</md-icon>
+							<md-progress-circular ng-show="search.isSubmit"  md-mode="indeterminate" md-diameter="20" class="mx-auto"></md-progress-circular>
+						</md-button>
+						<md-button ng-click="Report_View()" class="md-primary" type="button" ng-disabled="search.isSubmit">
+							<md-icon class="material-icons">print</md-icon>
+						</md-button>
+					</div>
+				</div>
+         </div>
+      </form>
+	</div>
+ asd
+   <div class="container-xl" >
+ 
+		<div class="table-responsive shadow">
+			<table>
+				<thead>
+					<tr>
+						<th>Appoint.</th>
+						<th>Checkup</th>
+						<th>Patient</th>
+						<th>Chief Complaint</th>
+						<th>Findings</th>
+						<th>Diagnosis</th>
+						<th>Doctor</th>
+						<th class="action"></th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr ng-repeat="A in Data()">
+						<th>Appoint.</th>
+						<td>
+							<div ng-show="A.APPOINTMENT" >
+								<md-tooltip md-direction="top">Appointment</md-tooltip>
+								<div layout="row" layout-align="start start">
+									<div>
+										<md-icon class="material-icons sm md-warn">perm_contact_calendar</md-icon>
+									</div>
+									<div>
+										<small ng-bind="A.APPOINTCLINIC" class="d-block"></small>	
+										<small  ng-bind="A.APPOINTMENTDATE|date:'MM/dd/y'"></small>
+										<small ng-bind="A.APPOINTMENTDESCRIPTION" class="text-muted"></small>
+									</div>
+								</div>
+							</div>
+						</td>
+						<th>Checkup</th>
+						<td>
+							<span ng-bind="A.CHECKUPDATE|date:'MM/dd/y'" ></span>
+						</td>
+						<th>Patient</th>
+						<td>
+							<span ng-bind="A.LASTNAME+', '+A.FIRSTNAME+' '+ A.MIDDLENAME"></span> 
+							<span ng-bind="A.AGE" class="text-muted"></span>
+						</td>
+						<th>Chief Complaint</th>
+						<td>
+							<pre ng-bind="A.CHEIFCOMPLAINT"></pre>
+
+							<md-button ng-show="A.TOTAL_LAB > 0" ng-click="MR_Laboratory(A.ID)" class="md-primary m-0 md-mini" >
+								<md-tooltip md-direction="top">{{A.TOTAL_LAB}} Laboratory result</md-tooltip>
+								<md-icon class="material-icons">bubble_chart</md-icon>
+							</md-button>
+						</td>
+						<th>Findings</th>
+						<td><pre ng-bind="A.FINDINGS"></pre></td>
+						<th>Diagnosis</th>
+						<td><pre ng-bind="A.DIAGNOSIS"></pre></td>
+						<th>Doctor</th>
+						<td>
+							<div class="mb-3">
+								<small ng-show="A.CREATEDNAME" ng-bind="A.CREATEDNAME"></small>
+								<small ng-hide="A.CREATEDNAME" class="text-muted">Prepared MR</small>
+								<div layout="row" layout-align="start start">
+									<div>
+										<md-icon class="material-icons sm md-primary" >room</md-icon>	
+									</div>
+									<div>
+										<small ng-bind="A.FROMCLINIC" class="d-block"></small>	
+									</div>
+								</div>
+							</div>
+
+							
+
+						</td>
+						<td class="action">
+							<div layout="column">
+								<div>
+									<md-button ng-click="Patient_Record_Link(A.PATIENTID)" class="md-primary md-mini">
+										<md-tooltip md-direction="top">Patient Record</md-tooltip>
+										<md-icon class="material-icons">folder_shared</md-icon>
+									</md-button>
+								</div>
+								<div>
+									<md-button ng-click="MR_Preview(A.ID)" class="md-primary md-mini">
+										<md-tooltip md-direction="top">Preview</md-tooltip>
+										<md-icon class="material-icons">find_in_page</md-icon>
+									</md-button>
+								</div>
+							</div>
+						</td>
+					</tr> 
+				</tbody>
+			</table>
+		</div>				
+
+
+
+		<div ng-show="isLoaded && search.viewMore " class="text-center">
+			<md-button ng-click="Submit_Search_More();" class="md-primary" ng-disabled="search.isSubmit">
+				<md-tooltip md-direction="top">View more</md-tooltip>
+				<md-icon ng-hide="search.isSubmit" class="material-icons">zoom_in</md-icon>
+				<div ng-if="search.isSubmit" layout="row" layout-align="center">
+					<md-progress-circular  md-mode="indeterminate" md-diameter="20"></md-progress-circular>
+				</div>
+			</md-button>
+		</div>
+
+
+	</div>
+</section>
+

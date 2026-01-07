@@ -1,0 +1,155 @@
+
+
+<div layout="column" layout-gt-xs="row" >
+    <md-card flex="100" flex-gt-xs="50">
+        <md-card-content layout="column" ng-include="'views/client/template/template_mr_checkup.html'"></md-card-content>
+    </md-card>
+
+    <md-card flex="100" flex-gt-xs="50">
+        <md-card-content>
+            <div ng-include="'views/client/template/template_mr_is_appointment.html'"></div>
+            <div layout="column" ng-include="'views/client/template/template_mr_appointment.html'"></div>
+        </md-card-content>
+    </md-card>
+</div>
+
+<md-card>
+    <md-card-title>
+        <md-card-title-text>
+            <span class="md-headline">Medical In</span>
+        </md-card-title-text>
+    </md-card-title>
+    <md-card-content>
+        <div ng-if="Me().OPHTHALMOLOGIST" ng-include="'views/client/template/template_mr_opthamologist.html'"></div>
+        <div ng-include="'views/client/template/template_mr_medicalin_1.html'"></div>
+    </md-card-content>
+</md-card>
+
+<md-card>
+    <md-card-title>
+        <md-card-title-text>
+            <span class="md-headline">Vital Signs</span>
+        </md-card-title-text>
+    </md-card-title>
+    <md-card-content>
+        <div ng-include="'views/client/template/template_mr_vital_signs.html'"></div>
+    </md-card-content>
+</md-card>
+
+<md-card  ng-if="Me().OPTICAL">
+    <md-card-title>
+        <md-card-title-text>
+            <span class="md-headline">Refraction</span>
+        </md-card-title-text>
+    </md-card-title>
+    <md-card-content>
+        <div ng-include="'views/client/template/template_mr_optical.html'"></div>
+    </md-card-content>
+</md-card>
+
+<md-card  ng-if="Laboratory().length > 0 || FORM.GROUP_LAB_MONITORING.length > 0">
+    <md-card-title>
+        <md-card-title-text>
+            <span class="md-headline">Laboratory</span>
+        </md-card-title-text>
+    </md-card-title>
+    <div ng-include="'views/client/template/template_mr_lab_template.html'"></div>
+</md-card>
+
+<md-card>
+    <md-card-content>
+        <div ng-include="'views/client/template/template_mr_medicalin_2.html'"></div>
+        <div ng-include="'views/client/template/template_mr_medicalin_3.html'"></div>
+    </md-card-content>
+</md-card>
+
+
+<md-card>
+    <md-card-title>
+        <md-card-title-text>
+            <span class="md-headline">Prescription</span>
+        </md-card-title-text>
+    </md-card-title>
+    <div ng-include="'views/client/template/template_mr_prescription.html'"></div>
+</md-card>
+
+
+
+<md-card>
+    <md-card-title>
+        <md-card-title-text>
+            <span class="md-headline">ICD & RVS Code</span>
+        </md-card-title-text>
+    </md-card-title>
+    <md-card-content>
+        <div ng-include="'views/client/template/template_mr_icdrvs_code.html'"></div>
+    </md-card-content>
+</md-card>
+
+<md-card ng-if="Me().PIRANI">
+    <md-card-title>
+        <md-card-title-text>
+            <span class="md-headline">PIRANI</span>
+        </md-card-title-text>
+    </md-card-title>
+    <md-card-content>
+        <div ng-include="'views/client/template/template_mr_pirani.html'"></div>
+    </md-card-content>
+</md-card>
+
+<md-card ng-if="Me().isDoctor">
+    <md-card-title>
+        <md-card-title-text>
+            <span class="md-headline">Medical Certificate</span>
+        </md-card-title-text>
+    </md-card-title>
+    <md-card-content>
+        <div ng-include="'views/client/template/template_mr_certificate.html'"></div>
+    </md-card-content>
+</md-card>
+
+<md-card ng-if="Me().isDoctor">
+    <md-card-title>
+        <md-card-title-text>
+            <span class="md-headline">Referral Letter</span>
+        </md-card-title-text>
+    </md-card-title>
+    <md-card-content>
+        <div ng-include="'views/client/template/template_mr_referral.html'"></div>
+    </md-card-content>
+</md-card>
+
+<md-card ng-if="Me().isDoctor">
+    <md-card-title>
+        <md-card-title-text>
+            <span class="md-headline">Clearance Letter</span>
+        </md-card-title-text>
+    </md-card-title>
+    <md-card-content>
+        <div ng-include="'views/client/template/template_mr_clearance.html'"></div>
+    </md-card-content>
+</md-card>
+
+<md-card>
+    <md-card-title>
+        <md-card-title-text>
+            <span class="md-headline">Files</span>
+        </md-card-title-text>
+    </md-card-title>
+    <md-card-content>           
+        <div ng-include="'views/client/template/template_mr_files.html'"></div>
+    </md-card-content>
+</md-card>
+
+<md-card ng-if="Me().SALES">
+    <md-card-title>
+        <md-card-title-text>
+            <span class="md-headline">Billing</span>
+        </md-card-title-text>
+    </md-card-title>
+    <md-card-content>
+        
+        <div ng-include="'views/client/template/template_mr_billing.html'"></div>
+
+    </md-card-content>
+</md-card>

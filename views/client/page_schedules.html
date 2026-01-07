@@ -1,0 +1,170 @@
+
+<section ng-controller="Schedules"  ng-init="Init();">
+	<md-progress-linear ng-hide="isLoaded" md-mode="indeterminate"></md-progress-linear>
+
+   <!-- SEARCH NAVIGATION -->
+   <div class="search-form">
+      <div layout="row" layout-align="space-between center" class="container-xl">
+
+        	<div flex hide="" show-gt-xs="" > 
+            <div layout="row" layout-align="start center">
+               <div ng-show="Data().CLINICS.length > 0" layout="row" layout-align="start center">
+						<md-icon class="material-icons m-0 sm"  md-colors="{color:'warn-300'}">perm_contact_calendar</md-icon>
+						<div ng-repeat="(key, A) in Data().CLINICS">
+							<small md-colors="{color:'warn-300'}" class="ml-1 mr-1">{{A.APPOINTCLINIC}}: {{A.TOTAL}},</small>
+						</div>
+					</div>
+               <!-- <div ng-show="Data().TOTAL_APPOINTMENT > 0" layout="row" layout-align="start center">
+                  <md-icon class="material-icons m-0 sm"  md-colors="{color:'warn-300'}">perm_contact_calendar</md-icon>
+                  <span ng-bind="Data().TOTAL_APPOINTMENT"  md-colors="{color:'warn-300'}" class="ml-1 mr-3"></span>
+                  <md-tooltip md-direction="top">Appointments</md-tooltip>
+               </div> -->
+               <div ng-show="Data().TOTAL_UNVERIFIED > 0" layout="row" layout-align="start center">
+                  <md-icon class="material-icons m-0 sm" md-colors="{color:'grey-500'}">group_add</md-icon>
+                  <span ng-bind="Data().TOTAL_UNVERIFIED"  md-colors="{color:'grey-500'}" class="ml-1 mr-3"></span>
+                  <md-tooltip md-direction="top">Unverify</md-tooltip>
+               </div>
+               <div ng-show="Data().TOTAL_UNACKNOWLEDGED > 0"  layout="row" layout-align="start center">
+                  <md-icon class="material-icons m-0 sm" md-colors="{color:'primary-200'}">assignment_late</md-icon>
+                  <span ng-bind="Data().TOTAL_UNACKNOWLEDGED" md-colors="{color:'primary-200'}" class="ml-1 mr-3"></span>
+                  <md-tooltip md-direction="top">Not yet acknowledge</md-tooltip>
+               </div>
+               <div ng-show="Data().TOTAL_ACKNOWLEDGED > 0"  layout="row" layout-align="start center">
+                  <md-icon class="material-icons m-0 sm" md-colors="{color:'primary-500'}">assignment_turned_in</md-icon>
+                  <span ng-bind="Data().TOTAL_ACKNOWLEDGED" md-colors="{color:'primary-500'}" class="ml-1 mr-3"></span>
+                  <md-tooltip md-direction="top">Acknowledged</md-tooltip>
+               </div>
+               <div ng-show="Data().TOTAL_NOSCHEDULED > 0"  layout="row" layout-align="start center">
+                  <md-icon class="material-icons m-0 sm" md-colors="{color:'primary-700'}">access_time</md-icon>
+                  <span ng-bind="Data().TOTAL_NOSCHEDULED" md-colors="{color:'primary-700'}" class="ml-1 mr-3"></span>
+                  <md-tooltip md-direction="top">No Schedule</md-tooltip>
+               </div>
+            </div>
+         </div>
+
+         <div flex="" layout="row" layout-align="center center">
+            <md-button ng-click="Change_month(-1);" ng-disabled="DataStatus()" class="md-primary md-mini">
+               <md-icon class="material-icons">keyboard_arrow_left</md-icon>
+            </md-button>
+
+            <input ng-model="search.monthDate" type="month" ng-change="Submit_Search()" aria-label="Month and year" disabled class="text-center unstyled" style="width: 140px;">
+
+            <md-button ng-click="Change_month(1);" ng-disabled="DataStatus()" class="md-primary md-mini">
+               <md-icon class="material-icons">keyboard_arrow_right</md-icon>
+            </md-button>
+         </div>
+
+         <div flex layout="row" layout-align="end center">
+            <md-button ng-click="Queue_SMS();" class="md-primary md-mini">
+               <md-tooltip md-direction="top">Rescheduled SMS</md-tooltip>
+               <md-icon class="material-icons">sms</md-icon>
+            </md-button>
+            <md-button ng-click="Submit_Search();"  ng-disabled="DataStatus()" class="md-primary md-mini">
+               <md-icon ng-hide="DataStatus()" class="material-icons">refresh</md-icon>
+               <md-progress-circular ng-show="DataStatus()"  md-mode="indeterminate" md-diameter="20" class="mx-auto"></md-progress-circular>
+            </md-button>
+         </div>
+
+      </div>
+   </div>
+
+
+   <!-- CALENDAR VIEW -->
+   <div class="container-xl">
+      <div ng-if="opt.gridView" class="calendar-grid">
+
+         <!-- day card -->
+         <div ng-repeat="(key, A) in Calendar()"  class="day-card {{A.active ? '' : 'disabled'}}  {{A.today ? 'today' : ''}} " >
+            <div ng-if="A.active" ng-click="View_Day(A)" layout="column" layout-align="space-between stretch" class="day-body animated fadeIn" ng-style="{'animation-delay' : (key*8) +'ms' }" >
+
+               <div layout="row" layout-align="start center" class="day-header">
+                  <span ng-bind="A.day" class="mr-1"></span>
+                  <span ng-bind="A.date |date:'EEE'"></span>
+               </div>
+
+               <div class="day-detail" flex>
+                  <table>
+                     <tr ng-repeat="(key1, B) in A.SCHEDULES | orderBy: ['SDATETIME']">
+                        <td ng-bind="B.SDATETIME| date: 'h:mm a'" class="pr-1 text-nowrap"></td>
+                        <td>
+                           <span ng-bind="B.SUBCLINICNAME"></span>
+                        </td>
+                     </tr>
+                  </table>
+
+                  <div ng-repeat="(key, B) in A.NOTES">
+                     <pre ng-bind="B.REMARKS" md-colors="{color:'grey-400'}" class="small m-0"></pre>
+                  </div>
+
+               </div>
+
+               <div layout="row" layout-align="end center"  class="day-footer">
+                  <div ng-show="A.SUBTOTAL_APPOINTMENT > 0" layout="row" layout-align="space-between center" >
+                     <md-icon class="material-icons sm" md-colors="{color:'warn-300'}">perm_contact_calendar</md-icon>
+                     <small ng-bind="A.SUBTOTAL_APPOINTMENT" md-colors="{color:'warn-300'}"></small>
+                  </div>
+
+                  <div ng-show="A.SUBTOTAL_UNVERIFIED > 0" layout="row" layout-align="space-between center"  class="pl-1">
+                     <md-icon class="material-icons sm"  md-colors="{color:'grey-300'}">group_add</md-icon>
+                     <small ng-bind="A.SUBTOTAL_UNVERIFIED" md-colors="{color:'grey-300'}" ></small>
+                  </div>
+
+                  <div ng-show="A.SUBTOTAL_UNACKNOWLEDGED > 0" layout="row" layout-align="space-between center"  class="pl-1">
+                     <md-icon class="material-icons sm" md-colors="{color:'primary-100'}">assignment_late</md-icon>
+                     <small ng-bind="A.SUBTOTAL_UNACKNOWLEDGED" md-colors="{color:'primary-100'}"></small>
+                  </div>
+
+                  <div ng-show="A.SUBTOTAL_ACKNOWLEDGED > 0" layout="row" layout-align="space-between center" class="pl-1">
+                     <md-icon class="material-icons sm" md-colors="{color:'primary-300'}">assignment_turned_in</md-icon>
+                     <small ng-bind="A.SUBTOTAL_ACKNOWLEDGED" md-colors="{color:'primary-300'}"></small>
+                  </div>
+
+                  <div ng-show="A.SUBTOTAL_NOSCHEDULED > 0" layout="row" layout-align="space-between center" class="pl-1">
+                     <md-icon class="material-icons sm" md-colors="{color:'primary-500'}">access_time</md-icon>
+                     <small ng-bind="A.SUBTOTAL_NOSCHEDULED" md-colors="{color:'primary-500'}"></small>
+                  </div>
+               </div>
+            </div>
+         </div>
+
+      </div>
+   </div>
+ 
+
+   <!-- GLOBAL COUNTS IN MOBILE VIEW -->
+   <div hide-gt-xs="" layout="row" layout-align="space-around center" layout-padding="">
+      <div ng-show="Data().CLINICS.length > 0" layout="row" layout-align="start center">
+         <md-icon class="material-icons m-0 sm"  md-colors="{color:'warn-300'}">perm_contact_calendar</md-icon>
+         <div ng-repeat="(key, A) in Data().CLINICS">
+            <small md-colors="{color:'warn-300'}" class="ml-1 mr-1">{{A.APPOINTCLINIC}}: {{A.TOTAL}},</small>
+         </div>
+      </div>
+      <!-- <div ng-show="Data().TOTAL_APPOINTMENT > 0" layout="row" layout-align="start center">
+         <md-icon class="material-icons m-0 sm"  md-colors="{color:'warn-300'}">perm_contact_calendar</md-icon>
+         <span ng-bind="Data().TOTAL_APPOINTMENT"  md-colors="{color:'warn-300'}" class="ml-1 mr-3"></span>
+         <md-tooltip md-direction="top">Appointments</md-tooltip>
+      </div> -->
+      <div ng-show="Data().TOTAL_UNVERIFIED > 0" layout="row" layout-align="start center">
+         <md-icon class="material-icons m-0 sm" md-colors="{color:'grey-500'}">group_add</md-icon>
+         <span ng-bind="Data().TOTAL_UNVERIFIED"  md-colors="{color:'grey-500'}" class="ml-1 mr-3"></span>
+         <md-tooltip md-direction="top">Unverify</md-tooltip>
+      </div>
+      <div ng-show="Data().TOTAL_UNACKNOWLEDGED > 0" layout="row" layout-align="start center">
+         <md-icon class="material-icons m-0 sm" md-colors="{color:'primary-200'}">assignment_late</md-icon>
+         <span ng-bind="Data().TOTAL_UNACKNOWLEDGED" md-colors="{color:'primary-200'}" class="ml-1 mr-3"></span>
+         <md-tooltip md-direction="top">Not yet acknowledge</md-tooltip>
+      </div>
+      <div ng-show="Data().TOTAL_ACKNOWLEDGED > 0" layout="row" layout-align="start center">
+         <md-icon class="material-icons m-0 sm" md-colors="{color:'primary-500'}">assignment_turned_in</md-icon>
+         <span ng-bind="Data().TOTAL_ACKNOWLEDGED" md-colors="{color:'primary-500'}" class="ml-1 mr-3"></span>
+         <md-tooltip md-direction="top">Acknowledged</md-tooltip>
+      </div>
+      <div ng-show="Data().TOTAL_NOSCHEDULED > 0" layout="row" layout-align="start center">
+         <md-icon class="material-icons m-0 sm" md-colors="{color:'primary-700'}">access_time</md-icon>
+         <span ng-bind="Data().TOTAL_NOSCHEDULED" md-colors="{color:'primary-700'}" class="ml-1"></span>
+         <md-tooltip md-direction="top">No Schedule</md-tooltip>
+      </div>
+   </div>
+
+
+</section>

@@ -1,0 +1,23 @@
+label{
+   color: rgb(117,117,117);
+}
+
+
+.table-unresponsive table thead th, 
+.table-responsive table thead th{
+   color: rgb(117,117,117);
+}
+
+
+.table-responsive table tbody tr{
+   background-color: white;
+}
+
+.table-responsive table tbody tr:hover {
+   background-color: #f9f9f9;
+}
+
+
+.table-responsive table tbody th {
+   color: rgb(117,117,117);
+}

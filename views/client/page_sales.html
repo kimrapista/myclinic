@@ -1,0 +1,325 @@
+
+<section ng-controller="Sales"  ng-init="Init();" >
+	<md-progress-linear ng-hide="isLoaded" md-mode="indeterminate"></md-progress-linear>
+
+   <div ng-hide="Me().isAssistant" class="search-form">
+      <form ng-submit="Submit_Search();">
+         <div  layout="row" layout-align="space-between center" class="container-lg">
+				<span flex="50" hide="" show-gt-sm=""></span>
+				<div flex="auto" layout="row">
+					<div flex="" layout="column" layout-gt-xs="row" layout-align="end start" >
+                  <input flex="grow" ng-model="search.dateFrom" ng-disabled="search.isSubmit" type="date" placeholder="From" style="max-width: 150px;">
+                  <input flex="grow" ng-model="search.dateTo" ng-disabled="search.isSubmit" type="date" placeholder="To" style="max-width: 150px;">
+					</div>
+					<md-button class="md-primary" type="submit" ng-disabled="search.isSubmit">
+						<md-icon ng-hide="search.isSubmit" class="material-icons">search</md-icon>
+						<md-progress-circular ng-show="search.isSubmit"  md-mode="indeterminate" md-diameter="20" class="mx-auto"></md-progress-circular>
+					</md-button>
+				</div>
+         </div>
+      </form>
+	</div>
+
+
+   <div class="container-lg" >
+
+      <div layout="column" layout-gt-xs="row" layout-align-gt-xs="start start" >
+
+         <md-card flex-gt-xs="35">
+            <div ng-show="search.isClinics" class="loading-form">
+               <div class="sk-folding-cube">
+                  <div class="sk-cube1 sk-cube"></div>
+                  <div class="sk-cube2 sk-cube"></div>
+                  <div class="sk-cube4 sk-cube"></div>
+                  <div class="sk-cube3 sk-cube"></div>
+               </div>
+            </div>
+
+            <md-card-content ng-if="!Me().isAssistant || (Me().isAssistant && Me().ISDISPLAYSERVICESAMOUNT)">
+               <h3 ng-bind="Data().TOTAL_NETPAYABLES|number:0" class="m-0 text-center"></h3>
+               <div class="text-center">
+                  <small class="text-muted">Income</small>
+               </div>
+               <md-button ng-click="Report_View('SUMMARY')" ng-disabled="!isLoaded" class="md-primary md-mini top-right" >
+                  <md-tooltip md-direction="top">Summary Report</md-tooltip>
+                  <md-icon class="material-icons">print</md-icon>
+               </md-button>
+            </md-card-content>
+
+            <div class="table-detail padding scroll" style="max-height: 60vh;">
+               <table>
+                  <thead>
+                     <tr>
+                        <th>Clinic</th>
+                        <th>No. Patients</th>
+                        <th ng-if="!Me().isAssistant || (Me().isAssistant && Me().ISDISPLAYSERVICESAMOUNT)">TOTAL AMT</th>
+                     </tr>
+                  </thead>
+                  <tbody>
+                     <tr ng-repeat="(key, A) in Data().CLINICS">
+                        <td ng-bind="A.NAME"></td>
+                        <td ng-bind="A.RECORDS" class="text-center"></td>
+                        <td ng-bind="A.NETPAYABLES|number:2" ng-if="!Me().isAssistant || (Me().isAssistant && Me().ISDISPLAYSERVICESAMOUNT)" class="text-right"></td>
+                     </tr>
+                  </tbody>
+               </table>
+            </div>
+         </md-card> 
+
+         <md-card flex>
+            <md-tabs md-dynamic-height md-border-bottom>
+
+               <!-- Patients -->
+               <md-tab label="With Charges">
+                  <div ng-show="search.isPatients" class="loading-form">
+                     <div class="sk-folding-cube">
+                        <div class="sk-cube1 sk-cube"></div>
+                        <div class="sk-cube2 sk-cube"></div>
+                        <div class="sk-cube4 sk-cube"></div>
+                        <div class="sk-cube3 sk-cube"></div>
+                     </div>
+                  </div>
+
+                  <md-input-container md-no-float="" class="md-block m-0">
+                     <md-icon>search</md-icon>
+                     <input type="text" ng-model="searchNameWithCharges" ng-model-options="{ debounce: 300 }" placeholder="Search Name" >
+                  </md-input-container>
+                  <div class="table-detail padding sales-patients-scroll scroll  table-fixed" style="min-height: 300px; max-height: calc(100vh - 270px);">
+                     <table>
+                        <thead>
+                           <tr>
+                              <th>Date</th>
+                              <th>Name</th>
+                              <th>HMO</th>
+                              <th ng-if="!Me().isAssistant || (Me().isAssistant && Me().ISDISPLAYSERVICESAMOUNT)">Amt</th>
+                              <th ng-if="!Me().isAssistant || (Me().isAssistant && Me().ISDISPLAYSERVICESAMOUNT)">Paid</th>
+                              <th class="action">
+                                 <md-menu ng-if="!Me().isAssistant || (Me().isAssistant && Me().ISDISPLAYSERVICESAMOUNT)" >
+                                    <md-button ng-click="$mdMenu.open();" class="md-primary md-icon-button" ng-disabled="!isLoaded">
+                                       <md-icon class="material-icons">print</md-icon>
+                                    </md-button>
+                                    <md-menu-content width="4">
+                                       <md-menu-item>
+                                          <md-button ng-click="Report_View('DETAIL')">Sales Detail Report</md-button>
+                                       </md-menu-item>
+                                       <md-menu-item>
+                                          <md-button ng-click="Report_View('DETAIL-PHILHEALTH')">PhilHealth Claims Report</md-button>
+                                       </md-menu-item>
+                                    </md-menu-content>
+                                 </md-menu>
+                              </th>
+                           </tr>
+                        </thead>
+                        <tbody>
+                           <tr ng-repeat="(key, A) in Data().PATIENTS| filter: searchNameWithCharges; track by $index">
+                              <td ng-bind="A.CHECKUPDATE|date:'MM/dd/y'"></td>
+                              <td ng-bind="A.NAME"></td>
+                              <td>
+                                 <div ng-bind="A.HMONAME"></div>
+                                 <small ng-if="A.PHILHEALTH" class="text-muted">PhilHealth</small>
+                              </td>
+                              <td  ng-bind="A.NETPAYABLES|number:2" ng-if="!Me().isAssistant || (Me().isAssistant && Me().ISDISPLAYSERVICESAMOUNT)" class="text-right"></td>
+                              <td  ng-bind="A.totalPaid|number:2" ng-if="!Me().isAssistant || (Me().isAssistant && Me().ISDISPLAYSERVICESAMOUNT)" class="text-right"></td>
+                              <td class="action">
+                                 <md-button ng-click="MR_Preview(A.ID)" class="md-primary">
+                                    <md-icon class="material-icons">find_in_page</md-icon>
+                                 </md-button>
+                              </td>
+                           </tr>
+
+                           <tr ng-if="Data().PATIENTS.length == 0">
+                              <td colspan="10" class="text-center">No Data</td>
+                           </tr>
+ 
+                        </tbody>
+                        <tfoot  ng-if="Data().PATIENTS.length > 0">
+                           <tr>
+                              <td colspan="4" ng-bind="Data().PATIENTS.length"></td>
+                              <td class="action">
+                                 <div  ng-show="search.patViewMore">
+                                    <md-button ng-click="More_Patients();"  class="md-primary md-icon-button" ng-disabled="search.isPatients">
+                                       <md-tooltip md-direction="top">View more</md-tooltip>
+                                       <md-icon class="material-icons">zoom_in</md-icon>
+                                    </md-button>
+                                 </div>
+                              </td>
+                           </tr>
+                        </tfoot>
+                     </table> 
+                  </div>
+               </md-tab>
+               <md-tab label="No Charges">
+                  <md-input-container md-no-float="" class="md-block m-0">
+                     <md-icon>search</md-icon>
+                     <input type="text" ng-model="searchNameNoCharges" ng-model-options="{ debounce: 300 }" placeholder="Search Name" >
+                  </md-input-container>
+                  <div class="table-detail padding sales-patients-scroll scroll  table-fixed" style="min-height: 300px; max-height: calc(100vh - 270px);">
+                     <table>
+                        <thead>
+                           <tr>
+                              <th>Date</th>
+                              <th>Name</th>
+                              <th class="action"></th>
+                           </tr>
+                        </thead>
+                        <tbody>
+                           <tr ng-repeat="(key, A) in Data().NOCHARGES| filter: searchNameNoCharges; track by $index">
+                              <td ng-bind="A.CHECKUPDATE|date:'MM/dd/y'"></td>
+                              <td ng-bind="A.NAME"></td>
+                              <td class="action">
+                                 <md-button ng-click="MR_Preview(A.ID)" class="md-primary">
+                                    <md-icon class="material-icons">find_in_page</md-icon>
+                                 </md-button>
+                              </td>
+                           </tr>
+
+                           <tr ng-if="Data().NOCHARGES.length == 0">
+                              <td colspan="10" class="text-center">No Data</td>
+                           </tr>
+ 
+                        </tbody>
+                        <tfoot  ng-if="Data().NOCHARGES.length > 0">
+                           <tr>
+                              <td colspan="4" ng-bind="Data().NOCHARGES.length"></td>
+                           </tr>
+                        </tfoot>
+                     </table> 
+                  </div>
+               </md-tab>
+
+               <!-- hmo -->
+               <md-tab label="HMO">
+                  <div ng-show="search.isHMO" class="loading-form">
+                     <div class="sk-folding-cube">
+                        <div class="sk-cube1 sk-cube"></div>
+                        <div class="sk-cube2 sk-cube"></div>
+                        <div class="sk-cube4 sk-cube"></div>
+                        <div class="sk-cube3 sk-cube"></div>
+                     </div>
+                  </div>
+
+                  <div class="table-detail padding scroll table-fixed" style="min-height: 300px; max-height: calc(100vh - 230px);">
+                     <table>
+                        <thead>
+                           <tr>
+                              <th>NAME</th>
+                              <th>Rcvd</th>
+                              <th>Not Rcvd</th>
+                              <th>TOTAL</th>
+                              <th>%</th>
+                              <th></th>
+                           </tr>
+                        </thead>
+                        <tbody>
+                           <tr ng-repeat="(key, A) in Data().HMO; track by $index">
+                              <td ng-bind="A.NAME"></td>
+                              <td ng-bind="A.RECEIVED_COUNT|number:0" class="text-center"></td>
+                              <td ng-bind="A.NOT_RECEIVED_COUNT|number:0" class="text-center"></td>
+                              <td ng-bind="A.RECORDS" class="text-center"></td>
+                              <td class="text-center"><span>{{A.percentage|number:2}} %</span></td>
+                              <td class="action">
+                                 <md-menu >
+                                    <md-button ng-click="$mdMenu.open();" class="md-primary md-icon-button" ng-disabled="!isLoaded">
+                                       <md-icon class="material-icons">more_vert</md-icon>
+                                    </md-button>
+                                    <md-menu-content width="4">
+                                       <md-menu-item>
+                                          <md-button ng-click="Report_HMO_View('HMO-PAID', A.ID, 1)">Paid Report</md-button>
+                                       </md-menu-item>
+                                       <md-menu-item>
+                                          <md-button ng-click="Report_HMO_View('HMO-UNPAID', A.ID, 0)">Unpaid Report </md-button>
+                                       </md-menu-item>
+                                       <md-menu-item>
+                                          <md-button ng-click="Report_HMO_View('HMO', A.ID, 2)">Paid & Unpaid Report</md-button>
+                                       </md-menu-item>
+													 <md-menu-item>
+                                          <md-button ng-click="Report_HMO_View1('HMO-POSTING', A.ID, 2)">HMO Posting</md-button>
+                                       </md-menu-item>
+                                    </md-menu-content>
+                                 </md-menu>
+                              </td>
+										
+										
+                           </tr>
+                           <tr ng-if="Data().HMO.length == 0">
+                              <td colspan="10" class="text-center">No Data</td>
+                           </tr>
+                        </tbody>
+                        <tfoot>
+                           <tr ng-if="Data().HMO.length > 0">
+                              <td ng-bind="Data().HMO.length"></td>
+                              <td ng-bind="Data().TOTAL_HMO_RECEIVED|number:0" class="text-center"></td>
+                              <td ng-bind="Data().TOTAL_HMO_NOT_RECEIVED|number:0" class="text-center"></td>
+                              <td ng-bind="Data().TOTAL_HMO|number:0" class="text-center"></td>
+                              <td colspan="2"></td>
+                           </tr>
+                        </tfoot>
+                     </table>
+                  </div>
+
+               </md-tab>
+
+               <!-- Services -->
+               <md-tab label="Services">
+
+                  <div ng-show="search.isServices" class="loading-form">
+                     <div class="sk-folding-cube">
+                        <div class="sk-cube1 sk-cube"></div>
+                        <div class="sk-cube2 sk-cube"></div>
+                        <div class="sk-cube4 sk-cube"></div>
+                        <div class="sk-cube3 sk-cube"></div>
+                     </div>
+                  </div>
+
+                  <div class="table-detail padding scroll  table-fixed" style="min-height: 300px; max-height: calc(100vh - 230px);">
+                     <table>
+                        <thead>
+                           <tr>
+                              <th>Name</th>
+                              <th>Qty</th>
+                              <th ng-if="!Me().isAssistant || (Me().isAssistant && Me().ISDISPLAYSERVICESAMOUNT)">Amount</th>
+                           </tr>
+                        </thead>
+                        <tbody ng-repeat="(key, A) in Data().CLINICS; track by $index">
+                           <tr>
+                              <td colspan="5"><strong ng-bind="A.NAME" md-colors="{color:'primary'}"></strong></td>
+                           </tr>
+                           <tr ng-if="A.SUBCLINICID == B.SUBCLINICID" ng-repeat="(key, B) in Data().SERVICES">
+                              <td><div ng-bind="B.NAME"></div></td>
+                              <td><div ng-bind="B.QUANTITY" class="text-center"></div></td>
+                              <td ng-if="!Me().isAssistant || (Me().isAssistant && Me().ISDISPLAYSERVICESAMOUNT)">
+                                 <div ng-bind="B.AMOUNT|number:2" class="text-right"></div>
+                              </td>
+                           </tr>
+                           <tr>
+                              <td colspan="2"><span class="text-muted">Sub Total</span></td>
+                              <td ng-if="!Me().isAssistant || (Me().isAssistant && Me().ISDISPLAYSERVICESAMOUNT)">
+                                 <div ng-bind="A.GROSSAMOUNT|number:2" class="text-right text-muted"></div>
+                              </td>
+                           </tr>
+                           <tr>
+                              <td colspan="2"><span class="text-muted">Discount</span></td>
+                              <td ng-if="!Me().isAssistant || (Me().isAssistant && Me().ISDISPLAYSERVICESAMOUNT)">
+                                 <div ng-bind="A.DISCOUNTAMOUNT|number:2" class="text-right text-muted"></div>
+                              </td>
+                           </tr>
+                           <tr>
+                              <td colspan="2"><span class="text-muted">Total</span></td>
+                              <td ng-if="!Me().isAssistant || (Me().isAssistant && Me().ISDISPLAYSERVICESAMOUNT)">
+                                 <div ng-bind="A.NETPAYABLES|number:2" class="text-right "></div>
+                              </td>
+                           </tr>
+                           <tr>
+                              <td colspan="5" class="text-center text-muted">--- End for {{A.NAME}} ---</td>
+                           </tr>
+                        </tbody>
+                     </table>
+                  </div>
+               </md-tab>
+
+            </md-tabs>
+         </md-card>
+
+      </div> 
+   </div>
+</section>

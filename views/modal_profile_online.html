@@ -1,0 +1,137 @@
+<md-dialog aria-label="Change Password" ng-init="Init();">
+	<md-toolbar>
+		<div class="md-toolbar-tools">
+			<h2 class="md-title">Online Profile</h2>
+			<span flex></span>
+			<md-button class="md-icon-button" ng-click="Close()">
+				<md-icon class="material-icons" aria-label="Close dialog">close</md-icon>
+			</md-button>
+		</div>
+   </md-toolbar>
+   
+	<div ng-hide="isLoaded" class="loading-form">
+		<div class="sk-folding-cube">
+			<div class="sk-cube1 sk-cube"></div>
+			<div class="sk-cube2 sk-cube"></div>
+			<div class="sk-cube4 sk-cube"></div>
+			<div class="sk-cube3 sk-cube"></div>
+		</div>
+	</div>
+
+   <md-dialog-content class="scroll" style="min-width: 40vw;" >
+
+      <md-tabs md-dynamic-height md-border-bottom md-center-tabsx>
+         <md-tab label="Profile"> 
+
+            <form name="formParent" ng-submit="Submit_Profile()" layout="column" class="md-padding">
+
+               <md-input-container class="md-block">
+                  <input ng-model="FORM.LINK" name="LINK" type="text" md-maxlength="20" placeholder="Profile Link" ng-pattern="/^@[a-zA-Z0-9]{1,19}$/" ng-disabled="!FORM.ISONLINE">
+                  <div ng-messages="formParent.LINK.$error" role="alert" md-auto-hide="false">
+                     <div ng-message="required">This is required.</div>
+                     <div ng-message="md-maxlength">Characters reach the maximum limit.</div>
+                     <div ng-message="pattern">Ex. @desirelink , allowed characters A-Z, 0-9 and no space.</div>
+                  </div>
+               </md-input-container>
+               
+      
+               <md-input-container class="md-block">
+                  <label>About yourself / motto</label>
+                  <textarea ng-model="FORM.MOTTO" name="MOTTO" md-maxlength="200"   ng-disabled="!FORM.ISONLINE"></textarea>
+                  <div ng-messages="formParent.MOTTO.$error" role="alert" md-auto-hide="false">
+                     <div ng-message="required">This is required.</div>
+                     <div ng-message="md-maxlength">character reach the max limit.</div>
+                  </div>
+               </md-input-container>
+               
+
+               <md-switch ng-model="FORM.ISONLINE">Public Profile</md-switch>
+          
+      
+               <div layout="column" layout-gt-xs="row" layout-align="end" class="mt-3">
+                  <md-button ng-disabled="FORM.isSubmit || formParent.$invalid || !isLoaded"  type="submit" class="md-raised md-primary">
+                     <span ng-hide="FORM.isSubmit">Save</span>
+                     <md-progress-circular ng-show="FORM.isSubmit" md-mode="indeterminate" md-diameter="20" class="mx-auto"></md-progress-circular>
+                  </md-button>
+                  <md-button ng-click="Close();"  class="" >Cancel</md-button>
+               </div>
+               
+            </form>
+
+         </md-tab>
+         <md-tab label="Clinic Time & Location"> 
+
+            <div ng-repeat="(key, A) in Clinics()" layout="row" layout-align="space-between start" class="px-3 mb-3">
+               <div class="mr-4">
+                  <md-switch ng-model="A.ISONLINE" ng-change="Submit_Subclinic_Time()" aria-label="Subclinic Name"><span ng-bind="A.NAME"></span></md-switch>
+               </div>              
+
+               <div ng-if="A.ISONLINE">
+                  <div layout-wrap="">
+                     <md-input-container flex>
+                        <label>Monday</label>
+                        <md-select ng-model="A.MONTIME" name="MONTIME" ng-change="Submit_Subclinic_Time()">
+                           <md-option ng-value="A.value" ng-bind="A.label" ng-repeat="A in Day_Time()"></md-option>
+                        </md-select>
+                     </md-input-container>
+
+                     <md-input-container flex>
+                        <label>Tueday</label>
+                        <md-select ng-model="A.TUETIME" name="TUETIME" ng-change="Submit_Subclinic_Time()">
+                           <md-option ng-value="A.value" ng-bind="A.label" ng-repeat="A in Day_Time()"></md-option>
+                        </md-select>
+                     </md-input-container>
+
+                     <md-input-container flex>
+                        <label>Wednesday</label>
+                        <md-select ng-model="A.WEDTIME" name="WEDTIME" ng-change="Submit_Subclinic_Time()">
+                           <md-option ng-value="A.value" ng-bind="A.label" ng-repeat="A in Day_Time()"></md-option>
+                        </md-select>
+                     </md-input-container>
+
+                     <md-input-container flex>
+                        <label>Thursday</label>
+                        <md-select ng-model="A.THUTIME" name="THUTIME" ng-change="Submit_Subclinic_Time()">
+                           <md-option ng-value="A.value" ng-bind="A.label" ng-repeat="A in Day_Time()"></md-option>
+                        </md-select>
+                     </md-input-container>
+
+                     <md-input-container flex>
+                        <label>Friday</label>
+                        <md-select ng-model="A.FRITIME" name="FRITIME" ng-change="Submit_Subclinic_Time()">
+                           <md-option ng-value="A.value" ng-bind="A.label" ng-repeat="A in Day_Time()"></md-option>
+                        </md-select>
+                     </md-input-container>
+
+                     <md-input-container flex>
+                        <label>Saturday</label>
+                        <md-select ng-model="A.SATTIME" name="SATTIME" ng-change="Submit_Subclinic_Time()">
+                           <md-option ng-value="A.value" ng-bind="A.label" ng-repeat="A in Day_Time()"></md-option>
+                        </md-select>
+                     </md-input-container>
+
+                     <md-input-container flex>
+                        <label>Sunday</label>
+                        <md-select ng-model="A.SUNTIME" name="SUNTIME" ng-change="Submit_Subclinic_Time()">
+                           <md-option ng-value="A.value" ng-bind="A.label" ng-repeat="A in Day_Time()"></md-option>
+                        </md-select>
+                     </md-input-container>
+                  </div>
+               </div> 
+            </div>
+            
+            <div layout="row" layout-align="center center" class="md-padding">
+               <md-button ng-click="Set_Map()" class="md-primary md-raised ">
+                  <md-icon class="material-icons sm">edit_location</md-icon>
+                  <span md-direction="top">Set clinic location</span>
+               </md-button>
+            </div>
+
+         </md-tab>
+      </md-tabs>
+      
+      
+      
+
+   </md-dialog-content>
+</md-dialog>

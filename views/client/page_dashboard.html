@@ -1,0 +1,199 @@
+
+<section ng-controller="Dashboard"  ng-init="Init();" >
+	<md-progress-linear ng-hide="isLoaded" md-mode="indeterminate"></md-progress-linear>
+
+  
+   <div class="container pt-5">
+
+      <div layout="row"  layout-wrap="">
+
+         <md-card flex>
+            <div ng-show="Data().isSummary || Data().isMonthServed" class="loading-form">
+               <div class="sk-folding-cube">
+                  <div class="sk-cube1 sk-cube"></div>
+                  <div class="sk-cube2 sk-cube"></div>
+                  <div class="sk-cube4 sk-cube"></div>
+                  <div class="sk-cube3 sk-cube"></div>
+               </div>
+            </div>
+
+            <div layout="column" layout-gt-xs="row">
+               <div flex="100" flex-gt-xs="25">
+
+                  <md-card-content class="">
+                     
+                     <h3 ng-show="Me().SALES" ng-bind="Data().SUMMARY.NETPAYABLES|number:0" class="my-0"></h3>
+                     <small ng-show="Me().SALES" class="text-muted">Today Income</small>
+                     
+                     <div layout="row" layout-align="space-between center">
+                        <div>
+                           <h4 ng-bind="Data().SUMMARY.TODAYMR" class="mb-0"></h4>
+                           <small class="text-muted">New Record</small>
+                        </div>
+                        <div ng-show="Me().SALES">
+                           <h4 ng-bind="Data().SUMMARY.TODAYHMO" class="mb-0 text-center"></h4>
+                           <small class="text-muted text-center">HMO</small>
+                        </div>
+                     </div>
+
+                     <h4 ng-bind="Data().SUMMARY.TODAYAPPOINT" class="mb-0"></h4>
+                     <small class="text-muted text-center">Appointment today</small>
+             
+                  </md-card-content>
+
+               </div>
+               <div flex="100" flex-gt-xs="75" style="position: relative;">
+                  <h6 class="header-float-r">Records</h6>
+                  <div id="monthServedCharts" class=""></div>
+               </div>
+            </div>
+         </md-card>
+
+         <md-card flex="100" flex-gt-xs="30">
+            <div ng-show="Data().isSummary" class="loading-form">
+               <div class="sk-folding-cube">
+                  <div class="sk-cube1 sk-cube"></div>
+                  <div class="sk-cube2 sk-cube"></div>
+                  <div class="sk-cube4 sk-cube"></div>
+                  <div class="sk-cube3 sk-cube"></div>
+               </div>
+            </div>
+            <md-card-content>
+               <div id="todaySexCharts" class=""></div>
+               <h2 ng-bind="Data().SUMMARY.NEWPAT" class="mb-0 text-right"></h2>
+               <small class="text-muted d-block text-right">New Registered</small>
+            </md-card-content>
+         </md-card>
+      </div>
+
+      <div layout="column" layout-gt-xs="row"  layout-wrap="">
+
+         <div  flex>
+            <md-card class="">
+               <div ng-show="Data().isSummary" class="loading-form">
+                  <div class="sk-folding-cube">
+                     <div class="sk-cube1 sk-cube"></div>
+                     <div class="sk-cube2 sk-cube"></div>
+                     <div class="sk-cube4 sk-cube"></div>
+                     <div class="sk-cube3 sk-cube"></div>
+                  </div>
+               </div>
+               <md-card-content class="text-center">
+                  <div  layout="row" layout-align="space-between end">
+                     <div>
+                        <h4 ng-bind="Data().SUMMARY.MONTHMR" class="my-3"></h4>
+                        <small class="text-muted">Month Record</small>
+                     </div>
+                     <div>
+                        <h4 ng-bind="Data().SUMMARY.MONTHHMO" class="my-3"></h4>
+                        <small class="text-muted d-block text-center">HMO</small>
+                     </div>
+                  </div>
+               </md-card-content>
+            </md-card>
+         </div>
+
+         <div ng-hide="Me().isAssistant || !Me().SALES"  flex>
+            <md-card class="">
+               <div ng-show="Data().isSummary" class="loading-form">
+                  <div class="sk-folding-cube">
+                     <div class="sk-cube1 sk-cube"></div>
+                     <div class="sk-cube2 sk-cube"></div>
+                     <div class="sk-cube4 sk-cube"></div>
+                     <div class="sk-cube3 sk-cube"></div>
+                  </div>
+               </div>
+               <md-card-content class="text-center">
+                  <h4 ng-bind="Data().SUMMARY.MONTHNETPAYABLES|number:0" class="my-3"></h4>
+                  <small class="text-muted">Month Net Income</small>
+               </md-card-content>
+            </md-card>
+         </div>
+
+         
+         <div flex>
+            <md-card class="">
+               <div ng-show="Data().isSummary" class="loading-form">
+                  <div class="sk-folding-cube">
+                     <div class="sk-cube1 sk-cube"></div>
+                     <div class="sk-cube2 sk-cube"></div>
+                     <div class="sk-cube4 sk-cube"></div>
+                     <div class="sk-cube3 sk-cube"></div>
+                  </div>
+               </div>
+               <md-card-content class="text-center">
+                  <div  layout="row" layout-align="space-between end">
+                     <div>
+                        <h4 ng-bind="Data().SUMMARY.MONTHAPPOINT" class="my-3"></h4>
+                        <small class="text-muted">Upcoming</small>
+                     </div>
+                     <div>
+                        <h4 ng-bind="(Data().SUMMARY.TOTALAPPOINT - Data().SUMMARY.MONTHAPPOINT)" class="my-3"></h4>
+                        <small class="text-muted d-block text-center">next month</small>
+                     </div>
+                  </div>
+               </md-card-content>
+            </md-card>
+         </div>
+         
+         <div flex>
+            <md-card class="">
+               <div ng-show="Data().isSummary" class="loading-form">
+                  <div class="sk-folding-cube">
+                     <div class="sk-cube1 sk-cube"></div>
+                     <div class="sk-cube2 sk-cube"></div>
+                     <div class="sk-cube4 sk-cube"></div>
+                     <div class="sk-cube3 sk-cube"></div>
+                  </div>
+               </div>
+               <md-card-content class="text-center">
+                  <div  layout="row" layout-align="space-between end">
+                     <div>
+                        <h4 ng-bind="Data().SUMMARY.MONTHPAT" class="my-3"></h4>
+                        <small class="text-muted">Registered</small>
+                     </div>
+                     <div>
+                        <h4 ng-bind="Data().SUMMARY.TOTALPAT|number:0" class="my-3"></h4>
+                        <small class="text-muted d-block text-center">Total</small>
+                     </div>
+                  </div>
+                  <!-- <h4 ng-bind="Data().SUMMARY.MONTHPAT|number:0" class="my-3"></h4>
+                  <small class="text-muted">Registered Patient</small> -->
+               </md-card-content>
+            </md-card>
+         </div>
+      </div>
+
+
+      <md-card ng-hide="Me().isAssistant || !Me().SALES" style="min-height: 200px;">
+         <div ng-show="Data().isMonthNet" class="loading-form">
+            <div class="sk-folding-cube">
+               <div class="sk-cube1 sk-cube"></div>
+               <div class="sk-cube2 sk-cube"></div>
+               <div class="sk-cube4 sk-cube"></div>
+               <div class="sk-cube3 sk-cube"></div>
+            </div>
+         </div>
+         <p class="header-float-l">Net Income</p>
+         <div id="monthNetCharts" class=""></div>
+      </md-card>
+
+
+
+      <!-- <md-card >
+         <md-card-content style="min-height: 200px;">
+            <div ng-show="Data().isPatients" class="loading-form">
+               <div class="sk-folding-cube">
+                  <div class="sk-cube1 sk-cube"></div>
+                  <div class="sk-cube2 sk-cube"></div>
+                  <div class="sk-cube4 sk-cube"></div>
+                  <div class="sk-cube3 sk-cube"></div>
+               </div>
+            </div>
+            <div id="patientsCharts" class=""></div>
+         </md-card-content>           
+      </md-card> -->
+
+ 
+   </div>
+</section>

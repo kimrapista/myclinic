@@ -1,0 +1,100 @@
+<md-dialog aria-label="Files" class="dialog-lg dialog-h-lg">
+	<md-toolbar>
+		<div class="md-toolbar-tools">
+			<h2 class="md-title" ng-bind="FILE.FILENAME"></h2>
+			<span flex></span>
+			<md-button class="md-icon-button" ng-click="Close()">
+				<md-icon class="material-icons" aria-label="Close dialog">close</md-icon>
+			</md-button>
+		</div>
+	</md-toolbar>
+	<md-dialog-content class="full-height">
+
+
+		<iframe id="iframe_viewer" ng-src="{{FILE.IMAGEPATH}}" onload="check_files()" frameborder="0"></iframe>
+		
+
+		<div id="iframe_opt" class="iframe_viewer_opt" layout="column">
+			<md-button id="btn_zoomfull" class="md-raised md-fab md-mini">
+				<md-icon class="material-icons">fullscreen</md-icon>
+			</md-button>
+			<md-button id="btn_zoomin" class="md-raised md-fab md-mini">
+				<md-icon class="material-icons">add</md-icon>
+			</md-button>
+			<md-button id="btn_zoomout" class="md-raised md-fab md-mini" >
+				<md-icon class="material-icons">remove</md-icon>
+			</md-button>
+		</div>
+
+		<script>
+
+			$(function(){ 
+
+				$('#btn_zoomfull').click(function(e){
+
+					if( Img_Width() > Img_Height() ){
+						$("#iframe_viewer").contents().find('img').css({'width': '95vw', 'height' : 'auto'});
+					}
+					else{
+						$("#iframe_viewer").contents().find('img').css({'width': 'auto', 'height' : '95vh'});
+					}
+				});
+
+				$('#btn_zoomin').click(function(e){
+					
+					var tempWidth = Img_Width();
+					tempWidth += parseInt(tempWidth * 0.2);
+
+					$("#iframe_viewer").contents().find('img').css({'width': tempWidth + 'px', 'height': 'auto'});
+				});
+
+				$('#btn_zoomout').click(function(e){
+					if( Img_Width() > 200 ){
+						var tempWidth = Img_Width();
+						tempWidth -= parseInt(tempWidth * 0.2);
+
+						$("#iframe_viewer").contents().find('img').css({'width': tempWidth + 'px', 'height': 'auto'});
+					}
+				});
+
+			});
+
+			function check_files(){
+				
+				if( $("#iframe_viewer").contents().find('img')[0] ){
+
+					$("#iframe_viewer").contents().find('body').css({'display': 'flex', 'background-color': 'rgb(82, 86, 89)'});
+
+					if( Img_Width() > Img_Height() ){
+						$("#iframe_viewer").contents().find('img').css({'margin': 'auto', 'display': 'block','width': '80vw', 'height' : 'auto'});
+					}
+					else{
+						$("#iframe_viewer").contents().find('img').css({'margin': 'auto', 'display': 'block','height': '80vh', 'width':'auto'});
+					}
+
+					$('#iframe_opt').show();
+				}
+				else{
+					$('#iframe_opt').hide();
+				}
+			}
+
+
+			function Img_Width(){
+				var tempWidth = $("#iframe_viewer").contents().find('img').css('width');
+				tempWidth = parseInt(tempWidth.replace('px',''));
+				return tempWidth;
+			}
+
+			function Img_Height(){
+				var tempHeight = $("#iframe_viewer").contents().find('img').css('height');
+				tempHeight = parseInt(tempHeight.replace('px',''));
+				return tempHeight;
+			}
+
+
+		</script>
+
+	</md-dialog-content>
+ 
+</md-dialog>

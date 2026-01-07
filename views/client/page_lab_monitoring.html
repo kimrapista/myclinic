@@ -1,0 +1,58 @@
+
+<section ng-controller="LabMonitoring"  ng-init="Init();" >
+	<md-progress-linear ng-hide="isLoaded" md-mode="indeterminate"></md-progress-linear>
+
+	<div class="search-form">
+		<div class="container-md">
+			<span>
+				<md-icon class="material-icons text-muted">search</md-icon>
+			</span>
+			<input ng-model="search.name" ng-model-options="{ debounce: 500 }" type="text" placeholder="Search">
+		</div>
+	</div>
+
+	<div class="container-md">
+
+		<md-button ng-show="isLoaded" ng-click="Add_Edit(0)" class="md-fab md-primary bottom-right-fixed" >
+			<md-icon class="material-icons">add</md-icon>
+		</md-button>
+		
+
+		<md-card>
+			<div class="table-unresponsive hover">
+				<table>
+					<thead>
+						<tr>
+							<th>Lab Name</th>
+							<th>Test Name</th>
+							<th>Sort</th>
+							<th>Indent</th>
+							<th class="text-center">Active</th>
+							<th></th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr ng-repeat="A in Data() | orderBy: ['GROUPNAME', 'SORT']">
+							<td ng-bind="A.GROUPNAME"></td>
+							<td ng-bind="A.NAME"></td>
+							<td ng-bind="A.SORT"></td>
+							<td ng-bind="A.INDENT"></td>
+							<td class="text-center">
+								<md-icon ng-show="A.ISACTIVE" class="material-icons">check</md-icon>
+								<md-icon ng-hide="A.ISACTIVE" class="material-icons">close</md-icon>
+							</td>
+							<td class="action">
+								<md-button ng-show="isLoaded" ng-click="Add_Edit(A.ID)" class="md-mini md-primary" >
+									<md-icon class="material-icons">edit</md-icon>
+								</md-button>
+							</td>		
+						</tr> 
+					</tbody>
+				</table>
+			</div>				
+		</md-card>
+
+
+	</div>
+</section>
+

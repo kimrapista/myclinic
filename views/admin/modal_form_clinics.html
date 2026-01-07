@@ -1,0 +1,111 @@
+<md-dialog aria-label="Clinic Form" ng-init="Init();">
+	<md-toolbar>
+		<div class="md-toolbar-tools"> 
+			<h2 class="md-title">Clinic Form</h2>
+		</div>
+   </md-toolbar>
+   <div ng-hide="isLoaded" class="loading-form">
+		<div class="sk-folding-cube">
+			<div class="sk-cube1 sk-cube"></div>
+			<div class="sk-cube2 sk-cube"></div>
+			<div class="sk-cube4 sk-cube"></div>
+			<div class="sk-cube3 sk-cube"></div>
+		</div>
+	</div>
+	<md-dialog-content class="md-padding" >
+
+		<form  name="formParent" ng-submit="Submit_Form()" role="form" layout="column" >
+
+			
+			<md-input-container class="md-block">
+				<label>Clinic Name</label> 
+				<input ng-model="FORM.CLINICNAME" name="CLINICNAME" type="text" required autofocus>
+				<div ng-messages="formParent.NAME.$error" role="alert" md-auto-hide="false">
+					<div ng-message="required">This is required.</div>
+				</div>
+			</md-input-container>
+
+			<div layout-gt-xs="row">
+				<md-input-container flex class="md-block">
+					<label>Specialist 1</label> 
+					<input ng-model="FORM.CLINICSUBNAME" name="CLINICSUBNAME" type="text" >
+					<div ng-messages="formParent.CLINICSUBNAME.$error" role="alert" md-auto-hide="false">
+						<div ng-message="required">This is required.</div>
+					</div>
+				</md-input-container>
+				<md-input-container flex class="md-block">
+					<label>Specialist 2</label> 
+					<input ng-model="FORM.CLINICSUBNAME1" name="CLINICSUBNAME1" type="text" >
+					<div ng-messages="formParent.CLINICSUBNAME1.$error" role="alert" md-auto-hide="false">
+						<div ng-message="required">This is required.</div>
+					</div>
+				</md-input-container>
+				<md-input-container flex class="md-block">
+					<label>Specialist 3</label> 
+					<input ng-model="FORM.CLINICSUBNAME2" name="CLINICSUBNAME2" type="text" >
+					<div ng-messages="formParent.CLINICSUBNAME2.$error" role="alert" md-auto-hide="false">
+						<div ng-message="required">This is required.</div>
+					</div>
+				</md-input-container>
+			</div>
+
+
+			<md-input-container class="md-block">
+				<label>Address</label>
+				<textarea ng-model="FORM.ADDRESS" name="ADDRESS" md-maxlength="200"  ></textarea>
+				<div ng-messages="formParent.ADDRESS.$error" role="alert" md-auto-hide="false">
+					<div ng-message="required">This is required.</div>
+					<div ng-message="md-maxlength">character reach the max limit.</div>
+				</div>
+			</md-input-container>
+
+
+			<div layout-gt-xs="row" class="mb-3">
+				<md-input-container flex class="md-block">
+					<label>Contact No</label> 
+					<input ng-model="FORM.CONTACTNO" name="CONTACTNO" type="text" >
+					<div ng-messages="formParent.CONTACTNO.$error" role="alert" md-auto-hide="false">
+						<div ng-message="required">This is required.</div>
+					</div>
+				</md-input-container>
+				<md-input-container flex class="md-block">
+					<label>Mobile No</label> 
+					<input ng-model="FORM.MOBILENO" name="MOBILENO" type="text" >
+					<div ng-messages="formParent.MOBILENO.$error" role="alert" md-auto-hide="false">
+						<div ng-message="required">This is required.</div>
+					</div>
+				</md-input-container>
+			</div>
+
+			<label>Services</label>
+			<div layout="row" layout-wrap="" class="mb-3">
+				<md-switch ng-model="FORM.SALES">Sales</md-switch>
+				<md-switch ng-model="FORM.BLAST">Text Blast</md-switch>
+			</div>
+			
+			<label>Templates</label>
+			<div layout="row" layout-wrap="" class="mb-3">
+				<md-switch ng-model="FORM.PIRANI">Pirani</md-switch>
+				<md-switch ng-model="FORM.OPHTHALMOLOGIST">Ophthalmologist</md-switch>
+				<md-switch ng-model="FORM.OPTICAL">Optical Clinic</md-switch>
+			</div>
+
+			<label>Full Clinic Setup</label>
+
+			<div layout="row" layout-wrap="" class="mb-3">
+				<md-switch ng-model="FORM.SETUP_CLINIC_ROMERO">Romero Optical Clinic </md-switch>
+			</div>
+
+
+			<div layout="column" layout-gt-xs="row" layout-align="end" class="mt-3">
+				<md-button ng-disabled="FORM.isSubmit || formParent.$invalid"  type="submit" class="md-raised md-primary">
+					<span ng-hide="FORM.isSubmit">Save</span>
+					<md-progress-circular ng-show="FORM.isSubmit" md-mode="indeterminate" md-diameter="20" class="mx-auto"></md-progress-circular>
+				</md-button>
+
+				<md-button ng-click="Close();"  class="" >Cancel</md-button>
+			</div>
+
+		</form>
+	</md-dialog-content>
+</md-dialog>

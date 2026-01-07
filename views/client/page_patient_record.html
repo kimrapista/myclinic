@@ -1,0 +1,368 @@
+<section ng-controller="PatientRecord" ng-init="Init();">
+	<md-progress-linear ng-hide="isLoaded" md-mode="indeterminate"></md-progress-linear>
+
+
+	<md-button ng-show="isLoaded" ng-click="Add_MR_Link();" class="md-fab md-primary bottom-right-fixed" >
+		<md-tooltip md-direction="top">Add MR</md-tooltip>
+		<md-icon class="material-icons">add</md-icon>
+	</md-button>
+	
+
+	<div class="profile-sticky"> 
+		<div class="profile-wrapper container-lg">
+
+			<img class="profile-image" ng-src="{{Patient().PICTURE}}"> </img>
+			<div class="profile-highlight">
+				<p ng-bind="Patient().LASTNAME+', '+Patient().FIRSTNAME+' '+Patient().MIDDLENAME" class="profile-name"></p>
+				<span class="profile-detail">
+					<div ng-bind="'DOB: '+(Patient().DOB | date: 'MM/dd/y')" ></div>
+					<div ng-bind="'PID: '+Patient().ID" ></div>
+				</span>
+			</div> 
+
+			<div ng-show="isLoaded" class="menus">
+	
+				<!-- <md-button ng-hide="Me().isAssistant" ng-href="#!/patient/{{Patient().ID}}/video-call" class="md-primary md-mini">
+					<md-icon class="material-icons">videocam</md-icon>
+				</md-button> -->
+	
+				<md-menu md-position-mode="target-right target" > 
+					<md-button class="md-primary md-mini" ng-click="$mdMenu.open($event)" >
+						<md-icon ng-hide="isPatDeleting" class="material-icons">more_vert</md-icon>
+						<div ng-show="isPatDeleting" layout="row" layout-align="center">
+							<md-progress-circular  md-mode="indeterminate" md-diameter="20"></md-progress-circular>
+						</div>
+					</md-button>
+					<md-menu-content>
+						<md-menu-item>
+							<md-button ng-href="#!/patient/{{Patient().ID}}/edit" class="">
+								<md-icon class="material-icons">edit</md-icon>
+								<span>Edit</span>
+							</md-button>
+						</md-menu-item>
+						<md-menu-item >
+							<md-button ng-click="Remove_Patient();" class="md-warn">
+								<md-icon class="material-icons">delete</md-icon>   
+								<span>Delete</span>
+							</md-button>
+						</md-menu-item>
+					</md-menu-content>
+				</md-menu>
+			</div>
+		</div>
+	</div>
+
+
+
+	<div class="container-lg">
+		<md-card >
+			<md-tabs md-dynamic-height md-border-bottom >
+				<md-tab label="MEDICAL RECORDS"> 
+
+					<div ng-hide="isMRLoaded" class="loading-form">
+						<div class="sk-folding-cube">
+							<div class="sk-cube1 sk-cube"></div>
+							<div class="sk-cube2 sk-cube"></div>
+							<div class="sk-cube4 sk-cube"></div>
+							<div class="sk-cube3 sk-cube"></div>
+						</div>
+					</div>
+
+					<div ng-if="!Me().SETUP_CLINIC_ROMERO" class="table-responsive hover">
+						<table>
+							<thead>
+								<tr>
+									<th>Checkup</th>
+									<th>Chief Complaint</th>
+									<th>Findings</th>
+									<th>Diagnosis</th>
+									<th>Doctor</th>
+									<th class="action"></th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr ng-repeat="(key, A) in MR()"> 
+									<th>Checkup</th>
+									<td>
+										<p ng-bind="A.CHECKUPDATE|date:'MM/dd/y'"></p> 
+
+										<div layout="row">
+											<label class="pr-1">Age: </label>
+											<span ng-bind="A.AGE"></span>
+										</div>
+										<div ng-show="Me().SALES">
+											<div ng-show="A.HMONAME" layout="row">
+												<label class="pr-1">HMO:</label>
+												<span ng-bind="A.HMONAME"></span>
+											</div>
+											<div ng-show="A.NETPAYABLES" ng-if="!Me().isAssistant || (Me().isAssistant && Me().ISDISPLAYSERVICESAMOUNT)" layout="row">
+												<label class="pr-1">Amt: </label>
+												<span ng-bind="A.NETPAYABLES|number:2"></span>
+											</div>
+										</div>
+
+									</td>
+									<th>Chief Complaint</th>
+									<td>
+										<pre ng-bind="A.CHEIFCOMPLAINT"></pre>
+
+										<md-button ng-show="A.TOTAL_LAB > 0" ng-click="MR_Laboratory(A.ID)" class="md-primary m-0 md-mini" >
+											<md-tooltip md-direction="top">{{A.TOTAL_LAB}} Laboratory result</md-tooltip>
+											<md-icon class="material-icons">biotech</md-icon>
+										</md-button>
+
+									</td>
+									<th>Findings</th>
+									<td><pre ng-bind="A.FINDINGS"></pre></td>
+									<th>Diagnosis</th>
+									<td><pre ng-bind="A.DIAGNOSIS"></pre></td>
+									<th>Doctor</th>
+									<td>
+
+										<p ng-show="A.CREATEDNAME" ng-bind="A.CREATEDNAME"></p>
+										<p ng-hide="A.CREATEDNAME" class="text-muted">Prepared MR</p>
+										
+										<div layout="row" layout-align="start start">
+											<div>
+												<md-icon class="material-icons sm md-primary" >room</md-icon>	
+											</div>
+											<div>
+												<small ng-bind="A.FROMCLINIC"></small>	
+											</div>
+										</div>
+
+										<div ng-show="A.APPOINTMENT" >
+											<md-tooltip md-direction="top">Appointment</md-tooltip>
+											<div layout="row" layout-align="start start">
+												<div>
+													<md-icon class="material-icons sm md-warn">perm_contact_calendar</md-icon>
+												</div>
+												<div layout="column">
+													<small ng-bind="A.APPOINTCLINIC"></small>	
+													<small  ng-bind="A.APPOINTMENTDATE|date:'MM/dd/y'"></small>
+													<small ng-bind="A.APPOINTMENTDESCRIPTION" class="text-muted"></small>
+												</div>
+											</div>
+										</div>
+
+									</td>
+									<td class="action">
+										<div layout="column">
+ 
+											<md-menu>
+												<md-button class="md-primary md-mini" ng-click="$mdMenu.open($event)">
+													<md-icon ng-hide="A.isCancelling" class="material-icons">more_vert</md-icon>
+													<div ng-show="A.isCancelling" layout="row" layout-align="center">
+														<md-progress-circular  md-mode="indeterminate" md-diameter="20"></md-progress-circular>
+													</div>
+												</md-button>
+												<md-menu-content>
+													<md-menu-item>
+														<md-button ng-click="Edit_MR_Link(A.ID)" class="">
+															<md-icon class="material-icons">edit</md-icon>
+															<span>Edit</span>
+														</md-button>
+													</md-menu-item>
+													<md-menu-item>
+														<md-button ng-click="MR_Report(A.ID)" class="">
+															<md-icon class="material-icons">print</md-icon>
+															<span>MR Report</span>
+														</md-button>
+													</md-menu-item>
+													<md-menu-item>
+														<md-button ng-click="Remove_MR(A)" class="md-warn">
+															<md-icon class="material-icons">delete</md-icon>
+															<span>Delete</span>
+														</md-button>
+													</md-menu-item>
+												</md-menu-content>
+											</md-menu> 
+
+											<div>
+												<md-button ng-click="MR_Preview(A.ID)" class="md-primary md-mini">
+													<md-tooltip md-direction="top">Preview</md-tooltip>
+													<md-icon class="material-icons">find_in_page</md-icon>
+												</md-button>
+											</div>
+										</div>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>	
+
+					<div ng-if="Me().SETUP_CLINIC_ROMERO" class="table-responsive hover">
+						<table>
+							<thead>
+								<tr>
+									<th>Location</th>
+									<th>Checkup</th>
+									<th>Age</th>
+									<th>OD</th>
+									<th>OS</th>
+									<th>ADD</th>
+									<th>PD</th>
+									<th>Frame</th>
+									<th>Lens</th>
+									<th>Remarks</th>
+									<th>Services</th>
+									<th>Doctor</th>
+									<th class="action"></th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr ng-repeat="(key, A) in MR()"> 
+									<th>Location</th>
+									<td>{{A.FROMCLINIC}}</td>
+									<th>Checkup</th>
+									<td> {{A.CHECKUPDATE|date:'MM/dd/y'}}
+									</td>
+									<th>Age</th>
+									<td>{{A.AGE}}</td>
+									<th>OD</th>
+									<td>{{A.REFOD}}</td>
+									<th>OS</th>
+									<td>{{A.REFOS}}</td>
+									<th>ADD</th>
+									<td>{{A.REFADD}}</td>
+									<th>PD</th>
+									<td>{{A.REFPD}}</td>
+									<th>Frame</th>
+									<td>{{A.FRAME}}</td>
+									<th>Lens</th>
+									<td>{{A.LENS}}</td>
+									<th>Remarks</th>
+									<td><pre class="m-0">{{A.REMARKS}}</pre></td>
+									<th>Services</th>
+									<td>
+										<div ng-repeat="(key1, B) in A.SERVICES" layout="row">
+											<div class="pr-3">{{B.NAME}}</div>
+											<div ng-if="!Me().isAssistant || (Me().isAssistant && Me().ISDISPLAYSERVICESAMOUNT)">{{B.AMOUNT|number:2}}</div>
+										</div>
+									</td>
+									<th>Doctor</th>
+									<td>
+										<div ng-show="A.CREATEDNAME" ng-bind="A.CREATEDNAME"></div>
+										<div ng-hide="A.CREATEDNAME" class="text-muted">Prepared MR</div>
+									</td>
+									<td class="action">
+										<md-menu>
+											<md-button class="md-primary md-mini" ng-click="$mdMenu.open($event)">
+												<md-icon ng-hide="A.isCancelling" class="material-icons">more_vert</md-icon>
+												<div ng-show="A.isCancelling" layout="row" layout-align="center">
+													<md-progress-circular  md-mode="indeterminate" md-diameter="20"></md-progress-circular>
+												</div>
+											</md-button>
+											<md-menu-content>
+												<md-menu-item>
+													<md-button ng-click="Edit_MR_Link(A.ID)" class="">
+														<md-icon class="material-icons">edit</md-icon>
+														<span>Edit</span>
+													</md-button>
+												</md-menu-item>
+												<md-menu-item>
+													<md-button ng-click="Remove_MR(A)" class="md-warn">
+														<md-icon class="material-icons">delete</md-icon>
+														<span>Delete</span>
+													</md-button>
+												</md-menu-item>
+											</md-menu-content>
+										</md-menu> 
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>	
+
+					<div ng-show="MR().length == 0" class="p-3">
+						<p class="text-center">No Data</p>
+					</div>
+
+					<div ng-show="isMRLoaded" layout="row" layout-align="space-around center">
+
+						<md-button ng-show="search.viewMore" ng-click="More_MR();" class="md-primary md-mini" ng-disabled="search.isSubmit">
+							<md-tooltip md-direction="top">View more</md-tooltip>
+							<md-icon ng-hide="search.isSubmit" class="material-icons">zoom_in</md-icon>
+							<div ng-if="search.isSubmit" layout="row" layout-align="center">
+								<md-progress-circular  md-mode="indeterminate" md-diameter="20"></md-progress-circular>
+							</div>
+						</md-button>
+
+						<md-button ng-click="Refresh_MR();" class="md-primary md-mini">
+							<md-tooltip md-direction="top">Refresh Medical Record</md-tooltip>
+							<md-icon class="material-icons">refresh</md-icon>   
+						</md-button>
+					</div>
+ 
+				</md-tab>
+				<md-tab label="Info">
+					<div layout="row" layout-wrap="" layout-padding="">
+						<div flex="100" flex-gt-xs="25">
+							<label>Sex</label>
+							<div ng-bind="Patient().SEX" ></div>
+						</div>
+						<div flex="100" flex-gt-xs="25">
+							<label>Blood type</label>
+							<div ng-bind="Patient().BLOODTYPE" ></div>
+						</div>
+						<div flex="100" flex-gt-xs="25">
+							<label>Civil Status</label>
+							<div ng-bind="Patient().CIVILSTATUS" ></div>
+						</div>
+						<div flex="100" flex-gt-xs="25">
+							<label>Nationality</label>
+							<div ng-bind="Patient().NATIONALITY" ></div>
+						</div>
+						<div flex="100" flex-gt-xs="25">
+							<label>Religion</label>
+							<div ng-bind="Patient().RELIGION" ></div>
+						</div>
+						<div flex="100" flex-gt-xs="25">
+							<label>Occupation</label>
+							<div ng-bind="Patient().OCCUPATION" ></div>
+						</div>
+						<div flex="100" flex-gt-xs="25">
+							<label>Street No.</label>
+							<div ng-bind="Patient().STREETNO" ></div>
+						</div>
+						<div flex="100" flex-gt-xs="25">
+							<label>City</label>
+							<div ng-bind="Patient().CITY" ></div>
+						</div>
+						<div flex="100" flex-gt-xs="25">
+							<label>Province</label>
+							<div ng-bind="Patient().PROVINCE" ></div>
+						</div>
+						<div flex="100" flex-gt-xs="25">
+							<label>Tel No.</label>
+							<div ng-bind="Patient().PHONENO" ></div>
+						</div>
+						<div flex="100" flex-gt-xs="25">
+							<label>Mobile No.</label>
+							<div ng-bind="Patient().MOBILENO" ></div>
+						</div>
+						<div flex="100" flex-gt-xs="25">
+							<label>Email</label>
+							<div ng-bind="Patient().EMAIL" ></div>
+						</div>
+						<div flex="100" flex-gt-xs="25">
+							<label>Date Registered</label>
+							<div ng-bind="Patient().DATEREG | date: 'MM/dd/y'" ></div>
+						</div>
+					</div>
+				</md-tab>
+				<md-tab label="OTHERS">
+					<div layout="row" layout-wrap="" layout-padding="">
+						<md-button ng-if="Me().PIRANI" ng-click="Pirani_Report(Patient().ID)" class="md-mini md-primary">
+							<md-icon class="material-icons">print</md-icon>
+							<span>PIRANI Scoring Report</span>
+						</md-button>
+					</div>
+				</md-tab>
+			</md-tabs>
+		</md-card>
+
+	</div>
+</section>
+
+

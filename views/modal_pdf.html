@@ -1,0 +1,32 @@
+<md-dialog aria-label="PDF" class="pdf_modal">
+	<md-toolbar>
+		<div class="md-toolbar-tools">
+			<h2 class="md-title" ng-bind="PDF().Title"></h2>
+			<span flex></span>
+			<md-button class="md-icon-button" ng-click="close()">
+				<md-icon class="material-icons" aria-label="Close dialog">close</md-icon>
+			</md-button>
+		</div>
+	</md-toolbar>
+	<md-dialog-content > 
+
+		<div id="pdf_wrapper">
+
+			<div ng-show="PDF().Get_Menu_Status() && ! PDF().Get_Load_Status()" class="menus">
+				<div class="menus-content">
+					<button ng-click="PDF().ScaleInc();" >
+						+
+					</button>
+					<button ng-click="PDF().ScaleDec();" >
+						-
+					</button>
+					<button ng-click="PDF().Print();" ng-hide="PDF().isPrintDisable" >
+						Print
+					</button>
+				</div>
+			</div>
+		</div>
+
+	</md-dialog-content>
+
+</md-dialog>

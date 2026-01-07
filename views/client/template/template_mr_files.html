@@ -1,0 +1,29 @@
+
+<div ng-show="FORM.ID > 0">
+
+    <div ng-hide="isFiles" layout="row" layout-wrap="" layout-align="start start">
+        <md-button ng-repeat="(key, A) in Images()" ng-click="File_View(A);" aria-label="{{A.FILENAME}}">
+            <img ng-if="A.isImage" src="{{A.IMAGEPATH}}" class="thumbnail">
+            
+            <md-icon ng-if="A.isPDF" class="material-icons">picture_as_pdf</md-icon>
+            <small ng-if="A.isPDF" ng-bind="A.FILENAME"  ></small>
+        </md-button>
+
+        <h6 ng-if="Images().length == 0">No Files found</h6>
+    </div> 
+
+    <div ng-show="isFiles">
+        <ng-dropzone ng-if="isFiles" options="dzOptions" callbacks="dzCallbacks" methods="dzMethods"  class="dropzone"></ng-dropzone>
+    </div>
+
+    <div class="top-right">
+        <md-button ng-click="Toggle_Files()" ng-hide="FORM.READONLY" class=" md-mini md-primary">
+            <md-icon ng-hide="isFiles" class="material-icons">attachments</md-icon>
+            <md-icon ng-show="isFiles" class="material-icons">cancel</md-icon>
+        </md-button>
+    </div>
+
+</div>	
+<div ng-show="FORM.ID == 0" class="text-muted">
+    Please save first before uploading files.
+</div>

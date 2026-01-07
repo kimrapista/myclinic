@@ -1,0 +1,90 @@
+<md-dialog aria-label="Schedule" ng-init="Init();">
+	<md-toolbar>
+		<div class="md-toolbar-tools">
+			<h2 class="md-title">Online Appointment Form</h2>
+		</div>
+	</md-toolbar>
+	<md-dialog-content  class="md-padding" >
+
+		<div ng-hide="isLoaded" class="loading-form">
+			<div class="sk-folding-cube">
+            <div class="sk-cube1 sk-cube"></div>
+            <div class="sk-cube2 sk-cube"></div>
+            <div class="sk-cube4 sk-cube"></div>
+            <div class="sk-cube3 sk-cube"></div>
+         </div>
+		</div>
+
+		<form  name="formParent" ng-submit="Submit_Form()" role="form" layout="column" >
+
+         <md-input-container class="md-block " >
+            <label>Doctor</label>
+            <md-select ng-model="FORM.USERID" name="USERID" ng-disabled="Me().isDoctor" required>
+               <md-option ng-repeat="(key, S) in Doctors()" ng-value="S.ID" ng-bind="S.NAME"></md-option>
+            </md-select>
+            <div ng-messages="formParent.USERID.$error" role="alert" md-auto-hide="false">
+               <div ng-message="required">This is required.</div>
+            </div>
+         </md-input-container>
+
+			<md-input-container class="md-block " >
+            <label>Clinic</label>
+            <md-select ng-model="FORM.SUBCLINICID" name="SUBCLINICID" ng-change="Clinic_Default_Time();" required>
+               <md-option ng-repeat="(key, S) in SubClinics()" ng-value="S.ID" ng-bind="S.NAME"></md-option>
+            </md-select>
+            <div ng-messages="formParent.SUBCLINICID.$error" role="alert" md-auto-hide="false">
+               <div ng-message="required">This is required.</div>
+            </div>
+         </md-input-container>
+
+         <div layout="row">
+            <md-input-container flex>
+               <input ng-model="FORM.SDATETIME" name="SDATETIMED"  type="date" placeholder="Date" disabled required>
+               <div ng-messages="formParent.SDATETIMED.$error" role="alert" md-auto-hide="false">
+                  <div ng-message="required">This is required.</div>
+               </div>
+            </md-input-container>
+            <md-input-container flex>
+               <input ng-model="FORM.SDATETIME" name="SDATETIMET"  type="time" placeholder="Time" required>
+               <div ng-messages="formParent.SDATETIMET.$error" role="alert" md-auto-hide="false">
+                  <div ng-message="required">This is required.</div>
+               </div>
+            </md-input-container>
+         </div>
+
+         
+         <md-slider-container>
+            <span>Max Patient</span>
+            <md-slider ng-model="FORM.MAXPATIENT" step="1" min="1" max="30" md-discrete  aria-label="MAX PATIENT" id="red-slider" class="md-primary"></md-slider>
+            <md-input-container>
+               <input type="number" ng-model="FORM.MAXPATIENT" name="MAXPATIENT" step="1" min="1" max="30" aria-label="MAX PATIENT" aria-controls="red-slider" required>
+               <div ng-messages="formParent.MAXPATIENT.$error" role="alert" md-auto-hide="false">
+                  <div ng-message="required">This is required.</div>
+                  <div ng-message="max">character reach the max limit.</div>
+               </div>
+            </md-input-container>
+         </md-slider-container>
+
+
+         <md-input-container class="md-block">
+            <label>Reminders</label>
+            <textarea ng-model="FORM.REMARKS" name="REMARKS" md-maxlength="200"  ></textarea>
+            <div ng-messages="formParent.REMARKS.$error" role="alert" md-auto-hide="false">
+               <div ng-message="required">This is required.</div>
+               <div ng-message="md-maxlength">character reach the max limit.</div>
+            </div>
+         </md-input-container>
+
+
+			<div layout="column" layout-gt-xs="row" layout-align="end"  class="mt-3">
+				<md-button ng-disabled="FORM.isSubmit || formParent.$invalid || !isLoaded"  type="submit" class="md-raised md-primary">
+					<span ng-hide="FORM.isSubmit">Save</span>
+					<md-progress-circular ng-show="FORM.isSubmit" md-mode="indeterminate" md-diameter="20" class="mx-auto"></md-progress-circular>
+				</md-button>
+
+				<md-button ng-click="Close();"  class="" >Cancel</md-button>
+			</div>
+
+		</form>
+	</md-dialog-content>
+</md-dialog>

@@ -1,0 +1,175 @@
+<?php
+defined('BASEPATH') OR exit('No direct script access allowed');
+
+
+class M_medical_certificate_2 extends CI_Model
+{
+	
+	function __construct(){ $this->load->database(); }
+
+
+	private function clinicInfo(){
+
+		$sql = $this->db->query("SELECT * FROM clinics where ID=? LIMIT 1",array($this->session->CLINICID));
+		return $sql->row();
+
+	}
+
+
+
+	public function Index($id, $return = FALSE){
+
+		$this->load->library('pdf');
+		$pageSize=array(5.15,8.20);
+
+		$this->pdf->__construct('P','in',$pageSize);
+		$pdf = $this->pdf;
+
+		$margL=0.3;
+		$margT=0.3;
+		$pdf->SetMargins($margL,$margT,$margL);
+		$pdf->SetAutoPageBreak(false);
+		$pdf->AddPage();
+
+		$pageNo=0;
+		$CH=0.2;
+		$CW=0.8;
+
+		$clinic = $this->clinicInfo();
+		
+
+		$sql = $this->db->query("SELECT p.ID,concat(p.FIRSTNAME,' ',p.MIDDLENAME,' ',p.LASTNAME) as NAME, p.SEX,p.OCCUPATION,p.STREETNO,p.CITY,p.PROVINCE,p.CIVILSTATUS, 
+			mr.AGE, mr.DIAGNOSIS,mr.CONFINEMENT_DATE_FROM,mr.CONFINEMENT_DATE_TO,mr.PROCEDURE_DONE,mr.ESTIMATED_HEAL_PERIOD, mr.CHECKUPDATE, mr.REMARKS, mr.CONSULTATIONDATES
+			FROM patients p 
+			INNER JOIN medicalrecords mr ON mr.PATIENTID = p.ID 
+			WHERE mr.ID = ? 
+			LIMIT 1",array($id));
+
+		$patient = $sql->row();
+
+
+		$pdf->SetFont('Arial','B',15);
+		$pdf->Cell(0,$CH,'ANTOLIN ORTHOPAEDIC CLINIC',0,1,'C');
+		$pdf->SetFont('Arial','',8);
+		$pdf->cell(0,$CH,'Maria Reyna-Xavier University Hospital, Clinic room #63,3rd Floor, Medical Specialty building',0,1,'C');
+		$pdf->Ln(-0.05);
+		$pdf->cell(0,$CH,'Landline (088) 882 - 0818',0,1,'C');
+		$pdf->Ln(-0.05);
+		$pdf->cell(0,$CH,'Cagayan De Oro City, Philippines',0,1,'C');
+
+		$pdf->Ln(0.2);
+		$pdf->SetFont('Arial','B',13);
+		$pdf->Cell(0,$CH,'MEDICAL CERTIFICATE',0,1,'C');
+		$pdf->Ln(0.1);
+
+		$CH=0.22;
+
+		$pdf->SetFont('Arial','',10);
+		$pdf->Cell( $pdf->GetPageWidth() - ($margL*2) - 1.2 ,$CH,'Date: ',0,0,'R');
+		$pdf->Cell(1.2,$CH,date('m/d/Y',time()),'B',1,'C');
+
+		$pdf->Cell(0,$CH,'To Whom It May Concern: ',0,1);
+		$pdf->Ln(0.1);
+		$pdf->MultiCell(0,$CH,'This is to certify that the person named hereunder has the following record of confinement/ consultation and treatment',0);
+		$pdf->Ln(0.05);
+		$pdf->SetFont('Arial','B',10);
+		$pdf->cell(0, $CH,'Name:'.utf8_decode($patient->NAME),1,1);
+		$pdf->SetFont('Arial','',10);
+		$pdf->Cell( ($pdf->GetPageWidth()/2.8) - ($margL), $CH,'Age/Sex: '.utf8_decode($patient->AGE.' / '.$patient->SEX),1,0);
+		$pdf->Cell( ($pdf->GetPageWidth()/1.556) - ($margL), $CH,'Occupation: '.$patient->OCCUPATION,1,1);
+		$pdf->Cell( ($pdf->GetPageWidth()/2.8) - ($margL), $CH,'Civil Status: '.utf8_decode($patient->CIVILSTATUS),1,0);
+		$pdf->Cell( ($pdf->GetPageWidth()/1.556) - ($margL), $CH,'Address: '.$patient->STREETNO,1,1);
+		$pdf->Ln(0.05);
+
+
+		$currentY = $pdf->GetY();
+
+
+		$pdf->Cell(1.3,$CH,'Date of Consultation: ',0,0);
+		$pdf->SetFont('Arial','U',10);
+		$pdf->MultiCell( 0, $CH, $patient->CONSULTATIONDATES,0,'J');
+
+		$pdf->SetFont('Arial','',10);
+
+		$pdf->SetXY($margL,$currentY + $CH);
+		$pdf->Cell(0,$CH,'Diagnosis(es)',0,1);
+
+		$currentY = $pdf->GetY();
+		$pdf->MultiCell( 0, $CH,utf8_decode($patient->DIAGNOSIS),0,'L');
+		
+		$pdf->SetXY($margL,$currentY);
+		$pdf->Cell(0,$CH,'','B',1);
+		$pdf->Cell(0,$CH,'','B',1);
+		$pdf->Cell(0,$CH,'','B',1);
+		$pdf->Ln(0.1);
+		
+		$pdf->Cell(0,$CH,'The following procedure(s) was/were done: ',0,1); 
+
+		$currentY = $pdf->GetY();		
+		$pdf->MultiCell( 0, $CH,utf8_decode($patient->PROCEDURE_DONE),0,'L');
+
+		$pdf->SetXY($margL,$currentY);
+		$pdf->Cell(0,$CH,'','B',1);
+		$pdf->Cell(0,$CH,'','B',1);
+		$pdf->Cell(0,$CH,'','B',1);
+		$pdf->Ln(0.1);
+
+		$pdf->Cell(2.2,$CH,'Healing period is estimated to last ',0,0); 
+		$pdf->Cell(1.8,$CH,utf8_decode($patient->ESTIMATED_HEAL_PERIOD),'B',0,'C');	
+		$pdf->Cell(2.2,$CH,' days ',0,1);	
+		$pdf->Ln(0.05);
+
+		$currentY = $pdf->GetY();		
+		$pdf->Cell(0.7,$CH,'Remarks: ',0,1); 
+		
+		$pdf->SetXY($margL,$currentY);
+		$pdf->MultiCell(0, $CH,'                   '.utf8_decode($patient->REMARKS),0,'L');
+
+		$pdf->SetXY($margL,$currentY);
+		$pdf->Cell(0.7,$CH,'',0,0);
+		$pdf->Cell(0,$CH,'','B',1);
+		$pdf->Cell(0,$CH,'','B',1);
+		$pdf->Ln(0.1);
+
+
+		$pdf->SetFont('Arial','',10);
+		$pdf->MultiCell(0,0.2,"This certificate is issued upon the request of the patient for whatever purpose it may serve best.",0);
+		$pdf->Ln(0.1);
+
+		$pdf->Cell(0,$CH,'Respectfully yours,',0,1);
+		$pdf->Ln(0.2);
+
+		
+		$q = $this->db->query("SELECT U.NAME, U.PTR, U.LICENSENO, U.S2NO
+			FROM users U
+			INNER JOIN medicalrecords MR ON MR.CREATEDBY = U.ID
+			WHERE MR.ID = ?   
+			LIMIT 1",array($id))->row();
+
+		if( $q ) {
+
+			$CH = $CH - 0.05;
+			$pdf->Cell(0,$CH,utf8_decode($q->NAME),0,1);
+			$pdf->Cell(0.37,$CH,'LIC #: ',0,0); 
+			$pdf->Cell(1,$CH,$q->LICENSENO,0,1); 
+			$pdf->Cell(0.44,$CH,'PTR #: ',0,0); 
+			$pdf->Cell(1,$CH,$q->PTR,0,1);
+
+		}
+
+		// $pdf->Output('I','Medical Certificate '.utf8_decode($patient->NAME).'.pdf');
+		$pdfPath = 'temp_files_pdf/Certificate_'.$id.'_.pdf';
+		$pdf->Output('F', $pdfPath);
+		
+		if( $return ){
+			return base_url($pdfPath);
+		}
+		else{
+			echo base_url($pdfPath);
+		}
+
+	}
+
+}
+
+?>

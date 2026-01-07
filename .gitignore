@@ -1,0 +1,9 @@
+.DS_Store
+
+/node_modules
+/application/config/database.php
+/application/config/config.php
+
+database/*
+uploads/records/*
+

@@ -1,0 +1,90 @@
+
+<section ng-controller="Dashboard"  ng-init="Init();" >
+	<md-progress-linear ng-hide="isLoaded" md-mode="indeterminate"></md-progress-linear>
+
+
+   <div class="search-form">
+      <form ng-submit="Init();">
+         <div layout="row" layout-align="space-between center" class="container-xl">
+				<span flex="50" hide="" show-gt-sm=""></span>
+				<div flex="auto" layout="row">
+					<div flex="shrink" layout="row">
+                  <input ng-model="search.dateFrom" ng-disabled="search.isSubmit" type="date" placeholder="From ">
+                  <input ng-model="search.dateTo" ng-disabled="search.isSubmit" type="date" placeholder="To">
+					</div>
+					<md-button class="md-primary" type="submit" ng-disabled="search.isSubmit">
+						<md-icon ng-hide="search.isSubmit" class="material-icons">search</md-icon>
+						<md-progress-circular ng-show="search.isSubmit"  md-mode="indeterminate" md-diameter="20" class="mx-auto"></md-progress-circular>
+					</md-button>
+				</div>
+         </div>
+      </form>
+	</div>
+   
+
+  
+   <div class="container pt-3">
+
+      <div layout="column" layout-gt-xs="row" >
+         <md-card flex>
+            <div ng-show="Data().isClinics" class="loading-form">
+               <div class="sk-folding-cube">
+                  <div class="sk-cube1 sk-cube"></div>
+                  <div class="sk-cube2 sk-cube"></div>
+                  <div class="sk-cube4 sk-cube"></div>
+                  <div class="sk-cube3 sk-cube"></div>
+               </div>
+            </div>
+            <div class="table-detail padding scroll" style="max-height: 65vh;">
+               <table>
+                  <thead>
+                     <tr>
+                        <th>Clinic</th>
+                        <th>Served</th>
+                     </tr>
+                  </thead>
+                  <tbody>
+                     <tr ng-repeat="(key, A) in Data().CLINICS |orderBy: ['-SERVED']">
+                        <td ng-bind="A.CLINICNAME"></td>
+                        <td ng-bind="A.SERVED|number:0" class="text-center"></td>
+                     </tr>
+                  </tbody>
+               </table>
+            </div>
+         </md-card>
+
+         <md-card flex>
+            <div ng-show="Data().isDoctors" class="loading-form">
+               <div class="sk-folding-cube">
+                  <div class="sk-cube1 sk-cube"></div>
+                  <div class="sk-cube2 sk-cube"></div>
+                  <div class="sk-cube4 sk-cube"></div>
+                  <div class="sk-cube3 sk-cube"></div>
+               </div>
+            </div>
+            <div class="table-detail padding scroll" style="max-height: 65vh;">
+               <table>
+                  <thead>
+                     <tr>
+                        <th>Doctor</th>
+                        <th>Served</th>
+                     </tr>
+                  </thead>
+                  <tbody>
+                     <tr ng-repeat="(key, A) in Data().DOCTORS |orderBy: ['-SERVED','DOCTORNAME']">
+                        <td>
+                           <p ng-bind="A.DOCTORNAME" class="mb-0"></p>
+                           <small ng-bind="A.CLINICNAME" class="text-muted"></small>
+                        </td>
+                        <td ng-bind="A.SERVED|number:0" class="text-center"></td>
+                     </tr>
+                  </tbody>
+               </table>
+            </div>
+         </md-card>
+      </div>
+
+      
+ 
+   </div>
+</section>

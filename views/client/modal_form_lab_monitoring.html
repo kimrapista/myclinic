@@ -1,0 +1,62 @@
+<md-dialog aria-label="LabMonitoring Form" ng-init="Init();">
+	<md-toolbar>
+		<div class="md-toolbar-tools">
+			<h2 class="md-title">Lab Monitoring Form</h2>
+		</div>
+	</md-toolbar>
+	<md-dialog-content class="md-padding" >
+
+		<div ng-hide="isLoaded" class="loading-form">
+			<md-progress-circular md-mode="indeterminate" md-diameter="40"></md-progress-circular>
+		</div>
+
+		<form  name="formParent" ng-submit="Submit_Form()" role="form" layout="column" >
+
+			
+			<md-input-container class="md-block">
+				<label>Lab Name</label>
+				<input ng-model="FORM.GROUPNAME" name="GROUPNAME" type="text" required autofocus>
+				<div ng-messages="formParent.GROUPNAME.$error" role="alert" md-auto-hide="false">
+					<div ng-message="required">This is required.</div>
+				</div>
+			</md-input-container>
+			
+			<md-input-container class="md-block">
+				<label>Test Name</label>
+				<input ng-model="FORM.NAME" name="NAME" type="text" required>
+				<div ng-messages="formParent.NAME.$error" role="alert" md-auto-hide="false">
+					<div ng-message="required">This is required.</div>
+				</div>
+			</md-input-container>
+
+			<md-input-container class="md-block">
+				<label>Sort</label>
+				<input ng-model="FORM.SORT" name="SORT" type="number" required>
+				<div ng-messages="formParent.SORT.$error" role="alert" md-auto-hide="false">
+					<div ng-message="required">This is required.</div>
+				</div>
+			</md-input-container>
+
+			<md-input-container class="md-block">
+				<label>Indent</label>
+				<input ng-model="FORM.INDENT" name="INDENT" type="number" required>
+				<div ng-messages="formParent.INDENT.$error" role="alert" md-auto-hide="false">
+					<div ng-message="required">This is required.</div>
+				</div>
+			</md-input-container>
+
+			<md-switch ng-model="FORM.ISACTIVE" aria-label="Active" class="">Active</md-switch>	
+
+
+			<div layout="column" layout-gt-xs="row" layout-align="end" class="mt-3">
+				<md-button ng-disabled="FORM.isSubmit || formParent.$invalid || !isLoaded"  type="submit" class="md-raised md-primary">
+					<span ng-hide="FORM.isSubmit">Save</span>
+					<md-progress-circular ng-show="FORM.isSubmit" md-mode="indeterminate" md-diameter="20" class="mx-auto"></md-progress-circular>
+				</md-button>
+
+				<md-button ng-click="close();"  class="" >Cancel</md-button>
+			</div>
+
+		</form>
+	</md-dialog-content>
+</md-dialog>

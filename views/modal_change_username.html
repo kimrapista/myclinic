@@ -1,0 +1,56 @@
+<md-dialog aria-label="Change Username" ng-init="Init();">
+   <md-toolbar>
+		<div class="md-toolbar-tools">
+			<h2 class="md-title">Change Username</h2>
+		</div>
+	</md-toolbar>
+	<div ng-hide="isLoaded" class="loading-form">
+		<div class="sk-folding-cube">
+			<div class="sk-cube1 sk-cube"></div>
+			<div class="sk-cube2 sk-cube"></div>
+			<div class="sk-cube4 sk-cube"></div>
+			<div class="sk-cube3 sk-cube"></div>
+		</div>
+	</div>
+
+   <md-dialog-content class="md-padding">
+      
+      <form name="formParent" ng-submit="Submit_Username()" layout="column">
+         <md-input-container class="md-block">
+            <label>Current Username</label>
+            <input ng-model="FORM.USERNAME" name="USERNAME" disabled>
+            <div ng-messages="formParent.USERNAME.$error" role="alert" md-auto-hide="false">
+               <div ng-message="required">This is required.</div>
+            </div>
+         </md-input-container>
+
+         <md-input-container class="md-block">
+            <label>New Username</label>
+            <input ng-model="FORM.NEWUSERNAME" name="NEWUSERNAME" required>
+            <div ng-messages="formParent.NEWUSERNAME.$error" role="alert" md-auto-hide="false">
+               <div ng-message="required">This is required.</div>
+            </div>
+			</md-input-container>
+			
+			<md-input-container class="md-block">
+            <label>Password</label>
+            <input ng-model="FORM.PASSWORD" name="PASSWORD" type="password" required>
+            <div ng-messages="formParent.PASSWORD.$error" role="alert" md-auto-hide="false">
+               <div ng-message="required">This is required.</div>
+            </div>
+         </md-input-container>
+
+         <div layout="column" layout-gt-xs="row" layout-align="end" class="mt-3">
+				<md-button ng-disabled="FORM.isSubmit || formParent.$invalid || !isLoaded"  type="submit" class="md-raised md-primary">
+               <span ng-hide="FORM.isSubmit">Save</span>
+					<md-progress-circular ng-show="FORM.isSubmit" md-mode="indeterminate" md-diameter="20" class="mx-auto"></md-progress-circular>
+				</md-button>
+
+				<md-button ng-click="Close();"  class="" >Cancel</md-button>
+         </div>
+         
+      </form>
+      
+
+   </md-dialog-content>
+</md-dialog>

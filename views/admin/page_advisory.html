@@ -1,0 +1,61 @@
+
+<section ng-controller="Advisory"  ng-init="Init();" >
+   <md-progress-linear ng-hide="isLoaded" md-mode="indeterminate"></md-progress-linear>
+   
+   <md-button ng-show="isLoaded" ng-click="Add_Edit(0)" class="md-fab md-primary bottom-right-fixed" >
+      <md-icon class="material-icons">add</md-icon>
+	</md-button>
+	
+	<div class="search-form">
+		<div layout="row" layout-align="space-between center" class="container">
+			<span flex="70" hide="" show-gt-sm=""></span>
+			<div flex="auto" layout="row">
+				<input flex="auto" ng-model="search.name" ng-disabled="search.isSubmit" type="text" placeholder="Search">
+			</div>
+		</div>
+	</div>
+
+	<div class="container" > 
+
+		<div class="table-responsive hover shadow">
+			<table>
+				<thead>
+					<tr>
+                  <th>ID</th> 
+						<th>Title</th>
+						<th>Body</th>
+						<th>POST DATE</th>
+						<th>Clinic</th>
+						<th></th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr ng-repeat="(key,A) in Data() | filter: search.name"> 
+                  <th>ID</th>
+                  <td ng-bind="A.ID"></td>
+						<th>Title</th>
+                  <td><span ng-bind="A.TITLE"></span></td> 
+                  <th>Body</th>
+						<td>
+							<pre ng-bind-html="A.BODY" class="advisory-message"></pre>
+						</td>
+						<th>POST DATE</th>
+						<td>
+							<md-checkbox ng-model="A.POST" disabled><span ng-bind="A.POSTDATE|date: 'MM/d/y'"></span></md-checkbox>
+							
+						</td> 
+						<th>Clinic</th>
+						<td><span ng-bind="A.CLINICNAME"></span></td> 
+						<td class="action">
+							<md-button ng-click="Add_Edit(A.ID);" class="md-primary md-mini">
+								<md-icon class="material-icons">edit</md-icon>
+							</md-button>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+
+	</div>
+</section>
+

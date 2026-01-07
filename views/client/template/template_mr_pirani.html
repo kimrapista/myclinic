@@ -1,0 +1,175 @@
+
+<div class="table-detail">
+    <table class="auto-width">
+        <thead>
+            <tr>
+                <th></th>
+                <th>Left</th>
+                <th>Right</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><label class="pt-3 pl-3">Lateral Border</label></td>
+                <td>
+                    <md-input-container>
+                        <input ng-model = "FORM.LATERAL_BORDER_L" type="number" min="0" ng-change="Calc_Pirani_Scoring();" ng-disabled="FORM.READONLY"  aria-label="pirani" >
+                    </md-input-container> 
+                </td>
+                <td>
+                    <md-input-container  >
+                        <input ng-model = "FORM.LATERAL_BORDER_R" type="number" min="0" ng-change="Calc_Pirani_Scoring();" ng-disabled="FORM.READONLY" aria-label="pirani"  >
+                    </md-input-container> 
+                </td>
+            </tr>
+            <tr>
+                <td><label class="pt-3 pl-3">Medical Crease</label></td>
+                <td>
+                    <md-input-container>
+                        <input ng-model = "FORM.MEDICAL_CREASE_L" type="number" min="0" ng-change="Calc_Pirani_Scoring();" ng-disabled="FORM.READONLY"  aria-label="pirani" >
+                    </md-input-container> 
+                </td>
+                <td>
+                    <md-input-container  >
+                        <input ng-model = "FORM.MEDICAL_CREASE_R" type="number" min="0" ng-change="Calc_Pirani_Scoring();" ng-disabled="FORM.READONLY"  aria-label="pirani" >
+                    </md-input-container> 
+                </td>
+            </tr>
+            <tr>
+                <td><label class="pt-3 pl-3">Talar Head</label></td>
+                <td>
+                    <md-input-container>
+                        <input ng-model = "FORM.TALAR_HEAD_L" type="number" min="0" ng-change="Calc_Pirani_Scoring();" ng-disabled="FORM.READONLY"  aria-label="pirani" >
+                    </md-input-container> 
+                </td>
+                <td>
+                    <md-input-container  >
+                        <input ng-model = "FORM.TALAR_HEAD_R" type="number" min="0" ng-change="Calc_Pirani_Scoring();" ng-disabled="FORM.READONLY"  aria-label="pirani" >
+                    </md-input-container> 
+                </td>
+            </tr>
+            <tr>
+                <td><div class="pt-3 pl-3">MIDFOOT Score</div></td>
+                <td>
+                    <md-input-container>
+                        <input ng-model = "FORM.MIDFOOT_SCORE_L" type="number"  disabled  aria-label="pirani" >
+                    </md-input-container> 
+                </td>
+                <td>
+                    <md-input-container  >
+                        <input ng-model = "FORM.MIDFOOT_SCORE_R" type="number"  disabled  aria-label="pirani" >
+                    </md-input-container> 
+                </td>
+            </tr>
+            <tr>
+                <td colspan="3" class="p-3"></td>
+            </tr>
+            <tr>
+                <td><label class="pt-3 pl-3">Posterior Crease</label></td>
+                <td>
+                    <md-input-container>
+                        <input ng-model = "FORM.POSTERIOR_CREASE_L" type="number" min="0" ng-change="Calc_Pirani_Scoring();" ng-disabled="FORM.READONLY"  aria-label="pirani" >
+                    </md-input-container> 
+                </td>
+                <td>
+                    <md-input-container  >
+                        <input ng-model = "FORM.POSTERIOR_CREASE_R" type="number" min="0" ng-change="Calc_Pirani_Scoring();" ng-disabled="FORM.READONLY"  aria-label="pirani" >
+                    </md-input-container> 
+                </td>
+            </tr>
+            <tr>
+                <td><label class="pt-3 pl-3">Empty Heel</label></td>
+                <td>
+                    <md-input-container>
+                        <input ng-model = "FORM.EMPTY_HEEL_L" type="number" min="0" ng-change="Calc_Pirani_Scoring();" ng-disabled="FORM.READONLY"  aria-label="pirani" >
+                    </md-input-container> 
+                </td>
+                <td>
+                    <md-input-container  >
+                        <input ng-model = "FORM.EMPTY_HEEL_R" type="number" min="0" ng-change="Calc_Pirani_Scoring();" ng-disabled="FORM.READONLY" aria-label="pirani"  >
+                    </md-input-container> 
+                </td>
+            </tr>
+            <tr>
+                <td><label class="pt-3 pl-3">Rigid Equinus</label></td>
+                <td>
+                    <md-input-container>
+                        <input ng-model = "FORM.RIGID_EQUINUS_L" type="number" min="0" ng-change="Calc_Pirani_Scoring();" ng-disabled="FORM.READONLY"  aria-label="pirani" >
+                    </md-input-container> 
+                </td>
+                <td>
+                    <md-input-container  >
+                        <input ng-model = "FORM.RIGID_EQUINUS_R" type="number" min="0" ng-change="Calc_Pirani_Scoring();" ng-disabled="FORM.READONLY"  aria-label="pirani" >
+                    </md-input-container> 
+                </td>
+            </tr>
+            <tr>
+                <td><div class="pt-3 pl-3">HINDFOOT Score</div></td>
+                <td>
+                    <md-input-container>
+                        <input ng-model = "FORM.HINDFOOT_SCORE_L" type="number"  disabled  aria-label="pirani" >
+                    </md-input-container> 
+                </td>
+                <td>
+                    <md-input-container  >
+                        <input ng-model = "FORM.HINDFOOT_SCORE_R" type="number"  disabled aria-label="pirani"  >
+                    </md-input-container> 
+                </td>
+            </tr>
+            <tr>
+                <td><div class="pt-3 pl-3">TOTAL SCORE</div></td>
+                <td>
+                    <md-input-container>
+                        <input ng-model = "FORM.TOTAL_SCORE_L" type="number"  disabled  aria-label="pirani" >
+                    </md-input-container> 
+                </td>
+                <td>
+                    <md-input-container  >
+                        <input ng-model = "FORM.TOTAL_SCORE_R" type="number"  disabled  aria-label="pirani" >
+                    </md-input-container> 
+                </td>
+            </tr>
+            <tr>
+                <td colspan="3" class="p-3"></td>
+            </tr>
+            <tr>
+                <td><div class="pt-3 pl-3">Complications</div></td>
+                <td>
+                    <md-input-container>
+                        <input ng-model="FORM.COMPLICATIONS_L" name="COMPLICATIONS_L" md-maxlength="50" ng-disabled="FORM.READONLY"  aria-label="pirani">
+                        <div ng-messages="formParent.COMPLICATIONS_L.$error" role="alert" md-auto-hide="false">
+                            <div ng-message="md-maxlength">character reach the max limit.</div>
+                        </div>
+                    </md-input-container>
+                </td>
+                <td>
+                    <md-input-container>
+                        <input ng-model="FORM.COMPLICATIONS_R" name="COMPLICATIONS_R" md-maxlength="50" ng-disabled="FORM.READONLY"  aria-label="pirani">
+                        <div ng-messages="formParent.COMPLICATIONS_R.$error" role="alert" md-auto-hide="false">
+                            <div ng-message="md-maxlength">character reach the max limit.</div>
+                        </div>
+                    </md-input-container>
+                </td>
+            </tr>
+            <tr>
+                <td><div class="pt-3 pl-3">Treatment Code</div></td>
+                <td>
+                    <md-input-container>
+                        <input ng-model="FORM.TREATMENT_CODE_L" name="TREATMENT_CODE_L" md-maxlength="50" ng-disabled="FORM.READONLY" aria-label="pirani" >
+                        <div ng-messages="formParent.TREATMENT_CODE_L.$error" role="alert" md-auto-hide="false">
+                            <div ng-message="md-maxlength">character reach the max limit.</div>
+                        </div>
+                    </md-input-container>
+                </td>
+                <td>
+                    <md-input-container>
+                        <input ng-model="FORM.TREATMENT_CODE_R" name="TREATMENT_CODE_R" md-maxlength="50" ng-disabled="FORM.READONLY"  aria-label="pirani">
+                        <div ng-messages="formParent.TREATMENT_CODE_R.$error" role="alert" md-auto-hide="false">
+                            <div ng-message="md-maxlength">character reach the max limit.</div>
+                        </div>
+                    </md-input-container>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>

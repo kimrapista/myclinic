@@ -1,0 +1,65 @@
+<div layout="row" layout-wrap="">
+
+    <md-input-container flex="50" flex-gt-xs="10">
+        <label>Systolic</label>
+        <input ng-model = "FORM.BP_SYSTOLIC"  ng-disabled="FORM.READONLY" >
+    </md-input-container>
+    <md-input-container flex="50" flex-gt-xs="10">
+        <label>Diastolic</label>
+        <input ng-model = "FORM.BP_DIASTOLIC"  ng-disabled="FORM.READONLY"  >
+    </md-input-container>
+
+    <md-input-container flex="30" flex-gt-xs="20" >
+        <label>HR</label>
+        <input ng-model = "FORM.HEART_RATE"  ng-disabled="FORM.READONLY"  >
+    </md-input-container>
+     
+    <md-input-container flex="30" flex-gt-xs="20">
+        <label>RR</label>
+        <input ng-model = "FORM.RESPIRATORY"  ng-disabled="FORM.READONLY"  >
+    </md-input-container>
+
+    <md-input-container flex="40" flex-gt-xs="20">
+        <label>Temp.</label>
+        <input ng-model = "FORM.TEMPERATURE"  ng-disabled="FORM.READONLY"  >
+    </md-input-container>
+
+    <md-input-container flex="30" flex-gt-xs="20">
+        <label>O2Sat</label>
+        <input ng-model = "FORM.O2SAT"  ng-disabled="FORM.READONLY"  >
+    </md-input-container>
+</div>
+
+<div layout="row" layout-wrap="">
+    <md-input-container flex="30" flex-gt-xs="20" >
+        <label>Height (cm)</label>
+        <input ng-model = "FORM.HEIGHT"  ng-change="Calc_BMI();" ng-disabled="FORM.READONLY"  >
+    </md-input-container> 
+
+    <div ng-if="FORM.PREVIOUS" flex="30" flex-gt-xs="20" layout="row" layout-align="end center">
+		<div flex>
+			<md-input-container>
+				<label>Weight {{FORM.PREVIOUS.CHECKUPDATE|date:'M/d/yy'}}</label>
+				<input ng-model = "FORM.PREVIOUS.WEIGHT"  disabled  >
+			</md-input-container>
+		</div>
+		<div layout layout-align="center end">
+			<md-icon class="material-icons sm md-warn">chevron_right</md-icon>
+		</div>
+	</div>
+
+    <md-input-container  flex="30" flex-gt-xs="20" >
+        <label>Weight (kg)</label>
+        <input ng-model = "FORM.WEIGHT"  ng-change="Calc_BMI();" ng-disabled="FORM.READONLY"  >
+    </md-input-container>
+
+    <md-input-container  flex="40" flex-gt-xs="20" >
+        <label>BMI</label>
+        <input ng-model = "FORM.BMI"  disabled >
+    </md-input-container>
+
+    <md-input-container flex="100" flex-gt-xs="20" >
+        <label>LMP</label>
+        <input ng-model="FORM.LMP" name="LMP" type="date" ng-disabled="FORM.READONLY" >
+    </md-input-container>
+</div>

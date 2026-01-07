@@ -1,0 +1,16 @@
+<md-dialog aria-label="SMS Sending">
+	<md-dialog-content class="p-4">
+		
+		<div class="d-flex justify-content-center align-items-center flex-column">
+			<md-progress-circular ng-hide="progress > 0" md-mode="indeterminate" ></md-progress-circular>	
+
+			<md-progress-circular ng-show="progress > 0" md-mode="determinate" value="{{progress}}" ></md-progress-circular>	
+			
+			<span ng-bind="currentProgress" class="my-3"></span>
+
+			<small class="text-muted mt-3">Please dont refresh the page</small>
+		</div>
+		 
+
+	</md-dialog-content>
+</md-dialog>

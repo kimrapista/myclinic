@@ -1,0 +1,33 @@
+
+<md-input-container class="md-block">
+    <label>Chief Complaint</label>
+    <textarea ng-model="FORM.CHEIFCOMPLAINT" name="CHEIFCOMPLAINT" md-maxlength="500" ng-disabled="FORM.READONLY" required=""></textarea>
+    <div ng-messages="formParent.CHEIFCOMPLAINT.$error" role="alert" md-auto-hide="false">
+        <div ng-message="required">This is required.</div>
+        <div ng-message="md-maxlength">character reach the max limit.</div>
+    </div>
+</md-input-container>
+
+
+<md-input-container class="md-block">
+    <label>History Present Illness</label>
+    <textarea ng-model="FORM.PRESENTILLNESS" name="PRESENTILLNESS" md-maxlength="500" ng-disabled="FORM.READONLY" ></textarea>
+    <div ng-messages="formParent.PRESENTILLNESS.$error" role="alert" md-auto-hide="false">
+        <div ng-message="md-maxlength">character reach the max limit.</div>
+    </div>
+</md-input-container>
+
+<div layout="row" layout-align="start start">
+    <md-input-container flex>
+        <label>CO-Morbidities</label>
+        <textarea ng-model="FORM.COMORBIDITIES" name="COMORBIDITIES" md-maxlength="500" ng-disabled="FORM.READONLY" ></textarea>
+        <div ng-messages="formParent.COMORBIDITIES.$error" role="alert" md-auto-hide="false">
+            <div ng-message="md-maxlength">character reach the max limit.</div>
+        </div>
+    </md-input-container>
+    
+    <md-button ng-show="Me().isAssistant && FORM.CREATEDBY == 0" ng-click="Copy_CO_Morbidities()" ng-disabled="FORM.READONLY" class="md-primary md-mini">
+        <md-tooltip md-direction="top">Copy Previous CO-Morbidities</md-tooltip>
+        <md-icon class="material-icons">filter_none</md-icon>
+    </md-button>
+</div>

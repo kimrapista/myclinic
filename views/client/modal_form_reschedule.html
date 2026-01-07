@@ -1,0 +1,282 @@
+<md-dialog aria-label="ReSchedule Form" ng-init="Init();" class="dialog-lg">
+	<md-toolbar>
+		<div class="md-toolbar-tools">
+         <h2 class="md-title">Re-scheduling From: {{Day.date| date:'EEE MMM dd, y'}}</h2>
+         <span flex></span>
+         <md-button ng-click="Close()" ng-disabled="FORM.isSubmit"  class="md-icon-button">
+				<md-icon class="material-icons" aria-label="Close dialog">close</md-icon>
+			</md-button>
+		</div>
+   </md-toolbar>
+
+   <!-- selecting process -->
+	<md-dialog-content ng-hide="isFORMView">
+
+		<div ng-hide="isLoaded" class="loading-form">
+			<div class="sk-folding-cube">
+            <div class="sk-cube1 sk-cube"></div>
+            <div class="sk-cube2 sk-cube"></div>
+            <div class="sk-cube4 sk-cube"></div>
+            <div class="sk-cube3 sk-cube"></div>
+         </div>
+      </div>
+
+      <div layout="row" layout-align="space-between start">
+
+         <!-- current patients -->
+         <div>
+            <div class="reschedule-left">
+
+               <!-- follow up -->
+               <h6 md-colors="{color:'grey-500'}" class="mt-3">Follow Up</h6>
+               <div ng-repeat="(key,A) in Day.APPOINTMENTS | orderBy: ['LASTNAME','FIRSTNAME']" >
+                  
+                  <md-checkbox ng-model="A.SELECTED" class="md-primary" aria-label="NAME">
+                     <span ng-bind="A.LASTNAME+', '+A.FIRSTNAME+' '+A.MIDDLENAME"></span>
+                  </md-checkbox>
+               </div>
+               <!-- online appointment -->
+               <h6 md-colors="{color:'grey-500'}">O.A.</h6>
+               <div ng-repeat="(key,A) in Day.SCHEDULES">
+                  <div ng-show="B.ACKNOWLEDGED && !B.CANCELLED && !B.BLOCKED" ng-repeat="(key1,B) in A.PATIENTS  | orderBy: ['LASTNAME','FIRSTNAME']">
+                     <div layout="row" layout-align="space-between center">
+                        <md-checkbox ng-model="B.SELECTED"  class="md-primary" aria-label="NAME">
+                           <span ng-bind="B.LASTNAME+', '+B.FIRSTNAME+' '+B.MIDDLENAME"></span>
+                        </md-checkbox>
+                     </div>
+                  </div>
+               </div>
+               <!-- no schedules -->
+               <h6 md-colors="{color:'grey-500'}">No Schedules</h6>
+               <div ng-repeat="(key,A) in Day.NOSCHEDULES  | orderBy: ['LASTNAME','FIRSTNAME']">
+                  <div layout="row" layout-align="space-between center">
+                     <md-checkbox ng-model="A.SELECTED"  class="md-primary" aria-label="NAME">
+                        <span ng-bind="A.LASTNAME+', '+A.FIRSTNAME+' '+A.MIDDLENAME"></span>
+                     </md-checkbox>
+                  </div>
+               </div>
+
+            </div>
+         </div>
+         
+         <!-- date to transfer -->
+         <div flex >
+            <div class="reschedule-right">
+               
+               <div class="sticky">
+                  <div layout="column" layout-gt-xs="row" layout-align-gt-xs="space-between end">
+                     <div layout="column" layout-gt-xs="row" >
+                        <md-checkbox ng-model="isVacant" class="md-primary" aria-label="selected only">Vacant</md-checkbox>
+                        <md-checkbox ng-model="isSelected" class="md-primary" aria-label="selected only">Summary</md-checkbox>
+                     </div>
+                     <div layout="column">
+                        <md-button ng-click="Check_Before_SMS();" class="md-primary">
+                           <span>Next</span>
+                           <md-icon class="material-icons">arrow_forward</md-icon>
+                        </md-button>
+                     </div>
+                  </div>
+               </div>
+
+               
+               <div class="table-unresponsive bordered">
+                  <table>
+                     <tbody ng-if="View_Selected(A.APPOINTMENTS.length, A.PATIENTS.length, A.NOSCHEDULES.length, A.TOTAL_PATIENT)" ng-repeat="(key, A) in RESCHEDULED | orderBy: ['date']">
+                        <tr>
+                           <td style="width: 1px;vertical-align: middle;">
+                              <md-button ng-click="Select_Date(A);" class="md-primary md-mini m-0">
+                                 <md-icon class="material-icons">add</md-icon>
+                              </md-button>
+                           </td>
+                           <td style="vertical-align: middle;">
+                              <span  md-colors="{color:'primary-300'}" ng-bind="A.date | date:'MMMM dd, y , EEEE'"></span>
+                              <pre ng-if="A.NOTES" ng-bind="A.NOTES" md-colors="{color:'grey-500'}" class="m-0 small text-rightx"></pre>
+                           </td>
+                           <td style="vertical-align: middle;">
+                              <div layout="row" layout-align="end center">
+                                 <div ng-show="A.COUNT_APPOINTMENT > 0" layout="row" layout-align="space-between center" class="mr-3">
+                                    <md-icon class="material-icons sm" md-colors="{color:'warn-300'}">perm_contact_calendar</md-icon>
+                                    <small ng-bind="A.COUNT_APPOINTMENT" md-colors="{color:'warn-300'}"></small>
+                                 </div>
+            
+                                 <div ng-show="A.COUNT_UNVERIFIED > 0" layout="row" layout-align="space-between center" class="mr-3">
+                                    <md-icon class="material-icons sm"  md-colors="{color:'grey-300'}">group_add</md-icon>
+                                    <small ng-bind="A.COUNT_UNVERIFIED" md-colors="{color:'grey-300'}" ></small>
+                                 </div>
+            
+                                 <div ng-show="A.COUNT_UNACKNOWLEDGED > 0" layout="row" layout-align="space-between center" class="mr-3">
+                                    <md-icon class="material-icons sm" md-colors="{color:'primary-100'}">assignment_late</md-icon>
+                                    <small ng-bind="A.COUNT_UNACKNOWLEDGED" md-colors="{color:'primary-100'}"></small>
+                                 </div>
+            
+                                 <div ng-show="A.COUNT_ACKNOWLEDGED > 0" layout="row" layout-align="space-between center" class="mr-3">
+                                    <md-icon class="material-icons sm" md-colors="{color:'primary-300'}">assignment_turned_in</md-icon>
+                                    <small ng-bind="A.COUNT_ACKNOWLEDGED" md-colors="{color:'primary-300'}"></small>
+                                 </div>
+
+                                 <div ng-show="A.COUNT_NOSCHEDULED > 0" layout="row" layout-align="space-between center">
+                                    <md-icon class="material-icons sm" md-colors="{color:'primary-500'}">access_time</md-icon>
+                                    <small ng-bind="A.COUNT_NOSCHEDULED" md-colors="{color:'primary-500'}"></small>
+                                 </div>
+                              </div>
+
+                              
+                           </td>
+                        </tr>
+
+
+                        <!-- APPOINTMENTS LIST RESCHED-->
+                        <tr ng-repeat="(key1,B) in A.APPOINTMENTS | orderBy: ['LASTNAME', 'FIRSTNAME']">
+                           <td></td>
+                           <td colspan="2"> 
+                              <div layout="row" layout-align="start center">
+                                 <md-button ng-click="Return_Appointment(A, B)" class="md-mini my-0">
+                                    <md-icon md-colors="{color:'warn-300'}" class="material-icons">close</md-icon>
+                                 </md-button> 
+                                 <span ng-bind="B.LASTNAME+', '+B.FIRSTNAME+' '+B.MIDDLENAME"></span>
+                              </div>
+                           </td>
+                        </tr>
+                        <!-- ONLINE APPOINTMENT LIST RESCHED -->
+                        <tr ng-repeat="(key1,B) in A.PATIENTS | orderBy: ['LASTNAME', 'FIRSTNAME']">
+                           <td></td>
+                           <td colspan="2">
+                              <div layout="row" layout-align="start center">
+                                 <md-button ng-click="Return_Schedule(A,B)" class="md-mini my-0">
+                                    <md-icon md-colors="{color:'warn-300'}" class="material-icons">close</md-icon>
+                                 </md-button> 
+                                 <span ng-bind="B.LASTNAME+', '+B.FIRSTNAME+' '+B.MIDDLENAME"></span>
+                              </div>
+                           </td>
+                        </tr>
+                        <!-- ONLINE APPOINTMENT LIST RESCHED -->
+                        <tr ng-repeat="(key1,B) in A.NOSCHEDULES | orderBy: ['LASTNAME', 'FIRSTNAME']">
+                           <td></td>
+                           <td colspan="2">
+                              <div layout="row" layout-align="start center">
+                                 <md-button ng-click="Return_NoSchedule(A,B)" class="md-mini my-0">
+                                    <md-icon md-colors="{color:'warn-300'}" class="material-icons">close</md-icon>
+                                 </md-button> 
+                                 <span ng-bind="B.LASTNAME+', '+B.FIRSTNAME+' '+B.MIDDLENAME"></span>
+                              </div>
+                           </td>
+                        </tr>
+                     </tbody>
+                  </table>
+               </div>
+
+            </div>
+         </div>
+
+      </div>
+   </md-dialog-content>
+
+   <!-- double checking and send sms -->
+   <md-dialog-content ng-show="isFORMView">
+      <form name="formParent" ng-submit="Submit_Form()"  class="animated fadeInLeft">
+         <div layout="column" layout-gt-xs="row" layout-align-gt-xs="space-between start">
+
+            <!-- selected patients -->
+            <div flex="" class="reschedule-left md-padding">
+               <div ng-repeat="(key,A) in FORM.Day" class="mb-3">
+                  <h6 md-colors="{color:'primary-300'}" ng-style="{'margin-top': (key == 0 ? '0' : '')}" ng-bind="A.date | date: 'EEEE MMM d, y'"></h6>
+
+                  <!-- APPOINTMENTS -->
+                  <div class="pl-3">
+                     <div ng-repeat="(key1,B) in A.APPOINTMENTS | orderBy: ['LASTNAME', 'FIRSTNAME']">
+                        <div layout="row" layout-align="start center">
+                           <span ng-bind="B.LASTNAME+', '+B.FIRSTNAME+' '+B.MIDDLENAME"></span>
+                        </div>
+                        <div ng-show="FORM.isMessage" layout="row" layout-align="start start">
+                           <pre ng-bind="B.MESSAGE" md-colors="{color:'grey-500'}" class="small"></pre>
+                           <div class="pl-2">
+                              <small ng-bind="B.MESSAGE.length"></small>
+                           </div>
+                        </div>
+                     </div>
+                  </div>               
+
+                  <!-- ONLINE APPOINTEMNTS -->
+                  <div class="pl-3">
+                     <div ng-repeat="(key1,B) in A.PATIENTS | orderBy: ['LASTNAME', 'FIRSTNAME']">
+                        <div layout="row" layout-align="start center">
+                           <span ng-bind="B.LASTNAME+', '+B.FIRSTNAME+' '+B.MIDDLENAME"></span>
+                        </div>
+                        <div ng-show="FORM.isMessage" layout="row" layout-align="start start">
+                           <pre ng-bind="B.MESSAGE" md-colors="{color:'grey-500'}" class="small"></pre>
+                           <div class="pl-2">
+                              <small  ng-bind="B.MESSAGE.length"></small>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+
+                  <!-- NO SCHEDULES -->
+                  <div class="pl-3">
+                     <div ng-repeat="(key1,B) in A.NOSCHEDULES | orderBy: ['LASTNAME', 'FIRSTNAME']">
+                        <div layout="row" layout-align="start center">
+                           <span ng-bind="B.LASTNAME+', '+B.FIRSTNAME+' '+B.MIDDLENAME"></span>
+                        </div>
+                        <div ng-show="FORM.isMessage" layout="row" layout-align="start start">
+                           <pre ng-bind="B.MESSAGE" md-colors="{color:'grey-500'}" class="small"></pre>
+                           <div class="pl-2">
+                              <small ng-bind="B.MESSAGE.length"></small>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+
+               <!-- NOTE FOR MESSAGES -->
+               <div class="mt-4">
+                  <div md-colors="{color:'grey-500'}" layout="column">
+                     <small>Please follow the <code>CODE</code> to automate change the messages</small>
+                     <small><code>[NAME]</code> for Patient Fullname </small>
+                     <small><code>[LASTNAME]</code> for Patient Lastname </small>
+                     <small><code>[DATE]</code> for reschedule date</small>
+                     <br>
+                     <small><code>[CLINICNAME]</code> for Clinic Name </small>
+                     <small><code>[CLINICMOBILE]</code> for Clinic Mobile NO. </small>
+                  </div>
+                  
+                  <md-button ng-click="FORM.isMessage = !FORM.isMessage" class="mx-0">
+                     <span>{{FORM.isMessage ? 'HIDE' : 'SHOW' }} all messages</span>
+                  </md-button>
+               </div>
+            </div>
+
+
+            <div hide="" show-gt-xs="" class="p-3"></div>
+
+            <!-- sms -->
+            <div flex="" class="md-padding">
+
+               <md-input-container class="md-block">
+                  <label>Message</label>
+                  <textarea ng-model="FORM.MESSAGE" name="MESSAGE" ng-change="SMS_Change();" md-maxlength="300" ng-disabled="FORM.isSubmit" ></textarea>
+                  <div ng-messages="formParent.MESSAGE.$error" role="alert" md-auto-hide="false">
+                     <div ng-message="required">This is required.</div>
+                     <div ng-message="md-maxlength">character reach the max limit.</div>
+                  </div>
+               </md-input-container>
+
+               <div layout="row" layout-align="end center" >
+						<md-button ng-disabled="FORM.isSubmit || formParent.$invalid || FORM.messageError"  type="submit" class="md-raised md-primary">
+							<div ng-hide="formParent.$invalid || FORM.messageError">
+								<span ng-hide="FORM.isSubmit">Save</span>
+								<md-progress-circular ng-show="FORM.isSubmit" md-mode="indeterminate" md-diameter="30" class="mx-auto"></md-progress-circular>
+							</div>
+							<div ng-show="formParent.$invalid || FORM.messageError">
+								<span>Required!</span>
+							</div>
+						</md-button>
+
+						<md-button ng-click="isFORMView = false;" ng-disabled="FORM.isSubmit" >Back</md-button>
+					</div>
+            </div>
+
+         </div>
+      </form>
+   </md-dialog-content>
+
+</md-dialog>

@@ -1,0 +1,74 @@
+
+<section  ng-controller="MRForm" ng-init="Init();" >
+	<md-progress-linear ng-hide="isLoaded" md-mode="indeterminate"></md-progress-linear>
+	
+	<form  name="formParent" ng-submit="Submit_Form()" >
+
+		<div class="profile-sticky">
+
+			<div class="profile-wrapper " ng-class="{'container-xl': Layout.isMRGLayout, 'container-md1': !Layout.isMRGLayout}" >
+				<img class="profile-image" ng-src="{{FORM.PATIENT.PICTURE}}"> </img>
+				<div class="profile-highlight">
+					<p ng-bind="FORM.PATIENT.LASTNAME+', '+FORM.PATIENT.FIRSTNAME+' '+FORM.PATIENT.MIDDLENAME" class="profile-name"></p>
+					<span class="profile-detail">
+						<div ng-bind="'DOB: '+(FORM.PATIENT.DOB | date: 'MM/dd/y')" ></div>
+						<div ng-bind="'Age: '+FORM.AGE" ></div>	
+					</span>
+				</div>
+
+				<div class="menus">
+
+					<md-button ng-disabled="FORM.isSubmit || formParent.$invalid || FORM.READONLY"  type="submit" class="md-mini md-primary">
+						<md-tooltip md-direction="top">Save</md-tooltip>
+						<md-icon ng-hide="FORM.isSubmit" class="material-icons">save</md-icon>
+						<div ng-show="FORM.isSubmit" layout="row" layout-align="center">
+							<md-progress-circular md-mode="indeterminate" md-diameter="20"></md-progress-circular>
+						</div>
+					</md-button>
+
+					<md-menu md-position-mode="target-right target" > 
+						<md-button class="md-primary md-mini" ng-click="$mdMenu.open($event)" >
+							<md-icon ng-hide="isPatDeleting" class="material-icons">more_vert</md-icon>
+						</md-button>
+						<md-menu-content>
+							<md-menu-item>
+								<md-button ng-click="Change_Layout('DEFAULT')" ng-class="{'md-accent': Layout.isMRDefault}">Default Layout</md-button>
+							</md-menu-item>
+							<md-menu-item >
+								<md-button ng-click="Change_Layout('VLAYOUT')" ng-class="{'md-accent': Layout.isMRVLayout}">Vertical Layout</md-button>
+							</md-menu-item>
+							<!-- <md-menu-item >
+								<md-button ng-click="Change_Layout('GLAYOUT')" ng-class="{'md-accent': Layout.isMRGLayout}">Grid Layout</md-button>
+							</md-menu-item> -->
+						</md-menu-content>
+					</md-menu>					
+				</div>
+			</div>
+		</div>
+
+		<div ng-class="{'container-xl': Layout.isMRGLayout, 'container-md1': !Layout.isMRGLayout}" class="">
+
+
+			<div ng-include="'views/client/template/template_mr_default_layout.html'" ng-if="Layout.isMRDefault && !Me().SETUP_CLINIC_ROMERO"></div>
+			<div ng-include="'views/client/template/template_mr_vertical_layout.html'" ng-if="Layout.isMRVLayout && !Me().SETUP_CLINIC_ROMERO"></div>	
+			<div ng-include="'views/client/template/template_mr_romero_layout.html'" ng-if="Me().SETUP_CLINIC_ROMERO"></div>	
+		
+
+			<div layout="column" layout-gt-xs="row" layout-align="end" >
+				<md-button ng-disabled="FORM.isSubmit || formParent.$invalid || FORM.READONLY"  type="submit" class="md-raised md-primary">
+					<div ng-hide="formParent.$invalid">
+						<span ng-hide="FORM.isSubmit">Save</span>
+						<div ng-show="FORM.isSubmit" layout="row" layout-align="center">
+							<md-progress-circular md-mode="indeterminate" md-diameter="20"></md-progress-circular>
+						</div>
+					</div>
+					<div ng-show="formParent.$invalid">
+						<span>Required!</span>
+					</div>
+				</md-button>
+				<md-button ng-href="{{cancel}}"  class="" >Cancel</md-button>
+			</div>
+
+		</div>
+	</form>
+</section>

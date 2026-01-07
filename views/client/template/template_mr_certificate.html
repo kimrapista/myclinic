@@ -1,0 +1,70 @@
+
+
+<div ng-show="FORM.ID > 0">
+
+    <div layout="row" layout-align-gt-sm="start start">
+        <md-input-container flex="40" flex-gt-xs="25">
+            <label>Confiment From</label>
+            <input ng-model="FORM.CONFINEMENT_DATE_FROM" name="CONFINEMENT_DATE_FROM" type="date" ng-disabled="FORM.READONLY" >
+            <div ng-messages="formParent.CONFINEMENT_DATE_FROM.$error" role="alert" md-auto-hide="false">
+                <div ng-message="required">This is required.</div>
+            </div>
+        </md-input-container>
+
+        <md-input-container flex="40" flex-gt-xs="25">
+            <label>Confiment To</label>
+            <input ng-model="FORM.CONFINEMENT_DATE_TO" name="CONFINEMENT_DATE_TO" type="date" ng-disabled="FORM.READONLY" >
+            <div ng-messages="formParent.CONFINEMENT_DATE_TO.$error" role="alert" md-auto-hide="false">
+                <div ng-message="required">This is required.</div>
+            </div>
+        </md-input-container>
+        <md-button ng-click="FORM.CONFINEMENT_DATE_FROM = null; FORM.CONFINEMENT_DATE_TO = null;" class="md-mini">
+            <md-icon class="material-icons">event_busy</md-icon>
+        </md-button>
+    </div>
+
+    
+    <md-input-container class="md-block">
+        <label>Date of Consultation</label>
+        <textarea ng-model="FORM.CONSULTATIONDATES" name="CONSULTATIONDATES" ng-trim="false" md-maxlength="200" ng-disabled="FORM.READONLY" ></textarea>
+        <div ng-messages="formParent.CONSULTATIONDATES.$error" role="alert" md-auto-hide="false">
+            <div ng-message="md-maxlength">character reach the max limit.</div>
+        </div>
+    </md-input-container>
+
+    <div layout="column" layout-gt-xs="row" layout-wrap="">
+        <md-input-container  >
+            <label>Healing Period</label>
+            <input ng-model = "FORM.ESTIMATED_HEAL_PERIOD"  ng-disabled="FORM.READONLY"  >
+        </md-input-container>
+    </div>
+
+    <md-input-container class="md-block">
+        <label>Remarks</label>
+        <textarea ng-model="FORM.REMARKS" name="REMARKS" ng-trim="false" md-maxlength="500" ng-disabled="FORM.READONLY" ></textarea>
+        <div ng-messages="formParent.REMARKS.$error" role="alert" md-auto-hide="false">
+            <div ng-message="md-maxlength">character reach the max limit.</div>
+        </div>
+    </md-input-container>
+
+    <md-button ng-click="FORM.CONSULTATIONDATES = FORM.DEFAULTCONSULTATIONS" ng-disabled="FORM.READONLY" class="md-mini md-primary">
+        <md-tooltip md-direction="top">All Consulation Dates</md-tooltip>
+        <md-icon class="material-icons">assignments</md-icon>
+    </md-button> 
+
+    <md-button ng-click="Report_View('CERTIFICATE')" class="md-mini md-primary">
+        <md-tooltip md-direction="top">Preview Medical Certificate</md-tooltip>
+        <md-icon class="material-icons">print</md-icon>
+    </md-button>
+
+    <md-button ng-click="Email_Certificate()" class="md-mini md-primary">
+        <md-tooltip md-direction="top">Email Medical Certificate</md-tooltip>
+        <md-icon class="material-icons">mail</md-icon>
+    </md-button>
+
+</div>
+
+<div ng-show="FORM.ID == 0" class="text-muted">
+    Please save first before editing medical certificate.
+</div>
+

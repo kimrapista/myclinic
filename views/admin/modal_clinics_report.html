@@ -1,0 +1,154 @@
+<md-dialog aria-label="Clinics Reports" ng-init="Init();" class="dialog-lg">
+	<md-toolbar>
+		<div class="md-toolbar-tools"> 
+			<h2 ng-bind="CLINIC.CLINICNAME" class="md-title">Clinic Report</h2>
+			<span flex></span>
+			<md-button class="md-icon-button" ng-click="Close()">
+				<md-icon class="material-icons" aria-label="Close dialog">close</md-icon>
+			</md-button>
+		</div>
+   </md-toolbar>
+   <div ng-hide="isLoaded" class="loading-form">
+		<div class="sk-folding-cube">
+			<div class="sk-cube1 sk-cube"></div>
+			<div class="sk-cube2 sk-cube"></div>
+			<div class="sk-cube4 sk-cube"></div>
+			<div class="sk-cube3 sk-cube"></div>
+		</div>
+	</div>
+	<md-dialog-content layout="row">
+
+		<div flex>
+			<iframe ng-src="{{reportUrl}}" frameborder="0" class="iframe-dynamic-report"></iframe>
+		</div>
+		<div flex>
+			<md-input-container class="md-block " >
+            <label>Report Type</label>
+            <md-select ng-model="CLINIC.TITLE" name="TITLE" ng-change="Init()" >
+               <md-option ng-repeat="(key, A) in RTypes" ng-value="A.value" ng-bind="A.label"></md-option>
+            </md-select>
+			</md-input-container>
+
+			<form>
+				<div layout="row">
+					<md-input-container flex >
+						<label>Orientation</label>
+						<md-select ng-model="FORM.ORIENTATION" ng-change="Add_Queue()" >
+							<md-option value="P">Portrait</md-option>
+							<md-option value="L">Landscape</md-option>
+						</md-select>
+					</md-input-container>
+					<md-input-container flex>
+						<input ng-model="FORM.WIDTH" name="WIDTH" type="number" min="0" placeholder="Width" ng-change="Add_Queue()" ng-model-options="{ debounce: 500 }" required>
+						<div ng-messages="formParent.WIDTH.$error" role="alert" md-auto-hide="false">
+							<div ng-message="required">This is required.</div>
+						</div>
+					</md-input-container>
+					<md-input-container flex>
+						<input ng-model="FORM.HEIGHT" name="HEIGHT" type="number" min="0" placeholder="Height" ng-change="Add_Queue()" ng-model-options="{ debounce: 500 }" required>
+						<div ng-messages="formParent.HEIGHT.$error" role="alert" md-auto-hide="false">
+							<div ng-message="required">This is required.</div>
+						</div>
+					</md-input-container>
+					<md-input-container flex>
+						<input ng-model="FORM.MARGINTOP" name="MARGINTOP" type="number" min="0" placeholder="Margin Top" ng-change="Add_Queue()" ng-model-options="{ debounce: 500 }" required>
+						<div ng-messages="formParent.MARGINTOP.$error" role="alert" md-auto-hide="false">
+							<div ng-message="required">This is required.</div>
+						</div>
+					</md-input-container>
+					<md-input-container flex>
+						<input ng-model="FORM.MARGINLEFT" name="MARGINLEFT" type="number" min="0" placeholder="Margin Left" ng-change="Add_Queue()" ng-model-options="{ debounce: 500 }" required>
+						<div ng-messages="formParent.MARGINLEFT.$error" role="alert" md-auto-hide="false">
+							<div ng-message="required">This is required.</div>
+						</div>
+					</md-input-container>
+				</div>
+
+
+				<div layout="column" >
+					<md-button ng-click="Add_Detail();" class="md-primary md-mini">
+						<md-icon class="material-icons">add</md-icon>
+						<span>Add Component</span>
+					</md-button>
+				</div>
+
+				<div ng-repeat="(key, A) in FORM.DETAIL">
+					
+					<table> 
+						<tr>
+							<td>Type</td>
+							<td>
+								<select ng-model="A.COMPONENTTYPE" ng-change="Add_Queue()" ng-model-options="{ debounce: 500 }">
+									<option ng-repeat="(key, B) in CompTypes" ng-value="B.value" ng-bind="B.label"></option>
+								</select>
+							</td>
+							<td>Align</td>
+							<td>
+								<select ng-model="A.ALIGN" ng-change="Add_Queue()" ng-model-options="{ debounce: 500 }">
+									<option ng-repeat="(key, B) in Aligns" ng-value="B.value" ng-bind="B.label"></option>
+								</select>
+							</td>
+						</tr>
+						<tr>
+							<td>Text</td>
+							<td colspan="7">
+								<textarea ng-model="A.DESCRIPTION" ng-change="Add_Queue()" ng-model-options="{ debounce: 500 }" class="w-100"></textarea>
+							</td>
+						</tr>
+						<tr>
+							<td>Font</td>
+							<td>
+								<select ng-model="A.FONT" ng-change="Add_Queue()" ng-model-options="{ debounce: 500 }">
+									<option ng-repeat="(key, B) in Fonts" ng-value="B.value" ng-bind="B.label"></option>
+								</select>
+							</td>
+							<td>Size</td>
+							<td><input ng-model="A.FONTSIZE" type="number" min="0"  ng-change="Add_Queue()" ng-model-options="{ debounce: 500 }" style="max-width: 50px;"></td>
+							<td>
+								Bold<input ng-model="A.FONTBOLD"  type="checkbox" ng-change="Add_Queue()">
+							</td>
+							<td>Color</td>
+							<td>
+								<div layout="start center">
+									<input ng-model="A.TEXTCOLOR1" type="number" min="0" max="255"  ng-change="Add_Queue()" ng-model-options="{ debounce: 500 }" style="max-width: 50px;"> 
+									<input ng-model="A.TEXTCOLOR2" type="number" min="0" max="255"  ng-change="Add_Queue()" ng-model-options="{ debounce: 500 }" style="max-width: 50px;"> 
+									<input ng-model="A.TEXTCOLOR3" type="number" min="0" max="255"  ng-change="Add_Queue()" ng-model-options="{ debounce: 500 }" style="max-width: 50px;"> 
+								</div>
+							</td>
+						</tr>
+						<tr>
+							<td>Border</td>
+							<td colspan="5">
+								<div layout="start center">
+									T<input ng-model="A.BORDERT"  type="checkbox" ng-change="Add_Queue()"> 
+									B<input ng-model="A.BORDERB"  type="checkbox" ng-change="Add_Queue()"> 
+									L<input ng-model="A.BORDERL"  type="checkbox" ng-change="Add_Queue()"> 
+									R<input ng-model="A.BORDERR"  type="checkbox" ng-change="Add_Queue()"> 
+								</div>
+							</td>
+						</tr>
+						<tr>
+							<td>Position</td>
+							<td colspan="5">
+								<div layout="row" layout-align="start center">
+									<span class="p-2">X</span>
+									<input ng-model="A.COORDX" type="number" min="0"  ng-change="Add_Queue()" ng-model-options="{ debounce: 500 }" style="max-width: 50px;"> 
+									<span class="p-2">Y</span>
+									<input ng-model="A.COORDY" type="number" min="0"  ng-change="Add_Queue()" ng-model-options="{ debounce: 500 }" style="max-width: 50px;">
+									<span class="p-2">W</span>
+									<input ng-model="A.WIDTH" type="number" min="0"  ng-change="Add_Queue()" ng-model-options="{ debounce: 500 }" style="max-width: 50px;">
+									<span class="p-2">H</span>
+									<input ng-model="A.HEIGHT" type="number" min="0"  ng-change="Add_Queue()" ng-model-options="{ debounce: 500 }" style="max-width: 50px;">
+								</div>
+							</td>
+						</tr>
+					</table>
+					<md-divider></md-divider>
+				</div>
+
+					
+			</form>
+		</div>
+
+	</md-dialog-content>
+</md-dialog>

@@ -1,0 +1,90 @@
+
+<section ng-controller="Clinics"  ng-init="Init();" >
+   <md-progress-linear ng-hide="isLoaded" md-mode="indeterminate"></md-progress-linear>
+   
+   <md-button ng-show="isLoaded" ng-click="Add_Edit(0)" class="md-fab md-primary bottom-right-fixed" >
+      <md-icon class="material-icons">add</md-icon>
+	</md-button>
+	
+	<div class="search-form">
+		<div layout="row" layout-align="space-between center" class="container">
+			<span flex="70" hide="" show-gt-sm=""></span>
+			<div flex="auto" layout="row">
+				<input flex="auto" ng-model="search.name" ng-disabled="search.isSubmit" type="text" placeholder="Search">
+			</div>
+		</div>
+	</div>
+
+	<div class="container" > 
+
+		<div class="table-responsive hover shadow">
+			<table>
+				<thead>
+					<tr>
+                  <th>ID</th>
+						<th>Clinic</th>
+						<th>Address</th>
+						<th>Contact</th>
+						<th>Users</th>
+						<th></th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr ng-repeat="(key,A) in Data() | filter: search.name"> 
+						<th>ID</th>
+						<td ng-bind="A.ID"></td>
+								<th>Clinic</th>
+						<td>
+							<div layout="column">
+								<p ng-bind="A.CLINICNAME" class="mb-0"></p>
+								<small ng-bind="A.CLINICSUBNAME" md-colors="{color:'grey-500'}"></small>
+								<small ng-bind="A.CLINICSUBNAME1" md-colors="{color:'grey-500'}"></small>
+							</div>
+						</td> 
+                  		<th>Address</th>
+						<td>
+							<pre ng-bind="A.ADDRESS" style="max-width: 300px;"></pre>
+						</td> 
+						<th>Contact</th>
+						<td>
+							<div layout="column">
+								<span ng-bind="A.CONTACTNO"></span>
+								<span ng-bind="A.MOBILENO"></span>
+							</div>
+						</td> 
+						<th>Users</th>
+						<td>
+							<div layout="" layout-wrap="" layout-padding>
+								<span ng-repeat="(key1,B) in A.USERS | orderBy: ['NAME']" ng-bind="B.NAME"></span>
+							</div>
+						</td>
+						<td class="action">
+
+							<md-menu>
+								<md-button class="md-primary md-mini" ng-click="$mdMenu.open($event)">
+									<md-icon class="material-icons">more_vert</md-icon>
+								</md-button>
+								<md-menu-content>
+									<md-menu-item>
+										<md-button ng-show="isLoaded" ng-click="Add_Edit(A.ID);" >
+											<md-icon class="material-icons">edit</md-icon>
+											<span>Edit</span>
+										</md-button>
+									</md-menu-item>
+									<md-menu-item >
+										<md-button ng-show="isLoaded" ng-click="Report(A);"  >
+											<md-icon class="material-icons">print</md-icon>
+											<span>Report</span>
+										</md-button>
+									</md-menu-item>
+								</md-menu-content>
+							</md-menu>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+
+	</div>
+</section>
+

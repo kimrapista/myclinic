@@ -1,0 +1,44 @@
+<section ng-controller="PatientVideoCall" ng-init="Init()">
+
+   <div layout="row" class="video-call">
+      <div id="local" flex>
+         <!-- <h6>Local</h6> -->
+         <video playsinline autoplay muted></video>
+         <span>Offer SDP</span>
+         <textarea style="width: 100%;"></textarea>
+      </div>
+      <div id="remote" flex>
+         <!-- <h6>Remote</h6> -->
+         <video playsinline autoplay></video>
+         <span>Answer SDP</span>
+         <textarea style="width: 100%;"></textarea>
+      </div>
+   </div>
+
+
+   <div id="selectSource" class="hidden">
+      <div id="select">Select an audio &amp; video source, then click <strong>Get media</strong>:</div>
+      <div class="source">
+          <label for="audioSrc">Audio source:</label>
+          <select id="audioSrc"></select>
+      </div>
+      <div class="source">
+          <label for="videoSrc">Video source:</label>
+          <select id="videoSrc"></select>
+      </div>
+  </div>
+
+  <div id="buttons">
+      <button id="getMedia" ng-click="Get_Media();" ng-disabled="!RTC().getMediaBtn" >Get Media</button>
+      <button id="createPeerConnection" ng-click="Create_Peer_Connection();" ng-disabled="!RTC().createPeerConnectionBtn" >Create peer connection</button>
+      <button id="createOffer" ng-click="Create_Offer();" ng-disabled="!RTC().createOfferBtn"  >Create offer</button>
+      <button id="setOffer" ng-click="Set_Offer();"  ng-disabled="!RTC().setOfferBtn" >Set offer</button>
+      <button id="createAnswer" ng-click="Create_Answer();" ng-disabled="!RTC().createAnswerBtn"  >Create answer</button>
+      <button id="setAnswer" ng-click="Set_Answer();" ng-disabled="!RTC().setAnswerBtn"  >Set answer</button>
+      <button id="hangup" ng-click="Hang_up();" ng-disabled="!RTC().hangUpBtn"  >Hang up</button>
+  </div>
+  
+   
+   
+
+</section>

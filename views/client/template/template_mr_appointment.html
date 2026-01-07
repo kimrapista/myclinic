@@ -1,0 +1,29 @@
+
+
+<md-input-container flex>
+    <label>Appointment Date</label>
+    <input ng-model="FORM.APPOINTMENTDATE" name="APPOINTMENTDATE" type="date" ng-disabled="FORM.READONLY || !FORM.APPOINTMENT"  ng-required="FORM.APPOINTMENT">
+    <div ng-messages="formParent.APPOINTMENTDATE.$error">
+        <div ng-message="required">This is required.</div>
+    </div>
+</md-input-container>
+
+<md-input-container flex>
+    <label>To Clinic</label>
+    <md-select ng-model="FORM.APPOINTMENTSUBCLINICID" name="APPOINTMENTSUBCLINICID" ng-disabled="FORM.READONLY || !FORM.APPOINTMENT || SubClinics().length == 0"  ng-required="FORM.APPOINTMENT">
+        <md-option value=""></md-option>
+        <md-option ng-repeat="(key, S) in SubClinics()" ng-value="S.ID" ng-bind="S.NAME"></md-option>
+    </md-select>
+    <div ng-messages="formParent.APPOINTMENTSUBCLINICID.$error" role="alert" md-auto-hide="false">
+        <div ng-message="required">This is required.</div>
+    </div>
+</md-input-container>
+
+<md-input-container flex>
+    <label>Bring on next visit</label>
+    <input ng-model="FORM.APPOINTMENTDESCRIPTION" name="APPOINTMENTDESCRIPTION" type="text" md-maxlength="200" ng-disabled="FORM.READONLY || !FORM.APPOINTMENT">
+    <div ng-messages="formParent.APPOINTMENTDESCRIPTION.$error" role="alert" md-auto-hide="false">
+        <div ng-message="required">This is required.</div>
+        <div ng-message="md-maxlength">character reach the max limit.</div>
+    </div>
+</md-input-container>

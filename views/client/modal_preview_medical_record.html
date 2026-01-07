@@ -1,0 +1,336 @@
+<md-dialog aria-label="Medical Record Preview">
+	<md-toolbar>
+		<div class="md-toolbar-tools">
+			<h2 class="md-title">Preview Medical Record</h2>
+			<span flex></span>
+			
+			</md-button>
+		</div>
+	</md-toolbar>
+	<div ng-hide="isLoaded" class="loading-form">
+		<div class="sk-folding-cube">
+			<div class="sk-cube1 sk-cube"></div>
+			<div class="sk-cube2 sk-cube"></div>
+			<div class="sk-cube4 sk-cube"></div>
+			<div class="sk-cube3 sk-cube"></div>
+		</div>
+	</div>
+
+	<md-dialog-content class="scroll p-0" style="min-width: 70vw;">
+
+		<div ng-if="!Me().SETUP_CLINIC_ROMERO">
+			<div class="md-padding">
+				<div layout="row" layout-wrap="">
+					<div flex="100" flex-gt-xs="50">
+						<label class="text-muted">Patient Name</label>
+						<p ng-bind="MR.FIRSTNAME+', '+MR.LASTNAME+' '+MR.MIDDLENAME"></p>
+					</div>
+					<div flex="50" flex-gt-xs="25">
+						<label class="text-muted">Age</label>
+						<p ng-bind="MR.AGE"></p>
+					</div>
+					<div flex="50" flex-gt-xs="25">
+						<label class="text-muted">Date Checkup</label>
+						<p ng-bind="MR.CHECKUPDATE|date:'MM/dd/y'"></p>
+					</div>
+				</div>
+	
+				<div ng-if="Me().OPHTHALMOLOGIST">
+					<h6 class="mt-0">Medical History</h6>
+					<div  class="grid layout-3">
+						<md-checkbox ng-model="MR.ANNUAL" disabled class="md-primary mb-0">Annual</md-checkbox>
+						<md-checkbox ng-model="MR.EXTERNAL_EYE" disabled class="md-primary mb-0">External Eye</md-checkbox>
+						<md-checkbox ng-model="MR.GLAUCOMA" disabled class="md-primary mb-0"> Glaucoma</md-checkbox>
+						<md-checkbox ng-model="MR.HEADACHE" disabled class="md-primary mb-0">Headache / dizzeness</md-checkbox>
+						<md-checkbox ng-model="MR.PITY" disabled class="md-primary mb-0">Pity</md-checkbox>
+						<md-checkbox ng-model="MR.RETINA" disabled class="md-primary mb-0">Retina</md-checkbox>
+						<md-checkbox ng-model="MR.CATARACT" disabled class="md-primary mb-0">Cataract</md-checkbox>
+						<md-checkbox ng-model="MR.FB" disabled class="md-primary mb-0">FB</md-checkbox>
+						<md-checkbox ng-model="MR.LASER" disabled class="md-primary mb-0">Laser</md-checkbox>
+						<md-checkbox ng-model="MR.REFRACTION" disabled class="md-primary mb-0">Refraction</md-checkbox>
+					</div>
+					<label class="text-muted">Others</label>
+					<p ng-bind="MR.OTHERS"></p>
+				</div>
+	
+				<label class="text-muted">Chief Complaint</label>
+				<pre ng-bind="MR.CHEIFCOMPLAINT"></pre>
+	
+				<label class="text-muted">History Present Illness</label>
+				<pre ng-bind="MR.PRESENTILLNESS"></pre>
+	
+				<label class="text-muted">CO-Morbidities</label>
+				<pre ng-bind="MR.COMORBIDITIES"></pre>
+			</div>
+	
+			<md-tabs md-dynamic-height md-border-bottom md-center-tabsx>
+	
+				<md-tab ng-if="Me().OPTICAL" label="Refraction">
+					<md-card-content>
+						<div layout="row" layout-wrap=""  class="p-3">
+							<div flex="30" flex-gt-xs="35">
+								<label class="text-muted">OD</label>
+								<span ng-bind= "MR.REFOD"></span>
+							</div>
+	
+							<div flex="50" flex-gt-xs="35">
+								<label class="text-muted">Sph Left</label>
+								<span ng-bind = "MR.SPHLEFT"></span>
+							</div>
+	
+							<div flex="50" flex-gt-xs="30">
+								<label class="text-muted">Cyl Axis Left</label>
+								<span ng-bind = "MR.CYLAXISLEFT"></span>
+							</div>
+							
+							<div flex="540" flex-gt-xs="35">
+								<label class="text-muted">OS</label>
+								<span ng-bind = "MR.REFOS"></span>
+							</div>
+	
+							<div flex="50" flex-gt-xs="35">
+								<label class="text-muted">Sph Right</label>
+								<span ng-bind = "MR.SPHRIGHT"></span>
+							</div>
+	
+							<div flex="50" flex-gt-xs="30">
+								<label class="text-muted">Cyl Axis Right</label>
+								<span ng-bind = "MR.CYLAXISRIGHT"></span>
+							</div>
+	
+							<div flex="30" flex-gt-xs="80" >
+								<label class="text-muted">ADD</label>
+								<span ng-bind= "MR.REFADD"></span>
+							</div>
+	
+							<div flex="30" flex-gt-xs="35">
+								<label class="text-muted">PD</label>
+								<span ng-bind= "MR.REFPD" ></span>
+							</div>
+						</div>
+					</md-card-content>
+				</md-tab>
+	
+				<md-tab label="Vital Signs">
+					<md-card-content>
+						<div layout="row" layout-wrap=""  class="p-3">
+	
+							<div flex="50" flex-gt-xs="20">
+								<label class="text-muted">BP</label>
+								<p ng-bind= "MR.BP_SYSTOLIC+'/'+MR.BP_DIASTOLIC"></p>
+							</div>
+	
+							<div flex="50" flex-gt-xs="20" >
+								<label class="text-muted">HR</label>
+								<p ng-bind= "MR.HEART_RATE"></p>
+							</div> 
+	
+							<div flex="50" flex-gt-xs="20">
+								<label class="text-muted">RR</label>
+								<p ng-bind= "MR.RESPIRATORY" ></p>
+							</div>
+	
+							<div flex="50" flex-gt-xs="20">
+								<label class="text-muted">Temp.</label>
+								<p ng-bind= "MR.TEMPERATURE"></p>
+							</div>
+
+							<div flex="50" flex-gt-xs="20">
+								<label class="text-muted">O2Sat</label>
+								<p ng-bind= "MR.O2SAT"></p>
+							</div>
+						</div>
+
+						<div layout="row" layout-wrap=""  class="px-3">
+
+							<div  flex="50" flex-gt-xs="20" >
+								<label class="text-muted">H(cm)</label>
+								<p ng-bind="MR.HEIGHT" ></p>
+							</div>
+	
+							<div  flex="50" layout flex-gt-xs="20" >
+								<div ng-if="MR.PREVIOUS" layout="column" layout-align="center center">
+									<label class="text-muted">{{MR.PREVIOUS.CHECKUPDATE|date:'M/d/yy'}}</label>
+									<p ng-bind="MR.PREVIOUS.WEIGHT"></p>
+								</div>
+								<div ng-if="MR.PREVIOUS"  layout layout-align="center end">
+									<md-icon class="material-icons sm md-warn">chevron_right</md-icon>
+								</div>
+								<div>
+									<label class="text-muted">W(kg)</label>
+									<p ng-bind="MR.WEIGHT" ></p>
+								</div>
+							</div>
+	
+							<div flex="50" flex-gt-xs="20" >
+								<label class="text-muted">BMI</label>
+								<p ng-bind= "MR.BMI" ></p>
+							</div>
+	
+							<div flex="50" flex-gt-xs="20" >
+								<label class="text-muted">LMP</label>
+								<p ng-bind="MR.LMP|date:'MM/dd/y'"></p>
+							</div>
+						</div>
+					</md-card-content>
+				</md-tab>
+	
+				<md-tab label="{{A.GROUPNAME}}" ng-repeat="(key, A) in MR.GROUP_LAB_MONITORING">
+					<md-card-content class="p-3">
+						<div class="table-detail scroll sub-scroll" style="max-height: 250px;">
+							<table class="auto-width">
+								<thead>
+									<tr>
+										<th>Test</th>
+										<th>Value</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr ng-repeat="(key1, B) in A.DATA">
+										<td class="pt-3 pl-3">
+											<span ng-style="{'padding-left': (B.INDENT * 1.5) +'rem'}" >{{B.NAME}}</span>
+										</td>   
+										<td>
+											<div class="pt-3">{{B.LABVALUE}}</div>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</md-card-content>
+				</md-tab>
+	
+				<md-tab label="{{A.NAME}}" ng-repeat="(key, A) in MR.LABORATORIES">
+					<md-card-content >
+						<div class="p-3" >
+							<md-button ng-if="A.FILENAME" ng-click="Lab_View(A);" class="md-primary mx-0">{{A.FILENAME}}</md-button>
+							<pre ng-bind="A.TEMPLATERESULT" class="m-0"></pre>
+						</div>
+					</md-card-content>
+				</md-tab>
+			</md-tabs>
+			
+	
+			<div class="md-padding">
+				<label class="text-muted">Findings</label>
+				<pre ng-bind="MR.FINDINGS"></pre>
+	
+				<label class="text-muted">Diagnosis</label>
+				<pre ng-bind="MR.DIAGNOSIS"></pre>
+	
+				<label class="text-muted">Procedure/s Done</label>
+				<pre ng-bind="MR.PROCEDURE_DONE"></pre>
+	
+				<label class="text-muted">Instruction</label>
+				<pre ng-bind="MR.INSTRUCTION"></pre>
+			</div>
+	
+			<div class="table-unresponsive my-4">
+				<table>
+					<thead>
+						<tr>
+							<th>PRESCRIPTION</th>
+							<th>DURATION</th>
+							<th>TABS</th>
+							<th>INSTRUCTION</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr ng-repeat="(key, A) in MR.MEDICINES">
+							<td ng-bind="A.NAME"></td>
+							<td ng-bind="A.FREQUENCY"></td>
+							<td ng-bind="A.QUANTITY"></td>
+							<td ng-bind="A.INSTRUCTION"></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+	
+			<div class="md-padding">
+				<label class="text-muted">Medication</label>
+				<pre ng-bind="MR.MEDICATION"></pre>
+	
+				<div layout="row" layout-align="end end">
+					<md-button ng-click="Redirect_Edit(MR)" class="md-primary md-raised">
+						<span>Edit</span>
+					</md-button>
+					<md-button class="" ng-click="Close()">
+						<span>Close</span>
+					</md-button>
+				</div>
+			</div>
+		</div>
+
+		<div ng-if="Me().SETUP_CLINIC_ROMERO" class="md-padding">
+
+			<div layout="row" layout-wrap="">
+				<div flex="100" flex-gt-xs="50">
+					<label class="text-muted">Patient Name</label>
+					<p ng-bind="MR.FIRSTNAME+', '+MR.LASTNAME+' '+MR.MIDDLENAME"></p>
+				</div>
+				<div flex="50" flex-gt-xs="25">
+					<label class="text-muted">Age</label>
+					<p ng-bind="MR.AGE"></p>
+				</div>
+				<div flex="50" flex-gt-xs="25">
+					<label class="text-muted">Date Checkup</label>
+					<p ng-bind="MR.CHECKUPDATE|date:'MM/dd/y'"></p>
+				</div>
+			</div>
+
+
+			<div layout="column">
+				<div layout="row">
+					<label class="text-muted pr-3">OD</label>
+					<span ng-bind= "MR.REFOD"></span>
+				</div>
+
+				<div layout="row">
+					<label class="text-muted pr-3">OS</label>
+					<span ng-bind= "MR.REFOS"></span>
+				</div>
+			</div>				
+
+			<div layout="column">
+				<div layout="row">
+					<label class="text-muted pr-3">ADD</label>
+					<span ng-bind= "MR.REFADD"></span>
+				</div>
+
+				<div layout="row">
+					<label class="text-muted pr-3">PD</label>
+					<span ng-bind= "MR.REFPD" ></span>
+				</div>
+			</div>
+
+			<div layout="column">
+				<div layout="row">
+					
+					<label class="text-muted pr-3">Frame</label>
+					<span ng-bind = "MR.FRAME"></span>
+				</div>
+
+				<div layout="row">
+					<label class="text-muted pr-3">Lens</label>
+					<span ng-bind = "MR.LENS"></span>
+				</div>
+			</div>
+			
+			<div layout="row">
+				<label class="text-muted pr-3">Remarks</label>
+				<pre  ng-bind = "MR.REMARKS"></pre>
+			</div>
+
+			<div layout="row" layout-align="end end">
+				<md-button ng-click="Redirect_Edit(MR)" class="md-primary md-raised">
+					<span>Edit</span>
+				</md-button>
+				<md-button class="" ng-click="Close()">
+					<span>Close</span>
+				</md-button>
+			</div>
+		</div>
+
+	</md-dialog-content>
+</md-dialog>
+

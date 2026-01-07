@@ -1,0 +1,43 @@
+
+<section ng-controller="HMO"  ng-init="Init();" >
+	<md-progress-linear ng-hide="isLoaded" md-mode="indeterminate"></md-progress-linear>
+
+	<md-button ng-show="isLoaded" ng-click="Add_Edit(0)" class="md-fab md-primary  bottom-right-fixed" >
+		<md-icon class="material-icons">add</md-icon>
+	</md-button>
+
+	<div class="container-md">
+
+		<md-card class="mt-5">
+			<div class="table-unresponsive hover">
+				<table>
+					<thead>
+						<tr>
+							<th>Name</th>
+							<th>Address</th>
+							<th>Phone No</th>
+							<th>Mobile No</th>
+							<th></th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr ng-repeat="A in Data() | orderBy: ['NAME']">
+							<td ng-bind="A.NAME"></td>
+							<td ng-bind="A.ADDRESS"></td>
+							<td ng-bind="A.PHONENO"></td>
+							<td ng-bind="A.MOBILE"></td>
+							<td class="action">
+								<md-button ng-show="isLoaded" ng-click="Add_Edit(A.ID)" class="md-mini md-primary" >
+									<md-icon class="material-icons">edit</md-icon>
+								</md-button>
+							</td>		
+						</tr> 
+					</tbody>
+				</table>
+			</div>				
+		</md-card>
+
+
+	</div>
+</section>
+

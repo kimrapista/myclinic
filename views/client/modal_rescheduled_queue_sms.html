@@ -1,0 +1,69 @@
+<md-dialog aria-label="Rescheduled SMS" ng-init="Init();" >
+	<md-toolbar>
+		<div class="md-toolbar-tools">
+         <h2 class="md-title">Rescheduled SMS</h2>
+         <span flex></span>
+         <md-button ng-click="Close()" ng-disabled="FORM.isSubmit"  class="md-icon-button">
+				<md-icon class="material-icons" aria-label="Close dialog">close</md-icon>
+			</md-button>
+		</div>
+   </md-toolbar>
+
+	<md-dialog-content class="md-padding">
+
+      <div ng-show="Data().isLoading" class="loading-form">
+			<div class="sk-folding-cube">
+            <div class="sk-cube1 sk-cube"></div>
+            <div class="sk-cube2 sk-cube"></div>
+            <div class="sk-cube4 sk-cube"></div>
+            <div class="sk-cube3 sk-cube"></div>
+         </div>
+      </div>
+
+      <div ng-show="Data().data.length == 0" md-colors="{color:'grey-500'}" class="text-center">
+         No pending sms
+      </div>
+
+      <form name="formParent" ng-submit="Submit_Form();" ng-show="Data().data.length > 0">
+
+         <div ng-repeat="(key, A) in Data().data | orderBy: ['LASTNAME', 'FIRSTNAME']" class="mb-2">
+           
+            <div layout="row" layout-align="start center">
+               <div ng-bind="A.LASTNAME +', '+A.FIRSTNAME+' '+ A.MIDDLENAME"></div>
+               <div class="pl-2">
+                  <span ng-show="A.SEND" md-colors="{color:'primary-300'}">SEND</span>
+                  <span ng-show="A.isError" md-colors="{color:'red-300'}" ng-bind="A.errorMessage"></span>
+                  <md-progress-circular ng-show="A.isSending" md-mode="indeterminate" md-diameter="15" class="mx-auto"></md-progress-circular>
+               </div>
+            </div>
+            
+
+            <div ng-show="Data().viewInfo" layout="row">
+               <label class="pr-2">Mobile No.: </label>
+               <span ng-bind="A.MOBILENO"></span>
+            </div>
+
+            <div ng-show="Data().viewInfo" layout="row">
+               <label class="pr-2">Message: </label>
+               <pre  ng-bind="A.MESSAGE"></pre>
+            </div>
+            
+         </div>
+
+         <div layout="row" layout-align="space-between end" >
+
+            <md-button ng-click="Data().viewInfo = ! Data().viewInfo;">View Info</md-button>
+
+            <md-button ng-disabled="Data().isSubmit || formParent.$invalid"  type="submit" class="md-raised md-primary">
+               <div ng-hide="formParent.$invalid">
+                  <span ng-hide="FORM.isSubmit">Send</span>
+                  <md-progress-circular ng-show="FORM.isSubmit" md-mode="indeterminate" md-diameter="30" class="mx-auto"></md-progress-circular>
+               </div>
+               <div ng-show="formParent.$invalid">
+                  <span>Required!</span>
+               </div>
+            </md-button>
+         </div>
+      </form>
+   </md-dialog-content>
+</md-dialog>

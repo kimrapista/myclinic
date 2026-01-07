@@ -1,0 +1,182 @@
+
+<md-card>
+    <md-card-content layout="column" layout-gt-xs="row">
+
+        <md-input-container flex>
+            <label>DATE CHECKUP</label>
+            <input ng-model="FORM.CHECKUPDATE" name="CHECKUPDATE" type="date" ng-disabled="FORM.READONLY"  required>
+            <div ng-messages="formParent.CHECKUPDATE.$error" role="alert" md-auto-hide="false">
+                <div ng-message="required">This is required.</div>
+            </div>
+        </md-input-container>
+            
+        <md-input-container flex>
+            <label>Clinic location</label>
+            <md-select ng-model="FORM.SUBCLINICID" name="SUBCLINICID"  ng-disabled="FORM.READONLY || SubClinics().length == 0"  required>
+                <md-option ng-repeat="(key, S) in SubClinics()" ng-value="S.ID" ng-bind="S.NAME"></md-option>
+            </md-select>
+            <div ng-messages="formParent.SUBCLINICID.$error" role="alert" md-auto-hide="false">
+                <div ng-message="required">This is required.</div>
+            </div>
+        </md-input-container>
+                    
+
+        <md-input-container  flex>
+            <label>Examined by</label>
+            <md-select ng-model="FORM.CREATEDBY" name="CREATEDBY"  ng-disabled="FORM.READONLY"  required>
+                <md-option ng-repeat="(key, S) in Doctor_List()" ng-value="S.ID" ng-bind="S.NAME"></md-option>
+            </md-select>
+            <div ng-messages="formParent.CREATEDBY.$error" role="alert" md-auto-hide="false">
+                <div ng-message="required">This is required.</div>
+            </div>
+        </md-input-container>
+
+        <md-input-container >
+            <label>Referred by</label>
+            <input ng-model="FORM.REFFEREDBY"  ng-disabled="FORM.READONLY" type="text">
+        </md-input-container>
+        
+    </md-card-content>
+</md-card>
+
+
+<md-card >
+    <md-card-title>
+        <md-card-title-text>
+            <span class="md-headline">Refraction</span>
+        </md-card-title-text>
+    </md-card-title>
+    <md-card-content>
+
+        <div layout="column" layout-gt-xs="row" >
+            <div>
+                <div layout="row">
+                    <md-input-container flex>
+                        <label>OD</label>
+                        <input ng-model = "FORM.REFOD"  ng-disabled="FORM.READONLY" >
+                    </md-input-container>
+                
+                    <md-input-container flex>
+                        <label>OS</label>
+                        <input ng-model = "FORM.REFOS"  ng-disabled="FORM.READONLY"  >
+                    </md-input-container>
+                </div>
+                <div layout="row">
+                    <md-input-container flex>
+                        <label>ADD</label>
+                        <input ng-model = "FORM.REFADD"  ng-disabled="FORM.READONLY"  >
+                    </md-input-container>            
+
+                    <md-input-container flex>
+                        <label>PD</label>
+                        <input ng-model = "FORM.REFPD"  ng-disabled="FORM.READONLY"  >
+                    </md-input-container>
+                </div>
+            </div>
+
+            <div flex class="p-2"></div>
+
+            <div>    
+                <div layout="row" >
+                    <md-input-container flex>
+                        <label>CYL Right</label>
+                        <input ng-model = "FORM.SPHRIGHT"  ng-disabled="FORM.READONLY"  >
+                    </md-input-container>
+        
+                    <md-input-container flex>
+                        <label>CYL Left</label>
+                        <input ng-model = "FORM.SPHLEFT"  ng-disabled="FORM.READONLY"  >
+                    </md-input-container>   
+                </div>
+    
+                <div layout="row">
+                    <md-input-container flex>
+                        <label>AXIS Right</label>
+                        <input ng-model = "FORM.CYLAXISRIGHT"  ng-disabled="FORM.READONLY"  >
+                    </md-input-container>
+        
+                    <md-input-container flex>
+                        <label>AXIS Left</label>
+                        <input ng-model = "FORM.CYLAXISLEFT"  ng-disabled="FORM.READONLY"  >
+                    </md-input-container>   
+                </div>
+    
+                <!-- <div  layout="row">
+                    <md-input-container flex>
+                        <label>AXIS Right</label>
+                        <input ng-model = "FORM.AXISRIGHT"  ng-disabled="FORM.READONLY"  >
+                    </md-input-container>
+        
+                    <md-input-container flex>
+                        <label>AXIS Left</label>
+                        <input ng-model = "FORM.AXISLEFT"  ng-disabled="FORM.READONLY"  >
+                    </md-input-container>   
+                </div> -->
+            </div>
+        </div>
+
+        
+        <md-input-container class="md-block">
+            <label>Frame</label>
+            <input ng-model = "FORM.FRAME"  ng-disabled="FORM.READONLY" >
+        </md-input-container>
+
+        <md-input-container class="md-block">
+            <label>Lens</label>
+            <input ng-model = "FORM.LENS"  ng-disabled="FORM.READONLY" >
+        </md-input-container>
+
+        <md-input-container class="md-block">
+            <label>Remarks</label>
+            <textarea ng-model="FORM.REMARKS" name="REMARKS" md-maxlength="500" ng-disabled="FORM.READONLY" ></textarea>
+            <div ng-messages="formParent.REMARKS.$error" role="alert" md-auto-hide="false">
+                <div ng-message="md-maxlength">character reach the max limit.</div>
+            </div>
+        </md-input-container>
+    </md-card-content>
+</md-card>
+
+
+
+<md-card >
+    <md-card-title>
+        <md-card-title-text>
+            <span class="md-headline">Billing</span>
+        </md-card-title-text>
+    </md-card-title>
+    <md-card-content>
+        <div class="pl-3">
+            <div ng-repeat="(key,s) in FORM.SERVICES">
+                <div ng-repeat="A in Services()" ng-if="A.ID == s.SERVICEID" layout="row" layout-align="start center">
+                    <h6 style="width: 130px;" class="m-0">{{A.NAME}}</h6>
+                    <h4 class="m-0">&#8369;</h4>
+                    <md-input-container class="m-0">
+                        <input  ng-model="s.UNITPRICE" ng-change="Calculate_Services();" ng-disabled="s.CANCELLED || FORM.READONLY" ng-required="!s.CANCELLED" type="number" min="0" step="0.01"  aria-label="true"> 
+                    </md-input-container>
+                </div>
+            </div>
+    
+            <div layout="row" layout-align="start center" class="mb-3">
+                <h6 md-colors="{color:'gray'}" style="width: 130px;" class="m-0">Subtotal</h6>
+                <h4 class="m-0">&#8369;</h4>
+                <h6 ng-bind="FORM.GROSSAMOUNT|number:2" class="text-right m-0" style="width: 180px;"></h6>
+            </div>
+            
+    
+            <div layout="row" layout-align="start center">
+                <h6 style="width: 130px;" class="m-0">Discount Price</h6>
+                <h4 class="m-0">&#8369;</h4>
+                <md-input-container class="m-0">
+                    <input  ng-model="FORM.DISCOUNTAMOUNT" ng-change="Billing_Changed();" ng-disabled="FORM.READONLY" required type="number" min="0" step="0.01"   aria-label="true"> 
+                </md-input-container>
+            </div>
+    
+            <div layout="row" layout-align="start center" class="mt-3">
+                <h6 md-colors="{color:'yellow'}" style="width: 130px;" class="m-0">Total</h6>
+                <h4 class="m-0">&#8369;</h4>
+                <h4 ng-bind="FORM.NETPAYABLES|number:2" md-colors="{color:'yellow'}" class="text-right m-0" style="width: 180px;"></h4>
+            </div>     
+        </div>       
+
+    </md-card-content>
+</md-card>

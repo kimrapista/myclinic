@@ -1,0 +1,197 @@
+
+<section ng-controller="PatientForm" ng-init="Init();">
+	<md-progress-linear ng-hide="isLoaded" md-mode="indeterminate"></md-progress-linear>
+	<div class="container-md">
+
+		<form name="formParent" ng-submit="Submit_Form()" role="form">
+
+			<md-card class="mt-5">
+				<md-card-title>
+					<md-card-title-text>
+						<span class="md-headline">Patient Information</span>
+					</md-card-title-text>
+				</md-card-title>
+				<md-card-content>
+
+					<div layout="column" layout-gt-xs="row">
+						<md-input-container flex-gt-xs="50" class="md-block">
+							<input ng-model="FORM.FIRSTNAME" name="FIRSTNAME" placeholder="First Name" autofocus required>
+							<div ng-messages="formParent.FIRSTNAME.$error" role="alert" md-auto-hide="false">
+								<div ng-message="required">This is required.</div>
+							</div>
+						</md-input-container>
+						<md-input-container flex-gt-xs="50" class="md-block">
+							<input ng-model="FORM.MIDDLENAME" name="MIDDLENAME" minlength="1" placeholder="Middlen Name">
+							<div ng-messages="formParent.MIDDLENAME.$error" role="alert" md-auto-hide="false">
+								<div ng-message="minlength">Please enter the full middle name</div>
+							</div>
+						</md-input-container>
+						<md-input-container flex-gt-xs="50" class="md-block">
+							<input ng-model="FORM.LASTNAME" name="LASTNAME" placeholder="Last Name" required>
+							<div ng-messages="formParent.LASTNAME.$error" role="alert" md-auto-hide="false">
+								<div ng-message="required">This is required.</div>
+							</div>
+						</md-input-container>
+					</div>
+
+					<div layout="row" layout-wrap="">
+						<md-input-container flex="50" flex-gt-xs="33" >
+							<input ng-model="FORM.DOB" name="DOB" type="date" placeholder="Date of Birth" required>
+							<div ng-messages="formParent.DOB.$error" role="alert" md-auto-hide="false">
+								<div ng-message="required">This is required.</div>
+							</div>
+						</md-input-container>
+						<md-input-container flex="50" flex-gt-xs="33"  >
+							<label>Sex</label>
+							<md-select ng-model="FORM.SEX" name ="SEX" required>
+								<md-option value="FEMALE">FEMALE</md-option>
+								<md-option value="MALE">MALE</md-option>
+							</md-select>
+							<div ng-messages="formParent.SEX.$error" role="alert" md-auto-hide="false">
+								<div ng-message="required">This is required.</div>
+							</div>
+						</md-input-container>
+						<md-input-container flex="100"  flex-gt-xs="33"  class="md-block">
+							<label>Blood Type</label>
+							<md-select ng-model="FORM.BLOODTYPE" >
+								<md-option value=""></md-option>
+								<md-option value="A">A</md-option>
+								<md-option value="A-">A-</md-option>
+								<md-option value="A+">A+</md-option>
+								<md-option value="B">B</md-option>
+								<md-option value="B-">B-</md-option>
+								<md-option value="B+">B+</md-option>
+								<md-option value="AB">AB</md-option>
+								<md-option value="AB-">AB-</md-option>
+								<md-option value="AB+">AB+</md-option>
+								<md-option value="O">O</md-option>
+								<md-option value="O-">O-</md-option>
+								<md-option value="O+">O+</md-option>
+							</md-select>
+						</md-input-container>
+					</div>
+
+					<div layout="column" layout-gt-xs="row">
+						<md-input-container flex-gt-xs="50" class="md-block">
+							<input ng-model="FORM.POB" placeholder="Place of Birth" >
+						</md-input-container>
+						<md-input-container flex-gt-xs="50" class="md-block">
+							<input ng-model="FORM.NATIONALITY" placeholder="Nationality" >
+						</md-input-container>
+						<md-input-container flex-gt-xs="50" class="md-block">
+							<input ng-model="FORM.RELIGION" placeholder="Religion" >
+						</md-input-container>
+					</div>
+
+					<div layout="column" layout-gt-xs="row">
+						<md-input-container  flex="100"  flex-gt-xs="33"  class="md-block" >
+							<label>Civil Status</label>
+							<md-select ng-model="FORM.CIVILSTATUS" name="CIVILSTATUS"  required>
+								<md-option value="MARRIED">MARRIED</md-option>
+								<md-option value="WIDOWED">WIDOWED</md-option>
+								<md-option value="SEPARATED">SEPARATED</md-option>
+								<md-option value="DIVORCED">DIVORCED</md-option>
+								<md-option value="SINGLE">SINGLE</md-option>
+								<md-option value="CHILD">CHILD</md-option>
+							</md-select>
+							<div ng-messages="formParent.CIVILSTATUS.$error" role="alert" md-auto-hide="false">
+								<div ng-message="required">This is required.</div>
+							</div>
+						</md-input-container>
+
+						<md-input-container  flex="100"  flex-gt-xs="33" class="md-block">
+							<input ng-model="FORM.OCCUPATION" placeholder="Occupation" >
+						</md-input-container>
+					</div>
+
+					
+
+				</md-card-content>
+
+				<md-card-header>
+					<md-card-header-text>
+						<span class="md-subhead">Contact Infomation</span>
+					</md-card-header-text>
+				</md-card-header>
+
+				<md-card-content>
+
+					<div layout="column" layout-gt-xs="row">
+						<md-input-container flex-gt-xs="50" class="md-block">
+							<input ng-model="FORM.STREETNO" placeholder="Street No." >
+						</md-input-container>
+						<md-input-container flex-gt-xs="50" class="md-block">
+							<input ng-model="FORM.CITY" placeholder="City" >
+						</md-input-container>
+						<md-input-container flex-gt-xs="50" class="md-block">
+							<input ng-model="FORM.PROVINCE" placeholder="Province" >
+						</md-input-container>
+					</div>
+
+
+					<div layout="column" layout-gt-xs="row">
+						<md-input-container flex-gt-xs="50" class="md-block">
+							<input ng-model="FORM.PHONENO" placeholder="Tel No." >
+						</md-input-container>
+						<md-input-container flex="33">
+							<input ng-model="FORM.MOBILENO" name="MOBILENO" type="text" placeholder="Mobile No." ng-pattern="/^09[0-9]{9}$/">
+							<div ng-messages="formParent.MOBILENO.$error" role="alert" md-auto-hide="false">
+								<div ng-message="required">Required</div>
+								<div ng-message="pattern">09#########. Please enter valid Mobile No.</div>
+							</div>
+						</md-input-container>
+						<md-input-container flex-gt-xs="50" class="md-block">
+							<input ng-model="FORM.EMAIL" name="EMAIL" type="email" placeholder="Email"  >
+						</md-input-container>
+					</div>
+
+					
+
+				</md-card-content>
+
+				<md-card-header>
+					<md-card-header-text>
+						<span class="md-subhead">Emergency Infomation</span>
+					</md-card-header-text>
+				</md-card-header>
+
+				<md-card-content>
+
+					<div layout="column" layout-gt-xs="row">
+						<md-input-container flex-gt-xs="35" class="md-block">
+							<input ng-model="FORM.EMERGENCYCONTACT" placeholder="Name" >
+						</md-input-container>
+						<md-input-container flex-gt-xs="auto" class="md-block">
+							<input ng-model="FORM.EMERGENCYADDRESS" placeholder="Address" >
+						</md-input-container>
+					</div>
+
+
+					<div layout="column" layout-gt-xs="row">
+						<md-input-container flex-gt-xs="35" class="md-block">
+							<input ng-model="FORM.EMERGENCYPHONENO" placeholder="Tel No." >
+						</md-input-container>
+						<md-input-container flex-gt-xs="35" class="md-block">
+							<input ng-model="FORM.EMERGENCYMOBILENO" placeholder="Mobile No." >
+						</md-input-container>
+					</div>
+
+
+					<div  layout="column" layout-gt-xs="row" layout-align-gt-xs="end center" class="pt-3">
+						<md-button ng-disabled="FORM.isSubmit || formParent.$invalid"  type="submit" class="md-raised md-primary">
+							<span ng-hide="FORM.isSubmit">Save</span>
+							<md-progress-circular ng-show="FORM.isSubmit" md-mode="indeterminate" md-diameter="20" class="mx-auto"></md-progress-circular>
+						</md-button>
+						<md-button ng-href="{{cancel}}">Cancel</md-button>
+					</div>
+
+
+				</md-card-content>
+			</md-card>
+
+
+		</form>
+
+	</div>
+</section>
+

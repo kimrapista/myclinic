@@ -1,0 +1,365 @@
+<md-dialog aria-label="Schedule Today" ng-init="Init();" class="dialog-lg">
+	<md-toolbar>
+		<div class="md-toolbar-tools">
+         <h2 class="md-title" ng-bind="Day().date| date:'fullDate'"></h2>
+         <span flex></span>
+         <md-button ng-click="Close()" class="md-icon-button" ng-click="Close()">
+				<md-icon class="material-icons" aria-label="Close dialog">close</md-icon>
+			</md-button>
+		</div>
+	</md-toolbar>
+	<md-dialog-content >
+
+		<div ng-show="Day().isLoadingDay || Day().isLoadingAppointment || Day().isLoadingNoSched" class="loading-form">
+			<div class="sk-folding-cube">
+            <div class="sk-cube1 sk-cube"></div>
+            <div class="sk-cube2 sk-cube"></div>
+            <div class="sk-cube4 sk-cube"></div>
+            <div class="sk-cube3 sk-cube"></div>
+         </div>
+      </div>
+      
+      <md-tabs md-dynamic-height md-border-bottom >
+
+         <!-- appointments tab -->
+         <md-tab label="Follow Up">
+            <md-content >
+               <div class="table-responsive hover">
+                  <table>
+                     <thead>
+                        <tr>
+                           <th>Patient Info</th>
+                           <th>CHIEF COMPLAINT</th>
+                           <th>FINDINGS</th>
+                           <th>DIAGNOSIS</th>
+                           <th>Info</th>
+                           <th></th>
+                        </tr>
+                     </thead>
+                     <tbody>
+                        <tr ng-repeat="(key,A) in Day().APPOINTMENTS">
+                           <th>Patient</th>
+                           <td>
+                              <p ng-bind="A.LASTNAME +', '+ A.FIRSTNAME +' '+ A.MIDDLENAME+', '"></p>
+                              <div layout="row">
+                                 <label class="pr-1">Age: </label>
+                                 <span ng-bind="A.AGE"></span>
+                              </div>
+                              <div layout="row">
+                                 <label class="pr-1">M#: </label>
+                                 <span ng-bind="A.MOBILENO"></span>
+                              </div>
+                           </td>
+                           <th>CHIEF COMPLAINT</th>
+                           <td>
+                              <pre ng-bind="A.CHEIFCOMPLAINT"></pre>
+
+                              <md-button ng-show="A.TOTAL_LAB > 0" ng-click="Preview_Lab(A.ID)" class="md-primary m-0 md-mini" >
+                                 <md-tooltip md-direction="top">{{A.TOTAL_LAB}} Lab result</md-tooltip>
+                                 <md-icon class="material-icons">biotech</md-icon>
+                              </md-button>
+                           </td>
+                           <th>FINDINGS</th>
+                           <td>
+                              <pre ng-bind="A.FINDINGS"></pre>
+                           </td>
+                           <th>DIAGNOSIS</th>
+                           <td>
+                              <pre ng-bind="A.DIAGNOSIS"></pre>
+                           </td>
+                           <th>Info</th>
+                           <td>
+                              <p ng-show="A.CREATEDNAME" ng-bind="A.CREATEDNAME"></p>
+                              <p ng-hide="A.CREATEDNAME" class="text-muted" >Prepared Record</p>
+                              
+                              <div layout="row">
+                                 <label class="pr-1">To: </label>
+                                 <span ng-bind="A.APPOINTCLINIC "></span>
+                              </div>
+                              <div layout="row">
+                                 <label class="pr-1">Bring: </label>
+                                 <span ng-bind="A.APPOINTMENTDESCRIPTION "></span>
+                              </div>
+                           </td>
+                           <td class="action">
+                              <div layout="column" layout-align="center center" class="pb-5">
+                                 <md-button ng-click="Redirect_Patient(A.PATIENTID)" class="md-primary md-mini">
+                                    <md-tooltip md-direction="top">Patient Records</md-tooltip>
+                                    <md-icon class="material-icons">folder_shared</md-icon>
+                                 </md-button>
+   
+                                 <md-button ng-click="Preview_Record(A.ID)" class="md-primary md-mini">
+                                    <md-tooltip md-direction="top">Preview</md-tooltip>
+                                    <md-icon class="material-icons">find_in_page</md-icon>
+                                 </md-button>
+                              </div>
+                           </td>
+                        </tr>
+                     </tbody>
+                     <tfoot ng-if="Day().APPOINTMENTS.length == 0">
+                        <tr>
+                           <td colspan="10" class="text-center">
+                              <label for="">No appointment on this day</label>
+                           </td>
+                        </tr>
+                     </tfoot>
+                  </table>
+               </div>
+            </md-content>
+         </md-tab>
+
+
+         <!-- Schedules Tab -->
+         <md-tab label="{{A.SDATETIME| date: 'hh:mm a'}}" ng-repeat="(key,A) in Day().SCHEDULES | orderBy: ['SDATETIME']">
+            <md-content >
+
+               <div class="md-padding">
+                  <div layout="row" layout-wrap="">
+                     <div flex="50" flex-gt-xs="25">
+                        <label>Doctor</label>
+                        <p ng-bind="A.DOCTORNAME"></p>
+                     </div>
+                     <div flex="50" flex-gt-xs="25">
+                        <label>Clinic</label>
+                        <p ng-bind="A.SUBCLINICNAME"></p>
+                     </div>
+                     <div flex="50" flex-gt-xs="25">
+                        <label>Max patient</label>
+                        <p ng-bind="A.MAXPATIENT"></p>
+                     </div>
+                     <div flex="50" flex-gt-xs="25">
+                        <label>Reminders</label>
+                        <p ng-bind="A.REMARKS"></p>
+                     </div>
+                  </div>
+               </div>
+
+               <div class="table-unresponsive mb-5">
+                  <table>
+                     <thead>
+                        <th>NAME</th>
+                        <th>Complaint</th>
+                        <th>Mobile No.</th>
+                        <th>Status</th>
+                        <th></th>
+                     </thead>
+                     <tbody>
+                        <tr ng-repeat="(key, B) in A.PATIENTS|orderBy: ['CANCELLED','BLOCKED', 'LASTNAME', 'FIRSTNAME']">
+                           <td>
+                              <p ng-bind="B.LASTNAME+', '+B.FIRSTNAME+' '+ B.MIDDLENAME"></p>
+                              <div layout="row">
+                                 <label class="pr-1">Age: </label>
+                                 <span ng-bind="B.AGE"></span>
+                              </div>
+                              <div layout="row">
+                                 <label class="pr-1">CS: </label>
+                                 <span ng-bind="B.CIVILSTATUS"></span>
+                              </div>
+                           </td>
+                           <td>
+                              <pre ng-bind="B.COMPLAINT" class="mb-0"></pre>
+                           </td>
+                           <td>
+                              <md-button href="tel://{{B.MOBILENO}}" class="md-primary m-0">
+                                 <md-icon class="material-icons sm">call</md-icon>
+                                 <span  ng-bind="B.MOBILENO"></span>
+                              </md-button>
+                           </td>
+                           <td>
+                              <div layout="column">
+                                 <small ng-show="!B.CANCELLED && !B.BLOCKED " md-colors="{color: (B.VERIFIED ? 'primary-200' : 'grey-700') }">VERIFIED</small>
+                                 <small ng-show="!B.CANCELLED && !B.BLOCKED" md-colors="{color: (B.ACKNOWLEDGED ? 'primary-200' : 'grey-700') }">ACKNOWLEDGED</small>
+                                 <small ng-show="B.CANCELLED && !B.BLOCKED" md-colors="{color: (B.CANCELLED ? 'red-200' : 'grey-700') }">CANCELLED</small>
+                                 <small ng-show="B.BLOCKED" md-colors="{color: (B.BLOCKED ? 'red-400' : 'grey-700') }">BLOCKED</small>
+                              </div>
+                           </td>
+                           <td class="action">
+                              <md-menu>
+                                 <md-button class="md-primary md-mini" ng-click="$mdMenu.open($event)" ng-disabled="B.isAcknowledging || B.isCancelling || B.isBlocking">
+                                    <md-icon ng-hide="B.isAcknowledging || B.isCancelling || B.isBlocking" class="material-icons">more_vert</md-icon>
+                                    <md-progress-circular ng-show="B.isAcknowledging || B.isCancelling || B.isBlocking" md-mode="indeterminate" md-diameter="20" class="mx-auto"></md-progress-circular>
+                                 </md-button>
+                                 <md-menu-content>
+                                    <md-menu-item>
+                                       <md-button ng-click="Sched_Patient_Acknowledged(B)" ng-disabled="B.ACKNOWLEDGED || B.CANCELLED || B.BLOCKED" >
+                                          <md-icon class="material-icons">check</md-icon>
+                                          <span>Acknowledge</span>
+                                       </md-button>
+                                    </md-menu-item>
+                                    <md-menu-item ng-hide="B.CANCELLED">
+                                       <md-button ng-click="Sched_Patient_Cancelled(B)"  ng-disabled="B.CANCELLED || B.BLOCKED">
+                                          <md-icon class="material-icons">cancel</md-icon>
+                                          <span>Cancel Appointment</span>
+                                       </md-button>
+                                    </md-menu-item>
+                                    <md-menu-item ng-show="B.CANCELLED">
+                                       <md-button ng-click="Sched_Patient_Recancelled(B)" ng-disabled="!B.CANCELLED || B.BLOCKED">
+                                          <md-icon class="material-icons">cancel</md-icon>
+                                          <span>Re-cancel Appointment</span>
+                                       </md-button>
+                                    </md-menu-item>
+                                    <md-menu-item ng-hide="B.BLOCKED">
+                                       <md-button ng-click="Sched_Patient_Blocked(B)" ng-disabled="B.BLOCKED">
+                                          <md-icon class="material-icons">block</md-icon>
+                                          <span>Block mobile no.</span>
+                                       </md-button>
+                                    </md-menu-item>
+                                    <md-menu-item ng-show="B.BLOCKED">
+                                       <md-button ng-click="Sched_Patient_Unblocked(B)" ng-disabled="!B.BLOCKED">
+                                          <md-icon class="material-icons">block</md-icon>
+                                          <span>UnBlock mobile no.</span>
+                                       </md-button>
+                                    </md-menu-item>
+                                 </md-menu-content>
+                              </md-menu>
+                           </td>
+                        </tr>
+                     </tbody>
+                  </table>
+               </div>
+               <br>
+
+
+               <div class="top-right">
+                  <md-menu>
+                     <md-button class="md-primary md-mini" ng-click="$mdMenu.open($event)">
+                        <md-icon class="material-icons">more_vert</md-icon>
+                     </md-button>
+                     <md-menu-content>
+                        <md-menu-item>
+                           <md-button ng-click="Add_Edit(A.ID)" >
+                              <md-icon class="material-icons">edit</md-icon>
+                              <span>Edit</span>
+                           </md-button>
+                        </md-menu-item>
+                        <md-menu-item >
+                           <md-button ng-click="Remove_Schedule(A)" class="md-warn">
+                              <md-icon class="material-icons">delete</md-icon>
+                              <span>Delete</span>
+                           </md-button>
+                        </md-menu-item>
+                     </md-menu-content>
+                  </md-menu>
+               </div>
+
+            </md-content>
+         </md-tab>
+         
+         
+
+
+         <md-tab ng-if="Day().NOSCHEDULES.length > 0" label="No Schedule">
+            <md-content> 
+               <div class="table-responsive hover">
+                  <table>
+                     <thead>
+                        <tr>
+                           <th>NAME</th>
+                           <th>Complaint</th>
+                           <th>Mobile No.</th>
+                           <th></th>
+                        </tr> 
+                     </thead>
+                     <tbody>
+                        <tr ng-repeat="(key,A) in Day().NOSCHEDULES">
+                           <td>
+                              <span ng-bind="A.LASTNAME+', '+A.FIRSTNAME+' '+ A.MIDDLENAME"></span>
+                           </td>
+                           <td>
+                              <pre ng-bind="A.COMPLAINT" class="mb-0"></pre>
+                           </td>
+                           <td>
+                              <md-button href="tel://{{A.MOBILENO}}" class="md-primary m-0">
+                                 <md-icon class="material-icons sm">call</md-icon>
+                                 <span  ng-bind="A.MOBILENO"></span>
+                              </md-button>
+                           </td>
+                           <td class="action">
+                              <md-menu>
+                                 <md-button class="md-primary md-mini" ng-click="$mdMenu.open($event)">
+                                    <md-icon class="material-icons">alarm_add</md-icon>
+                                 </md-button>
+                                 <md-menu-content>
+                                    <div class="p-3">Set Scheduled</div>
+                                    <md-menu-item ng-repeat="(key1,B) in Day().SCHEDULES | orderBy: ['SDATETIME']">
+                                       <md-button ng-click="Set_Patient_Scheduled(A,B)" aria-label="Schedule time">
+                                          <span ng-bind="B.SDATETIME| date: 'hh:mm a'"></span>
+                                       </md-button>
+                                    </md-menu-item>
+                                    <div ng-show="Day().SCHEDULES.length == 0" md-colors="{color:'grey-500'}" class="p-3"> 
+                                       No schedule for this day.
+                                    </div>
+                                 </md-menu-content>
+                              </md-menu>
+                           </td>
+                        </tr>
+                     </tbody>
+                  </table>
+               </div>
+               
+               <small md-colors="{color:'grey-500'}" class="p-3">This tab list of patient from online appointment that rescheduled without specific time.</small>
+            </md-content>
+         </md-tab>
+
+
+         <!-- Notes per day -->
+         <md-tab label="Note">
+            <md-content class="md-padding">
+
+               <div ng-if="Me().isDoctor">
+
+                  <div ng-repeat="(key, A) in Day().NOTES">
+                     <md-input-container class="md-block mb-5">
+                        <label>&nbsp;</label>
+                        <textarea ng-model="A.REMARKS" name="REMARKS" md-maxlength="200" ng-change="Note_Change(A)" ng-model-options="{ debounce: 500 }" ></textarea>
+                        <div ng-messages="formParent.REMARKS.$error" role="alert" md-auto-hide="false">
+                           <div ng-message="required">This is required.</div>
+                           <div ng-message="md-maxlength">character reach the max limit.</div>
+                        </div>
+                     </md-input-container>
+                  </div>
+
+               </div>
+              
+               <div ng-if="Me().isAssistant" ng-repeat="(key, A) in Day().NOTES">
+                  <pre ng-bind="A.REMARKS"></pre>
+               </div>
+               
+            </md-content>
+         </md-tab>
+
+         
+      </md-tabs>
+ 
+
+      <div class="bottom-right-fixed" >
+         <md-menu>
+            <md-button class="md-primary md-fab md-mini" ng-click="$mdMenu.open($event)">
+               <md-icon class="material-icons">more_vert</md-icon>
+            </md-button>
+            <md-menu-content>
+               <md-menu-item>
+                  <md-button ng-click="Add_Edit(0)" class="">
+                     <md-icon class="material-icons">add</md-icon>
+                     <span>Online Appointment</span>
+                  </md-button>
+               </md-menu-item>
+               <md-menu-item >
+                  <md-button ng-click="Appoint_Report()" class="">
+                     <md-icon class="material-icons">print</md-icon>
+                     <span>Appointment Report</span>
+                  </md-button>
+               </md-menu-item>
+               <md-menu-item >
+                  <md-button ng-click="Open_Reschedule_Form()" class="">
+                     <md-icon class="material-icons">transfer_within_a_station</md-icon>
+                     <span>Re-schedule</span>
+                  </md-button>
+               </md-menu-item>
+            </md-menu-content>
+         </md-menu>
+      </div>
+
+	
+	</md-dialog-content>
+</md-dialog>

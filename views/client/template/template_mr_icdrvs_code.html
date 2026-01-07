@@ -1,0 +1,45 @@
+
+
+<div layout="column" layout-gt-xs="row" >
+    <div flex>
+        <md-autocomplete flex md-search-text="icd.search"  md-items="item in Search_ICD()"	md-item-text="item.ITEMCODE" md-selected-item-change="Selected_ICD(item)" md-min-length="0"  ng-disabled="FORM.READONLY" placeholder="Search ICD"  md-search-text-change="Clear_ICD()" md-clear-button="true" md-mode="virtual" md-menu-class="autocomplete-virtual-template" md-menu-container-class="virtual-container">
+            <md-item-template>
+                <span class="item-title">
+                    <span> {{item.ITEMCODE}} </span>
+                </span>
+                <p class="item-desc">{{item.ITEMDESCRIPTION}}</p>
+            </md-item-template>
+            <md-not-found>
+                <span class="text-muted">Search not found.</span>
+            </md-not-found>
+        </md-autocomplete>
+        
+        <div class="md-padding">
+            <label for="">ICD Description</label>
+            <pre>{{icd.search ? icd.selected.ITEMDESCRIPTION : ''}}</pre>
+        </div>
+    </div>
+
+    <div flex>
+        <md-autocomplete flex md-search-text="rvs.search"  md-items="item in Search_RVS()"	md-item-text="item.ITEMCODE" md-selected-item-change="Selected_RVS(item)" md-min-length="0"  ng-disabled="FORM.READONLY" placeholder="Search RVS" md-search-text-change="Clear_RVS()"  md-clear-button="true" md-mode="virtual" md-menu-class="autocomplete-virtual-template" md-menu-container-class="virtual-container">
+            <md-item-template>
+                <span class="item-title">
+                    <span> {{item.ITEMCODE}} </span>
+                </span>
+                <p class="item-desc">{{item.ITEMDESCRIPTION}}</p>
+            </md-item-template>
+            <md-not-found>
+                <span class="text-muted">Search not found.</span>
+            </md-not-found>
+        </md-autocomplete>
+        
+        <div class="md-padding">
+            <label for="">RVS Description</label>
+            <pre>{{rvs.search ? rvs.selected.ITEMDESCRIPTION : ''}}</pre>
+        </div>
+    </div>
+</div>
+
+
+
+

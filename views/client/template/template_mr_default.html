@@ -1,0 +1,1273 @@
+<md-card >
+    <md-tabs md-dynamic-height md-border-bottom >
+        <md-tab label="MEDICAL IN">
+
+            <md-card-content>
+                
+                <md-input-container class="md-block">
+                    <label>Chief Complaint</label>
+                    <textarea ng-model="FORM.CHEIFCOMPLAINT" name="CHEIFCOMPLAINT" md-maxlength="500" ng-disabled="FORM.READONLY" required=""></textarea>
+                    <div ng-messages="formParent.CHEIFCOMPLAINT.$error" role="alert" md-auto-hide="false">
+                        <div ng-message="required">This is required.</div>
+                        <div ng-message="md-maxlength">character reach the max limit.</div>
+                    </div>
+                </md-input-container>
+
+
+                <md-input-container class="md-block">
+                    <label>History Present Illness</label>
+                    <textarea ng-model="FORM.PRESENTILLNESS" name="PRESENTILLNESS" md-maxlength="500" ng-disabled="FORM.READONLY" ></textarea>
+                    <div ng-messages="formParent.PRESENTILLNESS.$error" role="alert" md-auto-hide="false">
+                        <div ng-message="md-maxlength">character reach the max limit.</div>
+                    </div>
+                </md-input-container>
+
+                <div layout="row" layout-align="start start">
+                    <md-input-container flex>
+                        <label>CO-Morbidities</label>
+                        <textarea ng-model="FORM.COMORBIDITIES" name="COMORBIDITIES" md-maxlength="500" ng-disabled="FORM.READONLY" ></textarea>
+                        <div ng-messages="formParent.COMORBIDITIES.$error" role="alert" md-auto-hide="false">
+                            <div ng-message="md-maxlength">character reach the max limit.</div>
+                        </div>
+                    </md-input-container>
+
+                    <md-button ng-show="Me().isAssistant && FORM.CREATEDBY == 0" ng-click="Copy_CO_Morbidities()" ng-disabled="FORM.READONLY" class="md-primary md-mini">
+                        <md-tooltip md-direction="top">Copy Previous CO-Morbidities</md-tooltip>
+                        <md-icon class="material-icons">filter_none</md-icon>
+                    </md-button>
+                </div>
+
+            </md-card-content>
+
+
+            <md-tabs md-dynamic-height md-border-bottom md-center-tabsx>
+                <md-tab ng-if="Me().OPTICAL || Me().OPHTHALMOLOGIST" label="Refraction">
+                    <md-card-content>
+                        <div layout="row" layout-wrap="">
+
+                            <md-input-container flex="50" flex-gt-xs="35">
+                                <label>OD</label>
+                                <input ng-model = "FORM.REFOD"  ng-disabled="FORM.READONLY" >
+                            </md-input-container>
+
+                            <md-input-container flex="50" flex-gt-xs="35">
+                                <label>Sph Left</label>
+                                <input ng-model = "FORM.SPHLEFT"  ng-disabled="FORM.READONLY" >
+                            </md-input-container>
+
+                            <md-input-container flex="50" flex-gt-xs="30">
+                                <label>Cyl Axis Left</label>
+                                <input ng-model = "FORM.CYLAXISLEFT"  ng-disabled="FORM.READONLY" >
+                            </md-input-container>
+                            
+                            <md-input-container flex="540" flex-gt-xs="35">
+                                <label>OS</label>
+                                <input ng-model = "FORM.REFOS"  ng-disabled="FORM.READONLY"  >
+                            </md-input-container>
+
+                            <md-input-container flex="50" flex-gt-xs="35">
+                                <label>Sph Right</label>
+                                <input ng-model = "FORM.SPHRIGHT"  ng-disabled="FORM.READONLY" >
+                            </md-input-container>
+
+                            <md-input-container flex="50" flex-gt-xs="30">
+                                <label>Cyl Axis Right</label>
+                                <input ng-model = "FORM.CYLAXISRIGHT"  ng-disabled="FORM.READONLY" >
+                            </md-input-container>
+
+                            <md-input-container flex="50" flex-gt-xs="35" >
+                                <label>ADD</label>
+                                <input ng-model = "FORM.REFADD"  ng-disabled="FORM.READONLY"  >
+                            </md-input-container>
+                        </div>
+
+                        <div layout="row" layout-wrap="">
+                            <md-input-container flex="50" flex-gt-xs="35">
+                                <label>PD</label>
+                                <input ng-model = "FORM.REFPD"  ng-disabled="FORM.READONLY"  >
+                            </md-input-container>
+                        </div>
+
+                        <div layout="row" layout-wrap="">
+                            <md-input-container ng-if="Me().OPHTHALMOLOGIST" flex="50" flex-gt-xs="25">
+                                <md-checkbox ng-model="FORM.ANNUAL" ng-disabled="FORM.READONLY" class="md-primary mb-0">Annual</md-checkbox>
+                              </md-input-container>
+
+                              <md-input-container ng-if="Me().OPHTHALMOLOGIST" flex="50" flex-gt-xs="25">
+                                <md-checkbox ng-model="FORM.EXTERNAL_EYE" class="md-primary mb-0">External Eye</md-checkbox>
+                              </md-input-container>
+
+                              <md-input-container ng-if="Me().OPHTHALMOLOGIST" flex="50" flex-gt-xs="25">
+                                <md-checkbox ng-model="FORM.GLAUCOMA" class="md-primary mb-0">Glaucoma</md-checkbox>
+                              </md-input-container>
+
+                              <md-input-container ng-if="Me().OPHTHALMOLOGIST" flex="50" flex-gt-xs="25">
+                                <md-checkbox ng-model="FORM.HEADACHE" class="md-primary mb-0">Headache / dizziness</md-checkbox>
+                              </md-input-container>
+
+                              <md-input-container ng-if="Me().OPHTHALMOLOGIST" flex="50" flex-gt-xs="25">
+                                <md-checkbox ng-model="FORM.PITY" class="md-primary mb-0">Pity</md-checkbox>
+                              </md-input-container>
+
+                              <md-input-container ng-if="Me().OPHTHALMOLOGIST" flex="50" flex-gt-xs="25">
+                                <md-checkbox ng-model="FORM.RETINA" class="md-primary mb-0">Retina</md-checkbox>
+                              </md-input-container>
+
+                              <md-input-container ng-if="Me().OPHTHALMOLOGIST" flex="50" flex-gt-xs="25">
+                                <md-checkbox ng-model="FORM.CATARACT" class="md-primary mb-0">Cataract</md-checkbox>
+                              </md-input-container>
+
+                              <md-input-container ng-if="Me().OPHTHALMOLOGIST" flex="50" flex-gt-xs="25">
+                                <md-checkbox ng-model="FORM.FB" class="md-primary mb-0">FB</md-checkbox>
+                              </md-input-container>
+
+                              <md-input-container ng-if="Me().OPHTHALMOLOGIST" flex="50" flex-gt-xs="25">
+                                <md-checkbox ng-model="FORM.LASER" class="md-primary mb-0">Laser</md-checkbox>
+                              </md-input-container>
+
+                              <md-input-container ng-if="Me().OPHTHALMOLOGIST" flex="50" flex-gt-xs="25">
+                                <md-checkbox ng-model="FORM.REFRACTION" class="md-primary mb-0">Refraction</md-checkbox>
+                              </md-input-container>
+
+                              <md-input-container ng-if="Me().OPHTHALMOLOGIST" flex="50" flex-gt-xs="25">
+                                <label>OTHERS</label>
+                                <input ng-model = "FORM.OTHERS"  ng-disabled="FORM.READONLY"  >
+                            </md-input-container>
+                        </div>
+
+                    </md-card-content>
+                </md-tab>
+
+                <md-tab ng-if="Me().PIRANI" label="PIRANI">
+
+                    <md-card-content>
+        
+                        <div layout="row">
+                            <md-input-container>
+                                <label>Lateral Border Left</label>
+                                <input ng-model = "FORM.LATERAL_BORDER_L" type="number" min="0" ng-change="Calc_Pirani_Scoring();" ng-disabled="FORM.READONLY"  >
+                            </md-input-container> 
+                            <md-input-container  >
+                                <label>Lateral Border Right</label>
+                                <input ng-model = "FORM.LATERAL_BORDER_R" type="number" min="0" ng-change="Calc_Pirani_Scoring();" ng-disabled="FORM.READONLY"  >
+                            </md-input-container> 
+                        </div>
+        
+                        <div layout="row">
+                            <md-input-container  >
+                                <label>Medical Crease Left</label>
+                                <input ng-model = "FORM.MEDICAL_CREASE_L"  type="number" min="0" ng-change="Calc_Pirani_Scoring();" ng-disabled="FORM.READONLY"  >
+                            </md-input-container>
+                            <md-input-container  >
+                                <label>Medical Crease Right</label>
+                                <input ng-model = "FORM.MEDICAL_CREASE_R"  type="number" min="0" ng-change="Calc_Pirani_Scoring();" ng-disabled="FORM.READONLY"  >
+                            </md-input-container>
+                        </div>
+        
+                        <div layout="row">
+                            <md-input-container >
+                                <label>Talar Head Left</label>
+                                <input ng-model = "FORM.TALAR_HEAD_L"  type="number" min="0" ng-change="Calc_Pirani_Scoring();" ng-disabled="FORM.READONLY" >
+                            </md-input-container>
+                            <md-input-container >
+                                <label>Talar Head Right</label>
+                                <input ng-model = "FORM.TALAR_HEAD_R"  type="number" min="0" ng-change="Calc_Pirani_Scoring();" ng-disabled="FORM.READONLY" >
+                            </md-input-container>
+                        </div>
+        
+                        <div layout="row" class="pl-5">
+                            <md-input-container >
+                                <label>MIDFOOT Score Left</label>
+                                <input ng-model = "FORM.MIDFOOT_SCORE_L" disabled >
+                            </md-input-container>
+                            <md-input-container >
+                                <label>MIDFOOT Score Right</label>
+                                <input ng-model = "FORM.MIDFOOT_SCORE_R" disabled >
+                            </md-input-container>
+                        </div>
+        
+                        <div layout="row">
+                            <md-input-container>
+                                <label>Posterior Crease Left</label>
+                                <input ng-model = "FORM.POSTERIOR_CREASE_L" type="number" min="0" ng-change="Calc_Pirani_Scoring();"  ng-disabled="FORM.READONLY"  >
+                            </md-input-container>
+                            <md-input-container>
+                                <label>Posterior Crease Right</label>
+                                <input ng-model = "FORM.POSTERIOR_CREASE_R" type="number" min="0" ng-change="Calc_Pirani_Scoring();"  ng-disabled="FORM.READONLY"  >
+                            </md-input-container>
+                        </div>
+        
+                        <div layout="row">
+                            <md-input-container>
+                                <label>Empty Heel Left</label>
+                                <input ng-model = "FORM.EMPTY_HEEL_L" type="number" min="0" ng-change="Calc_Pirani_Scoring();"  ng-disabled="FORM.READONLY"  >
+                            </md-input-container> 
+                            <md-input-container>
+                                <label>Empty Heel Right</label>
+                                <input ng-model = "FORM.EMPTY_HEEL_R" type="number" min="0" ng-change="Calc_Pirani_Scoring();"  ng-disabled="FORM.READONLY"  >
+                            </md-input-container> 
+                        </div>
+        
+                        <div layout="row">
+                            <md-input-container>
+                                <label>Rigid Equinus Left</label>
+                                <input ng-model = "FORM.RIGID_EQUINUS_L" type="number" min="0" ng-change="Calc_Pirani_Scoring();" ng-disabled="FORM.READONLY"  >
+                            </md-input-container>
+                            <md-input-container>
+                                <label>Rigid Equinus Right</label>
+                                <input ng-model = "FORM.RIGID_EQUINUS_R" type="number" min="0" ng-change="Calc_Pirani_Scoring();" ng-disabled="FORM.READONLY"  >
+                            </md-input-container>
+                        </div>
+        
+                        <div layout="row" class="pl-5">
+                            <md-input-container  >
+                                <label>HINDFOOT Score Left</label>
+                                <input ng-model = "FORM.HINDFOOT_SCORE_L"  disabled >
+                            </md-input-container>
+                            <md-input-container  >
+                                <label>HINDFOOT Score Right</label>
+                                <input ng-model = "FORM.HINDFOOT_SCORE_R"  disabled >
+                            </md-input-container>
+                        </div>
+        
+                        <div layout="row" >
+                            <md-input-container  >
+                                <label>Total Score Left</label>
+                                <input ng-model = "FORM.TOTAL_SCORE_L"  disabled >
+                            </md-input-container>
+                            <md-input-container  >
+                                <label>Total Score Right</label>
+                                <input ng-model = "FORM.TOTAL_SCORE_R"  disabled >
+                            </md-input-container>
+                        </div>
+        
+                        <div layout="column" layout-gt-xs="row">
+                            <md-input-container>
+                                <label>Complications Left</label>
+                                <input ng-model="FORM.COMPLICATIONS_L" name="COMPLICATIONS_L" md-maxlength="50" ng-disabled="FORM.READONLY" >
+                                <div ng-messages="formParent.COMPLICATIONS_L.$error" role="alert" md-auto-hide="false">
+                                    <div ng-message="md-maxlength">character reach the max limit.</div>
+                                </div>
+                            </md-input-container>
+                            <md-input-container >
+                                <label>Complications Right</label>
+                                <input ng-model="FORM.COMPLICATIONS_R" name="COMPLICATIONS_R" md-maxlength="50" ng-disabled="FORM.READONLY" >
+                                <div ng-messages="formParent.COMPLICATIONS_R.$error" role="alert" md-auto-hide="false">
+                                    <div ng-message="md-maxlength">character reach the max limit.</div>
+                                </div>
+                            </md-input-container>
+                        </div>
+        
+                        <div layout="column" layout-gt-xs="row">
+                            <md-input-container >
+                                <label>Treatment Code Left</label>
+                                <input ng-model="FORM.TREATMENT_CODE_L" name="TREATMENT_CODE_L" md-maxlength="50" ng-disabled="FORM.READONLY" >
+                                <div ng-messages="formParent.TREATMENT_CODE_L.$error" role="alert" md-auto-hide="false">
+                                    <div ng-message="md-maxlength">character reach the max limit.</div>
+                                </div>
+                            </md-input-container>
+                            <md-input-container >
+                                <label>Treatment Code Right</label>
+                                <input ng-model="FORM.TREATMENT_CODE_R" name="TREATMENT_CODE_R" md-maxlength="50" ng-disabled="FORM.READONLY" >
+                                <div ng-messages="formParent.TREATMENT_CODE_R.$error" role="alert" md-auto-hide="false">
+                                    <div ng-message="md-maxlength">character reach the max limit.</div>
+                                </div>
+                            </md-input-container>
+                        </div>
+                        
+                    </md-card-content>
+                </md-tab>
+
+                <md-tab label="Vital Signs">
+                    <md-card-content>
+                        <div layout="row" layout-wrap="">
+
+                            <md-input-container flex="50" flex-gt-xs="20">
+                                <label>Systolic</label>
+                                <input ng-model = "FORM.BP_SYSTOLIC"  ng-disabled="FORM.READONLY" >
+                            </md-input-container>
+                            <md-input-container flex="50" flex-gt-xs="20">
+                                <label>Diastolic</label>
+                                <input ng-model = "FORM.BP_DIASTOLIC"  ng-disabled="FORM.READONLY"  >
+                            </md-input-container>
+
+                            <md-input-container flex="30" flex-gt-xs="20" >
+                                <label>HR</label>
+                                <input ng-model = "FORM.HEART_RATE"  ng-disabled="FORM.READONLY"  >
+                            </md-input-container>
+
+                            <md-input-container flex="30" flex-gt-xs="20">
+                                <label>RR</label>
+                                <input ng-model = "FORM.RESPIRATORY"  ng-disabled="FORM.READONLY"  >
+                            </md-input-container>
+
+                            <md-input-container flex="40" flex-gt-xs="20">
+                                <label>Temp.</label>
+                                <input ng-model = "FORM.TEMPERATURE"  ng-disabled="FORM.READONLY"  >
+                            </md-input-container>
+
+                            <md-input-container flex="30" flex-gt-xs="20" >
+                                <label>Height (cm)</label>
+                                <input ng-model = "FORM.HEIGHT"  ng-change="Calc_BMI();" ng-disabled="FORM.READONLY"  >
+                            </md-input-container> 
+
+                            <md-input-container  flex="30" flex-gt-xs="20" >
+                                <label>Weight (kg)</label>
+                                <input ng-model = "FORM.WEIGHT"  ng-change="Calc_BMI();" ng-disabled="FORM.READONLY"  >
+                            </md-input-container>
+
+                            <md-input-container  flex="40" flex-gt-xs="20" >
+                                <label>BMI</label>
+                                <input ng-model = "FORM.BMI"  disabled >
+                            </md-input-container>
+
+                            <md-input-container flex="100" flex-gt-xs="40" >
+                                <label>LMP</label>
+                                <input ng-model="FORM.LMP" name="LMP" type="date" ng-disabled="FORM.READONLY" >
+                            </md-input-container>
+                        </div>
+
+                    </md-card-content>
+                </md-tab>
+                
+                <md-tab label="Lab Monitoring">
+                    <md-card-content>
+                        <div class="table-detail">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th></th>
+                                        <th>{{FORM.CHECKUPDATE|date:'MM/dd/y'}}</th>
+                                        <th ng-repeat="(key1, B) in FORM.PREV_MRLABMONITORING">{{B.CHECKUPDATE|date:'MM/dd/y'}}</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="(key, A) in LabMonitoringServices_Data()">
+                                        <td class="p-2">{{A.NAME}}</td>
+                                        <td>
+                                            <div layout="row" layout-align="center center">
+                                                <md-input-container ng-if="A.ID == B.LABMONITORINGID" ng-repeat="(key1, B) in FORM.MRLABMONITORING" >
+                                                    <input ng-model="B.LABVALUE" type="text" ng-disabled="FORM.READONLY" aria-label="{{A.NAME}}">
+                                                </md-input-container>
+                                            </div>
+                                        </td>
+                                        <td ng-repeat="(key1, B) in FORM.PREV_MRLABMONITORING" class="p-2 text-center">
+                                            <span ng-if="A.ID == C.LABMONITORINGID" ng-repeat="(key2, C) in B.DATA">{{C.LABVALUE}}</span>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </md-card-content>
+                </md-tab>
+
+                <md-tab label="{{A.REF.NAME}}" ng-repeat="(key, A) in FORM.LABORATORIES">
+                    <md-card-content>
+
+                        <div  layout="row" layout-align="space-between center">
+                            <div>
+                                <div ng-if="A.ID === 0"  class="text-muted">Please save first before uploading a image.</div>
+                                <div ng-if="A.ID > 0 && !A.FILENAME"  class="text-muted">No image found.</div>
+                                
+                                <md-button ng-if="A.FILENAME" ng-disabled="A.CANCELLED"  ng-click="Lab_View(A);" class="md-mini">
+                                    <md-icon class="material-icons">find_in_page</md-icon>
+                                    <span ng-bind="A.FILENAME" ></span>
+                                </md-button>
+                            </div>
+                            
+                            <div>
+                                <md-button ng-if="A.ID > 0" ng-click="Init_Lab_Option(A);" class="md-icon-button md-primary">
+                                    <md-icon class="material-icons">attachments</md-icon>
+                                </md-button>
+                                <md-button  ng-click="Remove_Laboratory(key)" ng-if="!FORM.READONLY" class="md-icon-button md-warn ">
+                                    <md-icon ng-hide="A.CANCELLED" class="material-icons">remove_circle</md-icon>
+                                    <md-icon ng-show="A.CANCELLED" class="material-icons">replay</md-icon>
+                                </md-button>
+                            </div>
+                        </div>
+
+                        <div ng-if="A.isFiles">
+                            <ng-dropzone options="Dz_Lab_Option" callbacks="Dz_Lab_Callback" class="dropzone"></ng-dropzone>
+                        </div>
+
+                        <div>
+                            <br>
+                            <md-input-container class="md-block">
+                                <label>Result</label>
+                                <textarea ng-model="A.TEMPLATERESULT" name="TEMPLATERESULT" md-maxlength="500" ng-disabled="A.CANCELLED || FORM.READONLY" ></textarea>
+                                <div ng-messages="formParent.TEMPLATERESULT.$error" role="alert" md-auto-hide="false">
+                                    <div ng-message="md-maxlength">character reach the max limit.</div>
+                                </div>
+                            </md-input-container>
+                        </div>
+                        
+                    </md-card-content>
+                </md-tab>
+
+
+                <md-tab label="Add Lab" ng-if="!FORM.READONLY">
+                    <md-card-content class="">
+
+                        <div ng-show="Laboratory().length > 0" class="table-unresponsive shadow scroll" style="max-height:300px;">
+                            <table>
+                                <tr ng-repeat="(key,A) in Laboratory()">
+                                    <td>
+                                        <label ng-bind="A.NAME"></label>
+                                        <pre ng-bind="A.TEMPLATE" class="text-muted"></pre>
+                                    </td>
+                                    <td class="action">
+                                        <md-button ng-click="Add_Laboratory(A)" class="md-primary md-mini">
+                                            <md-icon class="material-icons">add</md-icon>
+                                        </md-button>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+
+
+                        <h6 ng-show="Laboratory().length == 0" class="text-muted">
+                            No current lab template
+                        </h6>
+
+                    </md-card-content>
+                </md-tab>             
+
+            </md-tabs>
+
+            <md-card-content>
+
+                <div layout="row" layout-align="start start">
+                    <md-input-container flex>
+                        <label>Findings</label>
+                        <textarea ng-model="FORM.FINDINGS" name="FINDINGS" md-maxlength="500"  ng-disabled="FORM.READONLY" ></textarea>
+                        <div ng-messages="formParent.FINDINGS.$error" role="alert" md-auto-hide="false">
+                            <div ng-message="md-maxlength">character reach the max limit.</div>
+                        </div>
+                    </md-input-container>
+                    <md-button ng-show="Me().isAssistant && FORM.CREATEDBY == 0" ng-click="Copy_Findings()" ng-disabled="FORM.READONLY" class="md-primary md-mini">
+                        <md-tooltip md-direction="top">Copy Previous Findings</md-tooltip>
+                        <md-icon class="material-icons">filter_none</md-icon>
+                    </md-button>
+                </div>
+
+                <div layout="row" layout-align="start start">
+                    <md-input-container flex>
+                        <label>Diagnosis</label>
+                        <textarea ng-model="FORM.DIAGNOSIS" name="DIAGNOSIS" md-maxlength="500" ng-disabled="FORM.READONLY" ></textarea>
+                        <div ng-messages="formParent.DIAGNOSIS.$error" role="alert" md-auto-hide="false">
+                            <div ng-message="md-maxlength">character reach the max limit.</div>
+                        </div>
+                    </md-input-container>
+                    <md-button ng-show="Me().isAssistant && FORM.CREATEDBY == 0" ng-click="Copy_Diagnosis()" ng-disabled="FORM.READONLY" class="md-primary md-mini">
+                        <md-tooltip md-direction="top">Copy Previous Diagnosis</md-tooltip>
+                        <md-icon class="material-icons">filter_none</md-icon>
+                    </md-button>
+                </div>
+
+        
+
+                <div layout="column" layout-gt-xs="row" layout-align-gt-xs="start start">
+                    <div layout="row"  ng-if="Procedures().length > 0">
+                        <md-input-container>
+                            <label for="">Procedure</label>
+                            <md-select ng-model="FORM.PROCEDURESID"  ng-disabled="FORM.READONLY">
+                                <md-option value="">N/A</md-option>
+                                <md-option ng-repeat="(key, A) in Procedures()" ng-value="A.ID" ng-bind="A.NAME"></md-option>
+                            </md-select>
+                        </md-input-container>
+                        
+                        <md-button ng-if="FORM.PROCEDURESID" ng-click="Procedures_Import_Description()" ng-disabled="FORM.READONLY" class="md-primary md-mini">
+                            <md-tooltip md-direction="top">Add Procedure Description</md-tooltip>
+                            <md-icon class="material-icons">playlist_add</md-icon>
+                        </md-button>
+                    </div>
+                    <div flex layout="row" layout-align="start start">
+                        <md-input-container flex>
+                            <label>Procedure/s Done</label>
+                            <textarea ng-model="FORM.PROCEDURE_DONE" name="PROCEDURE_DONE"  md-maxlength="500" ng-disabled="FORM.READONLY" ></textarea>
+                            <div ng-messages="formParent.PROCEDURE_DONE.$error" role="alert" md-auto-hide="false">
+                            </div>
+                        </md-input-container>
+                        <md-button ng-show="Me().isAssistant && FORM.CREATEDBY == 0" ng-click="Copy_Procedure()" ng-disabled="FORM.READONLY" class="md-primary md-mini">
+                            <md-tooltip md-direction="top">Copy Previous Procedure/s Done</md-tooltip>
+                            <md-icon class="material-icons">filter_none</md-icon>
+                        </md-button>
+                    </div>
+                </div>
+
+                <div layout="row" layout-align="start start">
+                    <md-input-container flex>
+                        <label>Instruction</label>
+                        <textarea ng-model="FORM.INSTRUCTION" name="INSTRUCTION" md-maxlength="500" ng-disabled="FORM.READONLY" ></textarea>
+                        <div ng-messages="formParent.INSTRUCTION.$error" role="alert" md-auto-hide="false">
+                            <div ng-message="md-maxlength">character reach the max limit.</div>
+                        </div>
+                    </md-input-container>
+                    <md-button ng-show="Me().isAssistant && FORM.CREATEDBY == 0" ng-click="Copy_Instruction()" ng-disabled="FORM.READONLY" class="md-primary md-mini">
+                        <md-tooltip md-direction="top">Copy Previous Instruction</md-tooltip>
+                        <md-icon class="material-icons">filter_none</md-icon>
+                    </md-button>
+                    <md-button ng-show="Me().CLINICID == 8 && FORM.ID > 0" ng-click="Report_View('INSTRUCTION')" ng-disabled="FORM.READONLY" class="md-primary md-mini">
+                        <md-tooltip md-direction="top">Print Instruction</md-tooltip>
+                        <md-icon class="material-icons">print</md-icon>
+                    </md-button>
+                </div>
+
+
+                <div class="table-detail mb-5">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th colspan="4" rowspan="2">
+                                    <label>Prescription</label>
+                                </th>
+                            </tr>
+                            <tr>
+                                <th class="action">
+
+                                    <md-menu>
+                                        <md-button class="md-primary md-mini" ng-click="$mdMenu.open($event)">
+                                            <md-icon class="material-icons">more_vert</md-icon>
+                                        </md-button>
+                                        <md-menu-content>
+                                            <md-menu-item>
+                                                <md-button ng-click="Report_View('PRESCRIPTION')" ng-disabled="Me().isAssistant || FORM.ID == 0">
+                                                    <md-icon class="material-icons">print</md-icon>
+                                                    <span>Preview prescription</span>
+                                                </md-button>
+                                            </md-menu-item>
+                                            <md-menu-item>
+                                                <md-button ng-disabled="FORM.READONLY" ng-click="Get_Lastest_Prescription($event)">
+                                                    <md-icon class="material-icons">filter_none</md-icon>
+                                                    <span>Copy previous prescription</span>
+                                                </md-button>
+                                            </md-menu-item>
+                                            <md-menu-item>
+                                                <md-button ng-click="Email_Prescription()" ng-disabled="FORM.ID == 0">
+                                                    <md-icon class="material-icons">email</md-icon>
+                                                    <span>Send to email</span>
+                                                </md-button>
+                                            </md-menu-item>
+                                        </md-menu-content>
+                                    </md-menu>
+                                </th>
+                            </tr>
+                            <tr>
+                                <th>Detail</th>
+                                <th style="width:90px;">Duration</th>
+                                <th style="width:70px;">Tabs</th>
+                                <th style="width:250px;">Instruction</th>
+                                <th class="action">
+                                    <md-button ng-click="Add_Prescription();"  ng-disabled="FORM.READONLY" class="md-primary ">
+                                        <md-tooltip md-direction="top">Add prescription</md-tooltip>
+                                        <md-icon class="material-icons">add</md-icon>
+                                    </md-button>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="(key,m) in FORM.MEDICINES">
+                                <td> 
+                                    <md-autocomplete md-input-name="test" md-no-cache="true" md-search-text="m.searchMeds" md-items="item in Medicines_Filter(m)" md-item-text="item.NAME" md-selected-item-change="Medicines_Selected(item,m)" md-clear-button="false"  md-min-length="0"  ng-disabled="m.CANCELLED || FORM.READONLY" required="!m.CANCELLED" md-mode="virtual" md-menu-class="autocomplete-virtual-template" md-menu-container-class="virtual-container">
+                                        <md-item-template>
+                                            <p ng-bind="item.NAME" class="item-desc"></p>
+                                        </md-item-template>
+                                        <md-not-found>
+                                            <span class="text-muted">Invalid medicine</span>
+                                        </md-not-found>
+                                        <div ng-messages="formParent.test.$error" role="alert" md-auto-hide="false">
+                                            <div ng-message="required">Required.</div>
+                                        </div>
+                                    </md-autocomplete>
+                                </td>
+                                <td>
+                                    <div style="width:90px;">
+                                        <md-autocomplete md-search-text="m.FREQUENCY" md-items="item in Durations() | filter: m.FREQUENCY" md-item-text="item.NAME" md-clear-button="false" md-min-length="0"  ng-disabled="m.CANCELLED || FORM.READONLY" >
+                                            <md-item-template>
+                                                <span ng-bind="item.NAME"></span>
+                                            </md-item-template>
+                                            <md-not-found>
+                                                <span class="text-muted">New data will be added.</span>
+                                            </md-not-found>
+                                        </md-autocomplete>
+                                    </div>
+                                </td>
+                                <td>
+                                    <md-input-container >
+                                        <input ng-model="m.QUANTITY" ng-disabled="m.CANCELLED || FORM.READONLY"  type="number" step="0.01" class="text-center" ng-required="!m.CANCELLED" aria-label="true">
+                                    </md-input-container>
+                                </td>
+                                <td>
+                                    <div style="width:230px;">
+                                        <md-autocomplete md-search-text="m.INSTRUCTION" md-items="item in Instructions(m.INSTRUCTION)" md-item-text="item.NAME" md-min-length="0"  ng-disabled="m.CANCELLED || FORM.READONLY" md-mode="virtual" md-menu-class="autocomplete-virtual-template" md-menu-container-class="virtual-container">
+                                            <md-item-template>
+                                                <p ng-bind="item.NAME" class="item-desc"></p>
+                                            </md-item-template>
+                                            <md-not-found>
+                                                <span class="text-muted">New data will be added.</span>
+                                            </md-not-found>
+                                        </md-autocomplete>
+                                    </div>
+                                </td>
+                                <td class="action">
+                                    <md-button ng-click="Remove_Prescription(key);" ng-disabled="FORM.READONLY" class="{{m.CANCELLED ? 'md-warn' : 'md-primary'}} ">
+                                        <md-icon ng-hide="m.CANCELLED" class="material-icons">remove</md-icon>
+                                        <md-icon ng-show="m.CANCELLED" class="material-icons">replay</md-icon>
+                                    </md-button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>  
+                </div>
+
+
+                <div layout="row" layout-align="start start">
+                    <md-input-container flex>
+                        <label>Medication</label>
+                        <textarea ng-model="FORM.MEDICATION" name="MEDICATION" md-maxlength="500" ng-disabled="FORM.READONLY" ></textarea>
+                        <div ng-messages="formParent.MEDICATION.$error" role="alert" md-auto-hide="false">
+                            <div ng-message="md-maxlength">character reach the max limit.</div>
+                        </div>
+                    </md-input-container>
+                    <md-button ng-show="Me().isAssistant && FORM.CREATEDBY == 0" ng-click="Copy_Medication()" ng-disabled="FORM.READONLY" class="md-primary md-mini">
+                        <md-tooltip md-direction="top">Copy Previous Medication</md-tooltip>
+                        <md-icon class="material-icons">filter_none</md-icon>
+                    </md-button>
+                </div> 
+
+
+                
+                
+                <!-- icd and rvs -->
+                <table class="w-100">
+                    <tr>
+                        <td colspan="3">
+                            <h6  class="mb-0">ICD</h6>
+                        </td>
+                    </tr>
+                    <tr ng-show="icd.edit">
+                        <td colspan="3">
+                            <md-autocomplete flex md-search-text="icd.search"  md-items="item in Search_ICD()"	md-item-text="item.ITEMCODE" md-selected-item-change="Selected_ICD(item)" md-min-length="0"  ng-disabled="FORM.READONLY" placeholder="Search ICD" md-clear-button="false" md-mode="virtual" md-menu-class="autocomplete-virtual-template" md-menu-container-class="virtual-container">
+                                <md-item-template>
+                                    <span class="item-title">
+                                        <span> {{item.ITEMCODE}} </span>
+                                    </span>
+                                    <p class="item-desc">{{item.ITEMDESCRIPTION}}</p>
+                                </md-item-template>
+                                <md-not-found>
+                                    <span class="text-muted">Search not found.</span>
+                                </md-not-found>
+                            </md-autocomplete>
+                        </td>
+                    </tr>
+                    <tbody ng-hide="icd.edit">
+                        <tr>
+                            <td><label for="">Code</label></td>
+                            <td><span ng-bind="icd.selected.ITEMCODE"></span></td>
+                            <td rowspan="2" style="width: 1px;">
+                                <md-button ng-click="Selected_ICD();" class="md-warn md-mini" >
+                                    <md-icon class="material-icons">cancel</md-icon>
+                                </md-button>
+                            </td>
+                        </tr>
+                        <tr ng-hide="icd.edit">
+                            <td><label for="">Description</label></td>
+                            <td><pre ng-bind="icd.selected.ITEMDESCRIPTION"></pre></td>
+                        </tr>
+                    </tbody>
+                    <tr>
+                        <td colspan="3">
+                            <h6 class="mb-0">RVS</h6>
+                        </td>
+                    </tr>
+
+                    <tr ng-show="rvs.edit">
+                        <td colspan="3">
+                            <md-autocomplete flex md-search-text="rvs.search"  md-items="item in Search_RVS()"	md-item-text="item.ITEMCODE" md-selected-item-change="Selected_RVS(item)" md-min-length="0"  ng-disabled="FORM.READONLY" placeholder="Search RVS" md-clear-button="false" md-mode="virtual" md-menu-class="autocomplete-virtual-template" md-menu-container-class="virtual-container">
+                                <md-item-template>
+                                    <span class="item-title">
+                                        <span> {{item.ITEMCODE}} </span>
+                                    </span>
+                                    <p class="item-desc">{{item.ITEMDESCRIPTION}}</p>
+                                </md-item-template>
+                                <md-not-found>
+                                    <span class="text-muted">Search not found.</span>
+                                </md-not-found>
+                            </md-autocomplete>
+                        </td>
+                    </tr>
+                    <tbody ng-hide="rvs.edit">
+                        <tr>
+                            <td><label for="">Code</label></td>
+                            <td><span ng-bind="rvs.selected.ITEMCODE"></span></td>
+                            <td rowspan="2" style="width: 1px;">
+                                <md-button ng-click="Selected_RVS();" class="md-warn md-mini" >
+                                    <md-icon class="material-icons">cancel</md-icon>
+                                </md-button>
+                            </td>
+                        </tr>
+                        <tr ng-hide="rvs.edit">
+                            <td><label for="">Description</label></td>
+                            <td><pre ng-bind="rvs.selected.ITEMDESCRIPTION"></pre></td>
+                        </tr>
+                    </tbody>
+                </table>						
+                
+
+            </md-card-content>
+        </md-tab>
+
+        <md-tab label="FILES" ng-if="Me().isDoctor">
+            <md-card-content>
+
+                <div ng-show="FORM.ID > 0">
+
+                    <div  ng-hide="isFiles" layout="row" layout-wrap="">
+                        <md-button ng-repeat="(key, A) in Images()" ng-click="File_View(A);" class="md-mini">
+                            <md-icon class="material-icons">find_in_page</md-icon>
+                            <span ng-bind="A.FILENAME" ></span>
+                        </md-button>
+                    </div> 
+
+                    <div ng-show="isFiles">
+                        <ng-dropzone ng-if="isFiles" options="dzOptions" callbacks=certi"dzCallbacks" methods="dzMethods"  class="dropzone"></ng-dropzone>
+                    </div>
+
+                    <div>
+                        <md-button ng-click="Toggle_Files()" ng-hide="FORM.READONLY" class="md-primary md-mini">
+                            <md-icon ng-hide="isFiles" class="material-icons">attachments</md-icon>
+                            <md-icon ng-show="isFiles" class="material-icons">cancel</md-icon>
+                        </md-button>
+                    </div>
+
+                </div>	
+                <div ng-show="FORM.ID == 0" class="text-muted">
+                    Please save first before uploading files.
+                </div>
+            </md-card-content>
+        </md-tab>
+        
+
+        <md-tab label="CERTIFICATE" ng-if="Me().isDoctor">
+            <md-card-content>
+
+                <div ng-show="FORM.ID > 0">
+
+                    <div layout="row" layout-align-gt-sm="start start">
+                        <md-input-container flex="40" flex-gt-xs="25">
+                            <label>Confiment From</label>
+                            <input ng-model="FORM.CONFINEMENT_DATE_FROM" name="CONFINEMENT_DATE_FROM" type="date" ng-disabled="FORM.READONLY" >
+                            <div ng-messages="formParent.CONFINEMENT_DATE_FROM.$error" role="alert" md-auto-hide="false">
+                                <div ng-message="required">This is required.</div>
+                            </div>
+                        </md-input-container>
+
+                        <md-input-container flex="40" flex-gt-xs="25">
+                            <label>Confiment To</label>
+                            <input ng-model="FORM.CONFINEMENT_DATE_TO" name="CONFINEMENT_DATE_TO" type="date" ng-disabled="FORM.READONLY" >
+                            <div ng-messages="formParent.CONFINEMENT_DATE_TO.$error" role="alert" md-auto-hide="false">
+                                <div ng-message="required">This is required.</div>
+                            </div>
+                        </md-input-container>
+                        <md-button ng-click="FORM.CONFINEMENT_DATE_FROM = null; FORM.CONFINEMENT_DATE_TO = null;" class="md-mini">
+                            <md-icon class="material-icons">event_busy</md-icon>
+                        </md-button>
+                    </div>
+
+                    
+                    <md-input-container class="md-block">
+                        <label>Date of Consultation</label>
+                        <textarea ng-model="FORM.CONSULTATIONDATES" name="CONSULTATIONDATES" ng-trim="false" md-maxlength="200" ng-disabled="FORM.READONLY" ></textarea>
+                        <div ng-messages="formParent.CONSULTATIONDATES.$error" role="alert" md-auto-hide="false">
+                            <div ng-message="md-maxlength">character reach the max limit.</div>
+                        </div>
+                    </md-input-container>
+
+                    <div layout="column" layout-gt-xs="row" layout-wrap="">
+                        <md-input-container  >
+                            <label>Healing Period</label>
+                            <input ng-model = "FORM.ESTIMATED_HEAL_PERIOD"  ng-disabled="FORM.READONLY"  >
+                        </md-input-container>
+                    </div>
+
+                    <md-input-container class="md-block">
+                        <label>Remarks</label>
+                        <textarea ng-model="FORM.REMARKS" name="REMARKS" ng-trim="false" md-maxlength="500" ng-disabled="FORM.READONLY" ></textarea>
+                        <div ng-messages="formParent.REMARKS.$error" role="alert" md-auto-hide="false">
+                            <div ng-message="md-maxlength">character reach the max limit.</div>
+                        </div>
+                    </md-input-container>
+
+                    <md-button ng-click="FORM.CONSULTATIONDATES = FORM.DEFAULTCONSULTATIONS" ng-disabled="FORM.READONLY" class="md-mini md-primary">
+                        <md-tooltip md-direction="top">All Consulation Dates</md-tooltip>
+                        <md-icon class="material-icons">assignments</md-icon>
+                    </md-button> 
+
+                    <md-button ng-click="Report_View('CERTIFICATE')" class="md-mini md-primary">
+                        <md-tooltip md-direction="top">Preview Medical Certificate</md-tooltip>
+                        <md-icon class="material-icons">print</md-icon>
+                    </md-button>
+
+                    <md-button ng-click="Email_Certificate()" class="md-mini md-primary">
+                        <md-tooltip md-direction="top">Email Medical Certificate</md-tooltip>
+                        <md-icon class="material-icons">mail</md-icon>
+                    </md-button>
+
+                </div>
+
+                <div ng-show="FORM.ID == 0" class="text-muted">
+                    Please save first before editing medical certificate.
+                </div>
+
+            </md-card-content>
+        </md-tab>
+
+
+        <md-tab label="REFERRAL" ng-if="Me().isDoctor">
+            <md-card-content>
+                <div ng-show="FORM.ID > 0">
+
+                    <md-input-container class="md-block">
+                        <label>To:</label>
+                        <input ng-model = "FORM.REFERRALTO"  ng-disabled="FORM.READONLY"  >
+                    </md-input-container>
+
+                    <md-input-container class="md-block" >
+                        <label>Message</label>
+                        <textarea ng-model="FORM.REFERRALMSG" name="REFERRALMSG" ng-trim="false" md-maxlength="1000" ng-disabled="FORM.READONLY" ng-required="FORM.REFERRALTO" ></textarea>
+                        <div ng-messages="formParent.REFERRALMSG.$error" role="alert" md-auto-hide="false">
+                            <div ng-message="required">This is required.</div>
+                            <div ng-message="md-maxlength">character reach the max limit.</div>
+                        </div>
+                    </md-input-container>
+
+                    <md-button ng-click="FORM.REFERRALMSG = MyClinic().REFERRALDEFAULTTEXT;" ng-disabled="FORM.READONLY" class="md-mini md-primary">
+                        <md-tooltip md-direction="top">Default Referral message</md-tooltip>
+                        <md-icon class="material-icons">assignments</md-icon>
+                    </md-button>
+
+                    <md-button ng-click="Report_View('REFERRAL')" class="md-mini md-primary">
+                        <md-tooltip md-direction="top">Preview Referral letter</md-tooltip>
+                        <md-icon class="material-icons">print</md-icon>
+                    </md-button>
+
+                </div>
+                <div ng-show="FORM.ID == 0" class="text-muted">
+                    Please save first before editing referral letter.
+                </div>
+
+            </md-card-conent>
+        </md-tab>
+
+
+        <md-tab label="CLEARANCE" ng-if="Me().isDoctor" >
+            <md-card-content>
+                <div ng-show="FORM.ID > 0">
+
+                    <md-input-container class="md-block">
+                        <label>To:</label>
+                        <input ng-model = "FORM.CLEARANCETO"  ng-disabled="FORM.READONLY"  >
+                    </md-input-container>
+
+                    <md-input-container class="md-block" >
+                        <label>Message</label>
+                        <textarea ng-model="FORM.CLEARANCEMSG" name="CLEARANCEMSG" ng-trim="false" md-maxlength="1000" ng-disabled="FORM.READONLY" ng-required="FORM.CLEARANCETO" ></textarea>
+                        <div ng-messages="formParent.CLEARANCEMSG.$error" role="alert" md-auto-hide="false">
+                            <div ng-message="required">This is required.</div>
+                            <div ng-message="md-maxlength">character reach the max limit.</div>
+                        </div>
+                    </md-input-container>
+
+                    <md-button ng-click="FORM.CLEARANCEMSG = MyClinic().CLEARANCEDEFAULTTEXT;" ng-disabled="FORM.READONLY" class="md-mini md-primary">
+                        <md-tooltip md-direction="top">Default Clearance message</md-tooltip>
+                        <md-icon class="material-icons">assignments</md-icon>
+                    </md-button>
+
+                    <md-button ng-click="Report_View('CLEARANCE')" class="md-mini md-primary">
+                        <md-tooltip md-direction="top">Preview Clearance letter</md-tooltip>
+                        <md-icon class="material-icons">print</md-icon>
+                    </md-button>
+
+                </div>
+                <div ng-show="FORM.ID == 0" class="text-muted">
+                    Please save first before editing referral letter.
+                </div>
+
+            </md-card-conent>
+        </md-tab>
+        
+        <md-tab ng-if="Me().SALES" label="BILLING" >
+            <md-card-content >
+
+                <div class="table-detail mb-5">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th colspan="5"><div class="p-2">Services</div></th>
+                            </tr>
+                            <tr>
+                                <th>DETAIL</th>
+                                <th style="width: 80px;">Unit Price</th>
+                                <th style="width: 70px;">Qty.</th>
+                                <th style="width: 100px;">Amount</th>
+                                <th class="action">
+                                    <md-button ng-click="Add_Services();"  ng-disabled="FORM.READONLY" class="md-primary ">
+                                        <md-icon class="material-icons">add</md-icon>
+                                    </md-button>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="(key,s) in FORM.SERVICES">
+                                <td>
+                                    <md-input-container class="md-block">
+                                        <label>&nbsp;</label> 
+                                        <md-select ng-model="s.SERVICEID" ng-change="Lookup_Service(s);"  ng-disabled="s.CANCELLED || FORM.READONLY" ng-required="!s.CANCELLED" aria-label="true">
+                                            <md-select-header>
+                                                <input ng-model="s.search" ng-keydown="$event.stopPropagation()"  type="text" placeholder="Search Services" class="md-select-search">
+                                            </md-select-header>
+                                            <md-optgroup label="List of Services">
+                                                <md-option ng-value="A.ID" ng-bind="A.NAME" ng-repeat="A in Services() |filter: s.search "></md-option>
+                                            </md-optgroup>
+                                        </md-select>
+                                    </md-input-container>
+                                </td>
+                                <td>
+                                    <md-input-container class="md-block">
+                                        <input ng-model="s.UNITPRICE" ng-change="Calculate_Services();" ng-disabled="s.CANCELLED || FORM.READONLY" ng-required="!s.CANCELLED" type="number" min="0" step="0.01" class="text-center" aria-label="true"> 
+                                    </md-input-container>
+                                </td>
+                                <td>
+                                    <md-input-container class="md-block">
+                                        <input ng-model="s.QUANTITY" ng-change="Calculate_Services();" ng-disabled="s.CANCELLED || FORM.READONLY" ng-required="!s.CANCELLED" type="number" step="0.01" min="1" class="text-center" aria-label="true"> 
+                                    </md-input-container>
+                                </td>
+                                <td>
+                                    <md-input-container class="md-block">
+                                        <div ng-bind="s.AMOUNT|number:2" class="text-muted p-2 text-right"></div>
+                                    </md-input-container>
+                                </td>
+                                <td >
+                                    <md-button ng-click="Remove_Services(key);" ng-disabled="FORM.READONLY" class="{{s.CANCELLED ? 'md-warn' : 'md-primary'}} ">
+                                        <md-icon ng-hide="s.CANCELLED" class="material-icons">remove</md-icon>
+                                        <md-icon ng-show="s.CANCELLED" class="material-icons">replay</md-icon>
+                                    </md-button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+
+
+                <div class="table-detail mb-5">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th colspan="5"><div class="p-2">Discount</div></th>
+                            </tr>
+                            <tr>
+                                <th>DETAIL</th>
+                                <th style="width: 100px;" class="text-center">% / Php</th>
+                                <th style="width: 100px;">Amount</th>
+                                <th  class="action">
+                                    <md-button ng-click="Add_Discounts()"  ng-disabled="FORM.READONLY" class="md-primary ">
+                                        <md-icon class="material-icons">add</md-icon>
+                                    </md-button>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="(key,d) in FORM.DISCOUNTS">
+                                <td>
+                                    <md-input-container class="md-block">
+                                        <label>&nbsp;</label>
+                                        <md-select ng-model="d.DISCOUNTID" ng-change="Lookup_Discount(d)"  ng-disabled="d.CANCELLED || FORM.READONLY" ng-required="!d.CANCELLED" aria-label="true">
+                                            <md-select-header>
+                                                <input ng-model="d.search" ng-keydown="$event.stopPropagation()"  type="text" placeholder="Search Discount" class="md-select-search">
+                                            </md-select-header>
+                                            <md-optgroup label="List of Discount">
+                                                <md-option ng-value="A.ID" ng-bind="A.NAME" ng-repeat="A in Discounts() |filter: d.search "></md-option>
+                                            </md-optgroup>
+                                        </md-select>
+                                    </md-input-container>
+                                </td>
+                                <td>
+                                    <md-input-container class="md-block">
+                                        <div ng-bind="( d.PERCENTAGE ? d.PERCENT +' %' : 'Php')" class="text-center p-2"></div>
+                                    </md-input-container>
+                                </td>
+                                <td>
+                                    <md-input-container >
+                                        <input ng-model="d.AMOUNT" ng-change="Calculate_Discount();" ng-disabled="d.CANCELLED || d.PERCENTAGE || FORM.READONLY" ng-required="!d.CANCELLED" type="number" step="0.01" min="0" class="text-right" aria-label="true">
+                                    </md-input-container>
+
+                                </td>
+                                <td>
+                                    <md-button ng-click="Remove_Discounts(key)"  ng-disabled="FORM.READONLY" class="{{d.CANCELLED ? 'md-warn' : 'md-primary'}} ">
+                                        <md-icon ng-hide="d.CANCELLED" class="material-icons">remove</md-icon>
+                                        <md-icon ng-show="d.CANCELLED" class="material-icons">replay</md-icon>
+                                    </md-button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+
+            
+                <div layout="row" layout-wrap="" layout-padding layout-align-gt-xs="space-between start">
+
+                    <div flex="100" flex-gt-xs="33" layout="column">
+                        <table class="mb-4">
+                            <tr>
+                                <td><label class="text-muted">Services</label></td>
+                                <td><div ng-bind="FORM.GROSSAMOUNT|number:2" class=" text-right "></div></td>
+                            </tr>
+                            <tr>
+                                <td><label class="text-muted">Discounts</label></td>
+                                <td><div ng-bind="FORM.DISCOUNTAMOUNT|number:2" class="text-right"></div></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">
+                                    <md-divider></md-divider>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><label md-colors="{color:'primary'}" class="pr-5">Net Payables</label></td>
+                                <td><div ng-bind="FORM.NETPAYABLES|number:2" class="text-right "></div></td>
+                            </tr>
+                            <tr>
+                                <td><label class="text-muted pl-3">Cash</label></td>
+                                <td><div ng-bind="FORM.PAIDAMOUNT|number:2" class="text-right"></div></td>
+                            </tr>
+                            <tr>
+                                <td><label class="text-muted pl-3">Cheque</label></td>
+                                <td><div ng-bind="FORM.CHEQUEAMOUNT|number:2" class="text-right"></div></td>
+                            </tr>
+                            <tr>
+                                <td><label class="text-muted pl-3">HMO</label></td>
+                                <td><div ng-bind="FORM.HMOAMOUNT|number:2" class="text-right"></div></td>
+                            </tr>
+                            <tr>
+                                <td><label class="text-muted pl-3">PhilHealth</label></td>
+                                <td><div ng-bind="FORM.PHILHEALTHAMOUNT|number:2" class="text-right"></div></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">
+                                    <md-divider></md-divider>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><label md-colors="{color:'warn'}">Amount Due</label></td>
+                                <td>
+                                    <div ng-bind="FORM.AMOUNTDUE | number:2"  class="text-right"></div>
+                                </td>
+                            </tr>
+                        </table>
+
+                
+                    </div>
+
+                    <div flex="100" flex-gt-xs="60" >
+
+                        <md-tabs md-dynamic-height md-border-bottom class="md-whiteframe-3dp">
+                            <md-tab label="Payment">
+                                <md-content class="md-padding">
+                                    <md-input-container class="md-block" md-no-float=""> 
+                                        <!-- <label>Payment Type</label> -->
+                                        <md-select ng-model="FORM.PAYMODE" name="PAYMODE" ng-change="Payment_Type();"  ng-disabled="FORM.READONLY" aria-label="Payment Type" required>
+                                            <md-option value="CASH">CASH</md-option>
+                                            <md-option value="CHEQUE">CHEQUE</md-option>
+                                            <md-option value="CHARGE">CHARGE</md-option>
+                                            <md-option value="NO CHARGE">NO CHARGE</md-option>
+                                        </md-select>
+                                        <div ng-messages="formParent.PAYMODE.$error" role="alert" md-auto-hide="false">
+                                            <div ng-message="required">This is required.</div>
+                                        </div>
+                                    </md-input-container>
+
+                                    <div ng-if="FORM.PAYMODE == 'CASH'" layout="column">
+                                        <md-input-container class="md-block">
+                                            <label>Amount</label>
+                                            <input name="AMOUNT" ng-model="FORM.AMOUNT" ng-change="Billing_Changed();" type="number" step="0.01" ng-disabled="FORM.READONLY" class="text-right" required>
+                                            <div ng-messages="formParent.AMOUNT.$error" role="alert" md-auto-hide="false">
+                                                <div ng-message="required">This is required.</div>
+                                            </div>
+                                        </md-input-container>
+                                    </div>
+
+                                    <div layout="column" ng-if="FORM.PAYMODE == 'CHEQUE'">
+
+                                        <md-input-container >
+                                            <label>Bank / Branch</label>
+                                            <input ng-model="FORM.CHEQUEBANKNAME" name="CHEQUEBANKNAME"  ng-disabled="FORM.READONLY" type="text" required>
+                                            <div ng-messages="formParent.CHEQUEBANKNAME.$error" role="alert" md-auto-hide="false">
+                                                <div ng-message="required">This is required.</div>
+                                            </div>
+                                        </md-input-container>
+
+                                        <div layout="column" layout-gt-xs="row" >
+                                            <md-input-container>
+                                                <label>Cheque No.</label>
+                                                <input ng-model="FORM.CHEQUENO" name="CHEQUENO"  ng-disabled="FORM.READONLY" type="text" required>
+                                                <div ng-messages="formParent.CHEQUENO.$error" role="alert" md-auto-hide="false">
+                                                    <div ng-message="required">This is required.</div>
+                                                </div>
+                                            </md-input-container>
+                                            <md-input-container>
+                                                <label>Date</label>
+                                                <input ng-model="FORM.CHEQUEDATE" name="CHEQUEDATE"  ng-disabled="FORM.READONLY" type="date" required>
+                                                <div ng-messages="formParent.CHEQUEDATE.$error" role="alert" md-auto-hide="false">
+                                                    <div ng-message="required">This is required.</div>
+                                                </div>
+                                            </md-input-container>
+                                            <md-input-container>
+                                                <label>Amount</label>
+                                                <input ng-model="FORM.CHEQUEAMOUNT" name="CHEQUEAMOUNT" ng-change="Billing_Changed();" ng-disabled="FORM.READONLY" type="number" required>
+                                                <div ng-messages="formParent.CHEQUEAMOUNT.$error" role="alert" md-auto-hide="false">
+                                                    <div ng-message="required">This is required.</div>
+                                                </div>
+                                            </md-input-container>
+                                        </div>
+
+                                        <div layout="column" layout-gt-xs="row" >
+                                            <md-input-container>
+                                                <label>Account No.</label>
+                                                <input ng-model="FORM.CHEQUEACCNO" name="CHEQUEACCNO"  ng-disabled="FORM.READONLY" type="text">
+                                                <div ng-messages="formParent.CHEQUEACCNO.$error" role="alert" md-auto-hide="false">
+                                                    <div ng-message="required">This is required.</div>
+                                                </div>
+                                            </md-input-container>
+                                            <md-input-container flex>
+                                                <label>Account Name</label>
+                                                <input ng-model="FORM.CHEQUEACCNAME" name="CHEQUEACCNAME"  ng-disabled="FORM.READONLY" type="text">
+                                                <div ng-messages="formParent.CHEQUEACCNAME.$error" role="alert" md-auto-hide="false">
+                                                    <div ng-message="required">This is required.</div>
+                                                </div>
+                                            </md-input-container>
+                                        </div>
+
+
+                                    </div>
+
+                                    <div ng-if="FORM.PAYMODE == 'CHARGE'" layout="column">
+                                        
+                                        <div layout="row" layout-align="start center">
+                                            <md-input-container flex="" >
+                                                <label>HMO</label>
+                                                <md-select ng-model="FORM.HMOID" name="HMOID" ng-disabled="FORM.READONLY" required>
+                                                    <md-option value=""></md-option>
+                                                    <md-option ng-value="A.ID" ng-bind="A.NAME" ng-repeat="A in HMO()"></md-option>
+                                                </md-select>
+                                                <div ng-messages="formParent.HMOID.$error" role="alert" md-auto-hide="false">
+                                                    <div ng-message="required">This is required.</div>
+                                                </div>
+                                            </md-input-container>
+                                            <div>
+                                                <md-checkbox ng-model="FORM.HMORECEIVED" ng-change="Payment_Type();" aria-label="HMO RECEIVED" class="md-primary">RECEIVED</md-checkbox>
+                                            </div>
+                                        </div>
+                                        
+                                        <div ng-if="FORM.HMORECEIVED">
+
+                                            <div layout="column" layout-gt-xs="row">
+                                                <md-input-container flex>
+                                                    <label>Date Received</label>
+                                                    <input ng-model="FORM.HMODATE" name="HMODATE"  ng-disabled="FORM.READONLY" type="date" required>
+                                                    <div ng-messages="formParent.HMODATE.$error" role="alert" md-auto-hide="false">
+                                                        <div ng-message="required">This is required.</div>
+                                                    </div>
+                                                </md-input-container>
+                                                <md-input-container>
+                                                    <label>Amount</label>
+                                                    <input ng-model="FORM.HMOAMOUNT" name="HMOAMOUNT" ng-change="Billing_Changed();" ng-disabled="FORM.READONLY"  required min="0" type="number" step="0.01"  class="text-right">
+                                                    <div ng-messages="formParent.HMOAMOUNT.$error" role="alert" md-auto-hide="false">
+                                                        <div ng-message="required">This is required.</div>
+                                                    </div>
+                                                </md-input-container>
+                                            </div>
+
+                                            <div layout="column" layout-gt-xs="row" >
+                                                <md-input-container flex>
+                                                    <label>Cheque No.</label>
+                                                    <input ng-model="FORM.CHEQUENO" name="CHEQUENO"  ng-disabled="FORM.READONLY" type="text">
+                                                    <div ng-messages="formParent.CHEQUENO.$error" role="alert" md-auto-hide="false">
+                                                        <div ng-message="required">This is required.</div>
+                                                    </div>
+                                                </md-input-container>
+                                                <md-input-container>
+                                                    <label>Date</label>
+                                                    <input ng-model="FORM.CHEQUEDATE" name="CHEQUEDATE"  ng-disabled="FORM.READONLY" type="date" ng-required="FORM.CHEQUENO">
+                                                    <div ng-messages="formParent.CHEQUEDATE.$error" role="alert" md-auto-hide="false">
+                                                        <div ng-message="required">This is required.</div>
+                                                    </div>
+                                                </md-input-container>
+                                                <md-input-container>
+                                                    <label>Amount</label>
+                                                    <input ng-model="FORM.CHEQUEAMOUNT" name="CHEQUEAMOUNT" ng-change="Billing_Changed();" ng-disabled="FORM.READONLY" type="number" ng-required="FORM.CHEQUENO">
+                                                    <div ng-messages="formParent.CHEQUEAMOUNT.$error" role="alert" md-auto-hide="false">
+                                                        <div ng-message="required">This is required.</div>
+                                                    </div>
+                                                </md-input-container>
+                                            </div>
+
+                                        </div>
+                                        
+                                    </div>
+
+                                    
+                                </md-content>
+                            </md-tab>
+
+                            <md-tab label="PhilHealth {{FORM.PHILHEALTH? '[ON]' : ''}}">
+                                <md-content class="md-padding">
+
+                                    <div layout="row" layout-align="space-between center">
+                                        <md-switch ng-model="FORM.PHILHEALTH" ng-change="Toggle_PhilHealth()" ng-disabled="FORM.READONLY"  aria-label="Appointment" class="md-primary">Applicable</md-switch>
+                                        <md-checkbox ng-model="FORM.PHILHEALTHRECEIVED" ng-change="Toggle_PhilHealth()"  ng-disabled="!FORM.PHILHEALTH || FORM.READONLY" aria-label="PHILHEALTH RECEIVED" class="md-primary mb-0">RECEIVED</md-checkbox>
+                                    </div>
+
+                                    <div ng-if="FORM.PHILHEALTHRECEIVED" >													
+
+                                        <div layout="column" layout-gt-xs="row" >
+                                            <md-input-container>
+                                                <label>Cheque No.</label>
+                                                <input ng-model="FORM.PHILHEALTHCHEQUENO" name="PHILHEALTHCHEQUENO"  required ng-disabled="FORM.READONLY" type="text">
+                                                <div ng-messages="formParent.PHILHEALTHCHEQUENO.$error" role="alert" md-auto-hide="false">
+                                                    <div ng-message="required">This is required.</div>
+                                                </div>
+                                            </md-input-container>
+
+                                            <md-input-container>
+                                                <label>Date</label>
+                                                <input ng-model="FORM.PHILHEALTHCHEQUEDATE" name="PHILHEALTHCHEQUEDATE"  ng-disabled="FORM.READONLY" type="date" required>
+                                                <div ng-messages="formParent.PHILHEALTHCHEQUEDATE.$error" role="alert" md-auto-hide="false">
+                                                    <div ng-message="required">This is required.</div>
+                                                </div>
+                                            </md-input-container>
+
+                                            <md-input-container>
+                                                <label>Amount</label>
+                                                <input ng-model="FORM.PHILHEALTHAMOUNT" name="PHILHEALTHAMOUNT" ng-change="Billing_Changed();" ng-disabled="FORM.READONLY"  required min="0" type="number" step="0.01"  class="text-right">
+                                                <div ng-messages="formParent.PHILHEALTHAMOUNT.$error" role="alert" md-auto-hide="false">
+                                                    <div ng-message="required">This is required.</div>
+                                                </div>
+                                            </md-input-container>
+                                        </div>
+                                    </div>
+
+                                </md-content>
+                            </md-tab>
+                        </md-tabs>
+                        
+
+                    </div>
+                </div>
+
+
+            </md-card-content>
+        </md-tab>
+
+    </md-tabs>
+</md-card> 

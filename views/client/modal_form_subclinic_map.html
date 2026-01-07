@@ -1,0 +1,39 @@
+<md-dialog aria-label="Map" ng-init="Init();" class="dialog-lg" >
+	<md-toolbar>
+		<div class="md-toolbar-tools">
+         <h2 class="md-title">Set Clinic location</h2>
+         <span flex></span>
+         <md-button ng-click="Close()"  class="md-icon-button">
+				<md-icon class="material-icons" aria-label="Close dialog">close</md-icon>
+			</md-button>
+		</div>
+   </md-toolbar>
+
+	<md-dialog-content class="md-padding">
+
+      <div layout="row" layout-align="space-between stretch">
+         <md-input-container flex>
+            <label>Clinics</label>
+            <md-select ng-model="FORM.ID" name="ID" ng-change="Change_Clinic();">
+               <md-option ng-if="A.ISONLINE" ng-value="A.ID" ng-bind="A.NAME" ng-repeat="A in Clinics()|orderBy:['NAME']"></md-option>
+            </md-select>
+            <div ng-messages="formParent.ID.$error" role="alert" md-auto-hide="false">
+               <div ng-message="required">This is required.</div>
+            </div>
+         </md-input-container>
+         <div layout="row">
+            <md-button ng-click="Set_Coordinate()" ng-disabled="!FORM.ID" class="md-primary">Set</md-button>
+            <md-button ng-click="Unset_Coordinate();" ng-disabled="!FORM.ID || !FORM.SUBCLINIC.COORDLONG_0" class="md-warn">Unset</md-button>
+         </div>
+      </div>
+
+      
+      <div id="map" ></div>
+      
+      <div layout="row" layout-align="space-between start">
+         <small md-colors="{color:'grey-500'}">Clinic must be in online appointment.</small>
+         <small ng-hide="FORM.SUBCLINIC.COORDLONG_0" md-colors="{color:'red-300'}"> No location</small>
+      </div>
+
+   </md-dialog-content>
+</md-dialog>

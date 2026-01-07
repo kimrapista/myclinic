@@ -1,0 +1,73 @@
+<md-dialog aria-label="Profile Picture" ng-init="Init();">
+   <md-toolbar>
+		<div class="md-toolbar-tools">
+			<h2 class="md-title">Profile Picture</h2>
+		</div>
+   </md-toolbar>
+   
+	<div ng-hide="isLoaded" class="loading-form">
+		<div class="sk-folding-cube">
+			<div class="sk-cube1 sk-cube"></div>
+			<div class="sk-cube2 sk-cube"></div>
+			<div class="sk-cube4 sk-cube"></div>
+			<div class="sk-cube3 sk-cube"></div>
+		</div>
+	</div>
+
+   <md-dialog-content class="md-padding">
+      
+      <div ng-show="isUploadForm">
+
+         <ng-dropzone options="dzOptions" callbacks="dzCallbacks" methods="dzMethods"  class="dropzone-profile"></ng-dropzone>
+
+         <div layout="row" layout-align="center center">
+            <md-button ng-click="Cancel_Upload();">Cancel</md-button>
+         </div>
+      </div> 
+
+      <div ng-show="isDefault" class="dropzone-profile-done">
+         <img ng-src="{{Me().AVATAR}}" alt="">
+         
+         <div layout="row" layout-align="center center">
+            <md-button id="btn_upload_new" ng-click="Upload_Form();" class="md-primary md-mini">
+               <md-tooltip md-direction="top">Upload</md-tooltip>
+               <md-icon class="material-icons">add_a_photo</md-icon>
+            </md-button>
+            
+            <md-button ng-click="Crop_Form()" class="md-primary md-mini">
+               <md-tooltip  md-direction="top">Crop</md-tooltip>
+               <md-icon class="material-icons">crop</md-icon>
+            </md-button>
+         </div>
+      </div>
+
+
+      <div ng-show="isCrop" >
+
+         <div id="crop-profile"></div>
+
+         <div layout="row" layout-align="center center">
+            <md-button ng-click="Crop_Result()" class="md-primary">Crop</md-button>
+
+            <md-button ng-click="Crop_Rotate()" class="md-primary md-mini">
+               <md-tooltip  md-direction="top">Rotate</md-tooltip>
+               <md-icon class="material-icons">crop_rotate</md-icon>
+            </md-button>
+            
+            <md-button ng-click="Cancel_Crop();">Cancel</md-button>
+         </div>
+         
+      </div>
+
+
+      <div ng-show="Me().isUploading" class="loading-form">
+         <div class="sk-folding-cube">
+            <div class="sk-cube1 sk-cube"></div>
+            <div class="sk-cube2 sk-cube"></div>
+            <div class="sk-cube4 sk-cube"></div>
+            <div class="sk-cube3 sk-cube"></div>
+         </div>
+      </div>
+
+   </md-dialog-content>
+</md-dialog>

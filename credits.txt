@@ -1,0 +1,21 @@
+subdomain
+
+clinic.cerebrodiagnostics.com
+
+
+
+ftp 
+creds
+
+clinic@cerebrodiagnostics.com / kdwTr.EIWGby
+
+
+
+db creds
+
+
+dbname : cerebro_clinic
+
+dbpaswd : kdwTr.EIWGby
+
+dbuser : cerebro_clinic

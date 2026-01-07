@@ -1,0 +1,31 @@
+
+
+
+<md-input-container flex>
+    <label>DATE CHECKUP</label>
+    <input ng-model="FORM.CHECKUPDATE" name="CHECKUPDATE" type="date" ng-disabled="FORM.READONLY"  required>
+    <div ng-messages="formParent.CHECKUPDATE.$error" role="alert" md-auto-hide="false">
+        <div ng-message="required">This is required.</div>
+    </div>
+</md-input-container>
+    
+<md-input-container flex>
+    <label>Clinic location</label>
+    <md-select ng-model="FORM.SUBCLINICID" name="SUBCLINICID"  ng-disabled="FORM.READONLY || SubClinics().length == 0"  required>
+        <md-option ng-repeat="(key, S) in SubClinics()" ng-value="S.ID" ng-bind="S.NAME"></md-option>
+    </md-select>
+    <div ng-messages="formParent.SUBCLINICID.$error" role="alert" md-auto-hide="false">
+        <div ng-message="required">This is required.</div>
+    </div>
+</md-input-container>
+
+
+<md-input-container  flex>
+    <label>Referred by</label>
+    <input ng-model="FORM.REFFEREDBY"  ng-disabled="FORM.READONLY" type="text">
+</md-input-container>
+
+<md-input-container  flex>
+    <label>HR No.</label>
+    <input ng-model="FORM.HRID"  ng-disabled="FORM.READONLY" type="text">
+</md-input-container>

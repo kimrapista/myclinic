@@ -1,0 +1,139 @@
+<md-dialog aria-label="Medical Record Preview">
+	<md-toolbar>
+		<div class="md-toolbar-tools d-flex justify-content-between">
+			<h2>PREVIEW</h2>
+			<md-button class="md-icon-button" ng-click="close()">
+				<md-icon class="material-icons">close</md-icon>
+			</md-button>
+		</div>
+	</md-toolbar>
+	<md-progress-linear ng-show="previewLoading" md-mode="indeterminate"></md-progress-linear>
+	<md-dialog-content style="min-width: 70vw;">
+		<div class="p-3">
+
+			<div layout="row" layout-wrap="">
+				<div flex="100" flex-gt-xs="50">
+					<label class="text-muted">Patient Name/Age</label>
+					<p ng-bind="MR.FIRSTNAME+', '+MR.LASTNAME+' '+MR.MIDDLENAME+' / '+MR.AGE"></p>
+				</div>
+				<div flex="100" flex-gt-xs="25">
+					<label class="text-muted">Check Up</label>
+					<p ng-bind="MR.CHECKUPDATE|date:'MM/dd/y'"></p>
+				</div>
+			</div>
+
+			<label class="text-muted">Chief Complaint</label>
+			<pre ng-bind="MR.CHEIFCOMPLAINT"></pre>
+
+			<label class="text-muted">History Present Illness</label>
+			<pre ng-bind="MR.PRESENTILLNESS"></pre>
+
+			<label class="text-muted">CO-Morbidities</label>
+			<pre ng-bind="MR.COMORBIDITIES"></pre>
+		</div>
+
+		<md-tabs md-dynamic-height md-border-bottom md-center-tabsx>
+			<md-tab label="Vital Signs">
+				<md-card-content>
+					<div layout="row" layout-wrap=""  class="p-3">
+
+						<div flex="30" flex-gt-xs="10">
+							<label class="text-muted">BP</label>
+							<p ng-bind= "MR.BP_SYSTOLIC+'/'+MR.BP_DIASTOLIC"></p>
+						</div>
+
+						<div flex="30" flex-gt-xs="15" >
+							<label class="text-muted">HR</label>
+							<p ng-bind= "MR.HEART_RATE"></p>
+						</div>
+
+						<div flex="30" flex-gt-xs="15">
+							<label class="text-muted">RR</label>
+							<p ng-bind= "MR.RESPIRATORY" ></p>
+						</div>
+
+						<div flex="30" flex-gt-xs="15">
+							<label class="text-muted">Temp.</label>
+							<p ng-bind= "MR.TEMPERATURE"></p>
+						</div>
+
+						<div  flex="30" flex-gt-xs="15" >
+							<label class="text-muted">W(kg) / H(cm)</label>
+							<p ng-bind="MR.WEIGHT+' / '+MR.HEIGHT" ></p>
+						</div>
+
+						<div flex="30" flex-gt-xs="15" >
+							<label class="text-muted">BMI</label>
+							<p ng-bind= "MR.BMI" ></p>
+						</div>
+
+						<div flex="40" flex-gt-xs="15" >
+							<label class="text-muted">LMP</label>
+							<p ng-bind="MR.LMP|date:'MM/dd/y'"></p>
+						</div>
+					</div>
+				</md-card-content>
+			</md-tab>
+
+			<md-tab label="{{A.NAME}}" ng-repeat="(key, A) in MR.LABORATORIES">
+				<md-card-content >
+					<div class="p-3" >
+						<pre ng-bind="A.TEMPLATERESULT"></pre>
+					</div>
+				</md-card-content>
+			</md-tab>
+
+		</md-tabs>
+		
+		<div class="p-3">
+			<label class="text-muted">Findings</label>
+			<pre ng-bind="MR.FINDINGS"></pre>
+
+			<label class="text-muted">Diagnosis</label>
+			<pre ng-bind="MR.DIAGNOSIS"></pre>
+
+			<label class="text-muted">Procedure/s Done</label>
+			<pre ng-bind="MR.PROCEDURE_DONE"></pre>
+
+			<label class="text-muted">Instruction</label>
+			<pre ng-bind="MR.INSTRUCTION"></pre>
+
+		</div>
+
+		<div class="table-unresponsive my-4">
+			<table>
+				<thead>
+					<tr>
+						<th>PRESCRIPTION</th>
+						<th>DURATION</th>
+						<th>TABS</th>
+						<th>INSTRUCTION</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr ng-repeat="(key, A) in MR.MEDICINES">
+						<td ng-bind="A.NAME"></td>
+						<td ng-bind="A.FREQUENCY"></td>
+						<td ng-bind="A.QUANTITY"></td>
+						<td ng-bind="A.INSTRUCTION"></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+
+		<div class="p-3">
+			
+			<label class="text-muted">Medication</label>
+			<pre ng-bind="MR.MEDICATION"></pre>
+
+			<div class="text-right">
+				<md-button ng-click="Edit_MR()" class="md-primary md-raised">
+					<span>Edit</span>
+				</md-button>
+			</div>
+
+		</div>
+
+	</md-dialog-content>
+</md-dialog>
+

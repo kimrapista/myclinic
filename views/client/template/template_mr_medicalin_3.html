@@ -1,0 +1,13 @@
+<div layout="row" layout-align="start start">
+    <md-input-container flex>
+        <label>Medication</label>
+        <textarea ng-model="FORM.MEDICATION" name="MEDICATION" md-maxlength="500" ng-disabled="FORM.READONLY" ></textarea>
+        <div ng-messages="formParent.MEDICATION.$error" role="alert" md-auto-hide="false">
+            <div ng-message="md-maxlength">character reach the max limit.</div>
+        </div>
+    </md-input-container>
+    <md-button ng-show="Me().isAssistant && FORM.CREATEDBY == 0" ng-click="Copy_Medication()" ng-disabled="FORM.READONLY" class="md-primary md-mini">
+        <md-tooltip md-direction="top">Copy Previous Medication</md-tooltip>
+        <md-icon class="material-icons">filter_none</md-icon>
+    </md-button>
+</div> 

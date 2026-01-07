@@ -1,0 +1,5 @@
+#c_main = remove comment 
+#clinics table = add fields
+#form_clinic = add inputs for new fields
+#form_patient  = remove form-group
+#custom.css = add width card-custom-link

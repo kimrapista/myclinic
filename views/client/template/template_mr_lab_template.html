@@ -1,0 +1,103 @@
+
+<md-tabs md-dynamic-height md-border-bottom>
+
+    <!-- lab monitoring -->
+    <md-tab label="{{A.GROUPNAME}}" ng-repeat="(key, A) in FORM.GROUP_LAB_MONITORING">
+        <md-card-content>
+            
+            <div class="table-detail scroll" style="max-height: 400px;">
+                <table class="auto-width">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th md-colors="{color: 'primary-500'}">{{FORM.CHECKUPDATE|date:'M/d/yy'}}</th>
+                            <th ng-repeat="(key1, B) in FORM.PREV_MRLABMONITORING">{{B.CHECKUPDATE|date:'M/d/yy'}}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-if="B.ISACTIVE" ng-repeat="(key, B) in A.DATA | orderBy: ['SORT']">
+                            <td class="pt-3 pl-3">
+                                <span ng-style="{'padding-left': (B.INDENT * 1.5) +'rem'}" >{{B.NAME}}</span>
+                            </td>                            
+                            <td>
+                                <md-input-container ng-if="B.ID == C.LABMONITORINGID" ng-repeat="(key1, C) in FORM.MRLABMONITORING"  style="max-width: 100px;" >
+                                    <input ng-model="C.LABVALUE" type="text" ng-disabled="FORM.READONLY" aria-label="{{B.NAME}}">
+                                </md-input-container>
+                            </td>
+
+                            <td ng-repeat="(key1, C) in FORM.PREV_MRLABMONITORING" class="text-center">
+                                <div ng-if="B.ID == D.LABMONITORINGID" ng-repeat="(key2, D) in C.DATA" class="pt-3">{{D.LABVALUE}}</div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+        </md-card-content>
+    </md-tab>
+
+    <!-- lab template -->
+    <md-tab label="{{A.REF.NAME}}" ng-repeat="(key, A) in FORM.LABORATORIES">
+        <md-card-content>
+
+            <md-input-container class="md-block">
+                <label>Result</label>
+                <textarea ng-model="A.TEMPLATERESULT" name="TEMPLATERESULT" md-maxlength="500" ng-disabled="A.CANCELLED || FORM.READONLY" ></textarea>
+                <div ng-messages="formParent.TEMPLATERESULT.$error" role="alert" md-auto-hide="false">
+                    <div ng-message="md-maxlength">character reach the max limit.</div>
+                </div>
+            </md-input-container>
+
+            
+            <div ng-hide="A.CANCELLED" >
+                <div ng-if="!A.isFiles">
+                    <div ng-if="A.ID === 0"  class="text-muted">Please save first before uploading a image.</div>
+                    <div ng-if="A.ID > 0 && !A.FILENAME"  class="text-muted">No image found.</div>
+                    
+                    <md-button ng-if="A.FILENAME" ng-disabled="A.CANCELLED"  ng-click="Lab_View(A);" class="md-mini" aria-label="{{A.FILENAME}}">
+                        <img ng-if="A.isImage" src="{{A.IMAGEPATH}}" alt="{{A.FILENAME}}" class="thumbnail">
+                        <md-icon ng-if="A.isPDF" class="material-icons">picture_as_pdf</md-icon>
+                        <span ng-if="A.isPDF">{{A.FILENAME}}</span>
+                    </md-button>
+                </div>
+    
+                <div ng-if="A.isFiles" >
+                    <ng-dropzone options="Dz_Lab_Option" callbacks="Dz_Lab_Callback" class="dropzone"></ng-dropzone>
+                </div>
+            </div>
+
+
+            <div class="top-right">
+                <md-button ng-if="A.ID > 0 && !A.CANCELLED" ng-click="Init_Lab_Option(A);" class="md-mini md-primary">
+                    <md-icon ng-hide="A.isFiles" class="material-icons">attachments</md-icon>
+                    <md-icon ng-show="A.isFiles" class="material-icons">cancel</md-icon>
+                </md-button>
+
+                <md-button ng-if="!FORM.READONLY"  ng-click="Remove_Laboratory(key, A)" ng-disabled="A.isFiles" class="md-warn md-mini ">
+                    <md-icon ng-hide="A.CANCELLED" class="material-icons">remove_circle</md-icon>
+                    <md-icon ng-show="A.CANCELLED" class="material-icons">replay</md-icon>
+                </md-button>                
+            </div>
+                
+        </md-card-content>
+    </md-tab>
+
+    <!-- selection lab template -->
+    <md-tab label="Add Lab" ng-if="!FORM.READONLY">
+        <md-card-content class="">
+
+            <div class="grid layout-3">
+                <md-button ng-repeat="(key,A) in Laboratory()" ng-click="Add_Laboratory(A)" class="m-0">                    
+                    <md-icon class="material-icons">add</md-icon>
+                    <span style="width: 100px; text-overflow: ellipses;">{{A.NAME}}</span>
+                </md-button>
+            </div>
+
+            <h6 ng-show="Laboratory().length == 0" class="text-muted">
+                No current lab template
+            </h6>
+
+        </md-card-content>
+    </md-tab> 
+
+</md-tabs>

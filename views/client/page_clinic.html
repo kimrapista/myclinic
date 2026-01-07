@@ -1,0 +1,121 @@
+
+<section ng-controller="Clinic"  ng-init="Init();" >
+   <md-progress-linear ng-hide="isLoaded" md-mode="indeterminate"></md-progress-linear>
+   
+   <md-button ng-show="isLoaded" ng-click="Add_Edit(0)" class="md-fab md-primary bottom-right-fixed" >
+      <md-icon class="material-icons">add</md-icon>
+   </md-button>
+
+	<div class="container-md" > 
+
+      <md-card class="mt-5">
+			<md-tabs md-dynamic-height md-border-bottom md-center-tabsx>
+				<md-tab label="Clinic"> 
+					<md-card-content >
+
+						<span class="text-muted">Clinic Name</span>
+						<p ng-bind="Data().CLINICNAME"></p>
+
+						<span class="text-muted">Clinic Name 1</span>
+						<p ng-bind="Data().CLINICNAME1"></p>
+
+						<span class="text-muted">Specialist 1</span>
+						<p ng-bind="Data().CLINICSUBNAME"></p>
+
+						<span class="text-muted">Specialist 2</span>
+						<p ng-bind="Data().CLINICSUBNAME1"></p>
+
+						<span class="text-muted">Specialist 3</span>
+						<p ng-bind="Data().CLINICSUBNAME2"></p>
+
+						<div layout="column" layout-gt-xs="row">
+							<div flex>
+								<span class="text-muted">TIN</span>
+								<p ng-bind="Data().TIN"></p>
+							</div>
+							<div flex>
+								<span class="text-muted">Tel No.</span>
+								<p ng-bind="Data().CONTACTNO"></p>
+							</div>
+							<div flex>
+								<span class="text-muted">Mobile No.</span>
+								<p ng-bind="Data().MOBILENO"></p>
+							</div>
+						</div>
+
+						<span class="text-muted">Email</span>
+						<p ng-bind="Data().EMAIL"></p>
+
+						<span class="text-muted">Address</span>
+						<p ng-bind="Data().ADDRESS"></p>
+						
+						<div class="bottom-right">
+							<md-button ng-show="isLoaded" ng-href="#!/myclinic/edit" class="md-primary md-mini">
+								<md-icon class="material-icons">edit</md-icon>
+							</md-button>
+						</div>
+
+               </md-card-content>
+				</md-tab>
+				<md-tab label="Referral Letter"> 
+					<md-card-content>
+						<pre ng-bind="Data().REFERRALDEFAULTTEXT"></pre>
+
+						<div class="bottom-right">
+							<md-button ng-show="isLoaded" ng-click="Preview_Report('REFERRAL')" class="md-primary md-mini">
+								<md-icon class="material-icons">find_in_page</md-icon>
+							</md-button>
+						</div>
+					</md-card-content>
+				</md-tab>
+				<md-tab label="Clearance Letter"> 
+					<md-card-content>
+						<pre ng-bind="Data().CLEARANCEDEFAULTTEXT"></pre>
+						
+						<div class="bottom-right">
+							<md-button ng-show="isLoaded" ng-click="Preview_Report('CLEARANCE')" class="md-primary md-mini">
+								<md-icon class="material-icons">find_in_page</md-icon>
+							</md-button>
+						</div>
+					</md-card-content>
+				</md-tab>
+				<md-tab label="Others"> 
+					<md-card-content>
+						<label for="">SMS Numbers</label>
+						<pre ng-bind="Data().SMSNOS"></pre>
+					</md-card-content>
+				</md-tab>
+			</md-tabs>
+      </md-card>
+		
+		<div class="table-responsive  hover shadow">
+			<table>
+				<thead>
+					<tr>
+						<th>NAME</th>
+						<th>Location</th>
+						<th></th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr ng-repeat="(key,A) in Detail()"> 
+						<th>NAME</th>
+						<td ng-bind="A.NAME"></td>
+						<th>Location</th>
+						<td>
+							<span ng-if="A.HOSPITALNAME" ng-bind="A.HOSPITALNAME+', '"></span>
+							<span ng-if="A.LOCATION" ng-bind="A.LOCATION"></span>
+						</td>
+						<td class="action">
+							<md-button ng-show="isLoaded" ng-click="Add_Edit(A.ID);" class="md-primary md-mini" >
+								<md-icon class="material-icons">edit</md-icon>
+							</md-button>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+
+	</div>
+</section>
+

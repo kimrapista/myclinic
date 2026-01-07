@@ -1,0 +1,35 @@
+
+<md-tabs md-dynamic-height md-border-bottom>
+    <md-tab label="{{A.GROUPNAME}}" ng-repeat="(key, A) in FORM.GROUP_LAB_MONITORING">
+        <md-card-content>
+            
+            <div class="table-detail">
+                <table class="auto-width">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th md-colors="{color: 'accent-500'}">{{FORM.CHECKUPDATE|date:'M/d/yy'}}</th>
+                            <th ng-repeat="(key1, B) in FORM.PREV_MRLABMONITORING">{{B.CHECKUPDATE|date:'M/d/yy'}}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-if="B.ISACTIVE" ng-repeat="(key, B) in A.DATA">
+                            <td class="pt-3 pl-3">{{B.NAME}}</td>
+                            
+                            <td>
+                                <md-input-container ng-if="B.ID == C.LABMONITORINGID" ng-repeat="(key1, C) in FORM.MRLABMONITORING"  style="max-width: 100px;" >
+                                    <input ng-model="C.LABVALUE" type="text" ng-disabled="FORM.READONLY" aria-label="{{B.NAME}}">
+                                </md-input-container>
+                            </td>
+
+                            <td ng-repeat="(key1, C) in FORM.PREV_MRLABMONITORING" class="text-center">
+                                <div ng-if="B.ID == D.LABMONITORINGID" ng-repeat="(key2, D) in C.DATA" class="pt-3">{{D.LABVALUE}}</div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+        </md-card-content>
+    </md-tab>
+</md-tabs>

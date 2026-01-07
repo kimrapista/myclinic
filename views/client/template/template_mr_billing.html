@@ -1,0 +1,362 @@
+
+<div class="table-detail mb-5">
+    <table>
+        <thead>
+            <tr>
+                <th colspan="5"><div class="p-2">Services</div></th>
+            </tr>
+            <tr>
+                <th>DETAIL</th>
+                <th style="width: 80px;" ng-if="!Me().isAssistant || (Me().isAssistant && Me().ISDISPLAYSERVICESAMOUNT)">Unit Price</th>
+                <th style="width: 70px;" >Qty.</th>
+                <th style="width: 100px;" ng-if="!Me().isAssistant || (Me().isAssistant && Me().ISDISPLAYSERVICESAMOUNT)">Amount</th>
+                <th class="action">
+                    <md-button ng-click="Add_Services();"  ng-disabled="FORM.READONLY" ng-if="!Me().isAssistant || (Me().isAssistant && Me().ISADDSERVICES)" class="md-primary ">
+                        <md-icon class="material-icons">add</md-icon>
+                    </md-button>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="(key,s) in FORM.SERVICES">
+                <td>
+                    <md-input-container class="md-block">
+                        <label>&nbsp;</label> 
+                        <md-select ng-model="s.SERVICEID" ng-change="Lookup_Service(s);"  ng-disabled="s.CANCELLED || FORM.READONLY" ng-required="!s.CANCELLED" aria-label="true">
+                            <md-select-header>
+                                <input ng-model="s.search" ng-keydown="$event.stopPropagation()"  type="text" placeholder="Search Services" class="md-select-search">
+                            </md-select-header>
+                            <md-optgroup label="List of Services">
+                                <md-option ng-value="A.ID" ng-bind="A.NAME" ng-repeat="A in Services() |filter: s.search "></md-option>
+                            </md-optgroup>
+                        </md-select>
+                    </md-input-container>
+                </td>
+                <td ng-if="!Me().isAssistant || (Me().isAssistant && Me().ISDISPLAYSERVICESAMOUNT)">
+                    <md-input-container class="md-block">
+                        <input  ng-model="s.UNITPRICE" ng-change="Calculate_Services();" ng-disabled="s.CANCELLED || FORM.READONLY" ng-required="!s.CANCELLED" type="number" min="0" step="0.01" class="text-center" aria-label="true"> 
+                    </md-input-container>
+                </td>
+                <td>
+                    <md-input-container class="md-block">
+                        <input ng-model="s.QUANTITY" ng-change="Calculate_Services();" ng-disabled="s.CANCELLED || FORM.READONLY" ng-required="!s.CANCELLED" type="number" step="0.01" min="1" class="text-center" aria-label="true"> 
+                    </md-input-container>
+                </td>
+                <td ng-if="!Me().isAssistant || (Me().isAssistant && Me().ISDISPLAYSERVICESAMOUNT)" class="text-center">
+                    <label ng-bind="s.AMOUNT|number:2" class="pt-3"></label>
+                </td>
+                <td >
+                    <md-button ng-click="Remove_Services(key);" ng-disabled="FORM.READONLY" class="md-warn">
+                        <md-icon ng-hide="s.CANCELLED" class="material-icons">remove</md-icon>
+                        <md-icon ng-show="s.CANCELLED" class="material-icons">replay</md-icon>
+                    </md-button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+
+
+<div class="table-detail mb-5">
+    <table>
+        <thead>
+            <tr>
+                <th colspan="5"><div class="p-2">Discount</div></th>
+            </tr>
+            <tr>
+                <th>DETAIL</th>
+                <th style="width: 100px;" class="text-center">% / Php</th>
+                <th style="width: 100px;" ng-if="!Me().isAssistant || (Me().isAssistant && Me().ISDISPLAYSERVICESAMOUNT)">Amount</th>
+                <th  class="action">
+                    <md-button ng-click="Add_Discounts()"  ng-disabled="FORM.READONLY" ng-if="!Me().isAssistant || (Me().isAssistant && Me().ISADDSERVICES)" class="md-primary ">
+                        <md-icon class="material-icons">add</md-icon>
+                    </md-button>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="(key,d) in FORM.DISCOUNTS">
+                <td>
+                    <md-input-container class="md-block">
+                        <label>&nbsp;</label>
+                        <md-select ng-model="d.DISCOUNTID" ng-change="Lookup_Discount(d)"  ng-disabled="d.CANCELLED || FORM.READONLY" ng-required="!d.CANCELLED" aria-label="true">
+                            <md-select-header>
+                                <input ng-model="d.search" ng-keydown="$event.stopPropagation()"  type="text" placeholder="Search Discount" class="md-select-search">
+                            </md-select-header>
+                            <md-optgroup label="List of Discount">
+                                <md-option ng-value="A.ID" ng-bind="A.NAME" ng-repeat="A in Discounts() |filter: d.search "></md-option>
+                            </md-optgroup>
+                        </md-select>
+                    </md-input-container>
+                </td>
+                <td class="text-center">
+                    <label ng-bind="( d.PERCENTAGE ? d.PERCENT +' %' : 'Php')" class="pt-3"></label>
+                </td>
+                <td ng-if="!Me().isAssistant || (Me().isAssistant && Me().ISDISPLAYSERVICESAMOUNT)">
+                    <md-input-container >
+                        <input ng-model="d.AMOUNT" ng-change="Calculate_Discount();" ng-disabled="d.CANCELLED || d.PERCENTAGE || FORM.READONLY" ng-required="!d.CANCELLED" type="number" step="0.01" min="0" class="text-right" aria-label="true">
+                    </md-input-container>
+                </td>
+                <td>
+                    <md-button ng-click="Remove_Discounts(key)"  ng-disabled="FORM.READONLY" class="md-warn">
+                        <md-icon ng-hide="d.CANCELLED" class="material-icons">remove</md-icon>
+                        <md-icon ng-show="d.CANCELLED" class="material-icons">replay</md-icon>
+                    </md-button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+
+
+<div layout="column" layout-gt-xs="row" layout-padding layout-align-gt-xs="space-between start">
+
+    <div  ng-if="!Me().isAssistant || (Me().isAssistant && Me().ISDISPLAYSERVICESAMOUNT)" flex="100" flex-gt-xs="33">
+        <table class="mb-4 w-100">
+            <tr>
+                <td><label class="text-muted">Services</label></td>
+                <td><div ng-bind="FORM.GROSSAMOUNT|number:2" class=" text-right "></div></td>
+            </tr>
+            <tr>
+                <td><label class="text-muted">Discounts</label></td>
+                <td><div ng-bind="FORM.DISCOUNTAMOUNT|number:2" class="text-right"></div></td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <md-divider></md-divider>
+                </td>
+            </tr>
+            <tr>
+                <td><label md-colors="{color:'primary'}" class="pr-5">Net Payables</label></td>
+                <td><div ng-bind="FORM.NETPAYABLES|number:2" class="text-right "></div></td>
+            </tr>
+            <tr>
+                <td><label class="text-muted pl-3">Cash</label></td>
+                <td><div ng-bind="FORM.PAIDAMOUNT|number:2" class="text-right"></div></td>
+            </tr>
+            <tr>
+                <td><label class="text-muted pl-3">Cheque</label></td>
+                <td><div ng-bind="FORM.CHEQUEAMOUNT|number:2" class="text-right"></div></td>
+            </tr>
+            <tr>
+                <td><label class="text-muted pl-3">HMO</label></td>
+                <td><div ng-bind="FORM.HMOAMOUNT|number:2" class="text-right"></div></td>
+            </tr>
+            <tr>
+                <td><label class="text-muted pl-3">PhilHealth</label></td>
+                <td><div ng-bind="FORM.PHILHEALTHAMOUNT|number:2" class="text-right"></div></td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <md-divider></md-divider>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div layout="" layout-align="start center">
+                        <label md-colors="{color:'warn'}">Amount Due</label>
+
+                        <md-button ng-click="Print_Bluetooth()" class="md-primary md-mini m-0">
+                            <md-tooltip md-direction="top">Mini billing</md-tooltip>
+                            <md-icon class="material-icons">print</md-icon>
+                        </md-button>
+                    </div>
+                </td>
+                <td>
+                    <div ng-bind="FORM.AMOUNTDUE | number:2"  class="text-right"></div>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    <div flex="100" flex-gt-xs="auto" >
+        
+        <md-tabs md-dynamic-height md-border-bottom class="md-whiteframe-3dp">
+            <md-tab label="Cash">
+                <md-content class="md-padding">
+
+                    <div layout="">
+                        <md-input-container flex>
+                            <label>Enter Amount</label>
+                            <input ng-model="FORM.AMOUNT" name="AMOUNT" ng-change="Change_Cash_Amount();" type="number" step="0.01" ng-disabled="FORM.READONLY" class="text-right" required>
+                            <div ng-messages="formParent.AMOUNT.$error" role="alert" md-auto-hide="false">
+                                <div ng-message="required">This is required.</div>
+                            </div>
+                        </md-input-container>
+                        <md-button ng-click="Amount_As_Paid()" class="md-primary  md-mini">As Paid</md-button>
+                    </div>
+
+                    <md-input-container class="md-block">
+                        <label>Paid Amount</label>
+                        <input ng-model="FORM.PAIDAMOUNT" name="PAIDAMOUNT" ng-change="Billing_Changed();" ng-min="FORM.AMOUNT > 0 ? 0.01 : 0" ng-max="FORM.AMOUNT" type="number" step="0.01" ng-disabled="FORM.READONLY" class="text-right" required>
+                        <div ng-messages="formParent.PAIDAMOUNT.$error" role="alert" md-auto-hide="false">
+                            <div ng-message="required">This is required.</div>
+                            <div ng-message="max">Insufficient Amount</div>
+                            <div ng-message="min">Please enter paid amount</div>
+                        </div>
+                    </md-input-container>
+
+                    <div layout="column" layout-align="end end">
+                        <h5 class="mb-0">{{FORM.AMOUNTCHANGE|number:2}}</h5>
+                        <small class="text-muted">Changed</small>
+                    </div>
+
+                </md-content>
+            </md-tab>
+
+            <md-tab label="Cheque">
+                <md-content class="md-padding">
+
+                    <md-input-container class="md-block" >
+                        <label>Bank / Branch</label>
+                        <input ng-model="FORM.CHEQUEBANKNAME" name="CHEQUEBANKNAME"  ng-disabled="FORM.READONLY" type="text">
+                        <div ng-messages="formParent.CHEQUEBANKNAME.$error" role="alert" md-auto-hide="false">
+                            <div ng-message="required">This is required.</div>
+                        </div>
+                    </md-input-container>
+
+                    <div layout="column" layout-gt-xs="row" >
+                        <md-input-container>
+                            <label>Cheque No.</label>
+                            <input ng-model="FORM.CHEQUENO" name="CHEQUENO"  ng-disabled="FORM.READONLY || !FORM.CHEQUEBANKNAME" type="text" ng-required="FORM.CHEQUEBANKNAME">
+                            <div ng-messages="formParent.CHEQUENO.$error" role="alert" md-auto-hide="false">
+                                <div ng-message="required">This is required.</div>
+                            </div>
+                        </md-input-container>
+                        <md-input-container>
+                            <label>Date</label>
+                            <input ng-model="FORM.CHEQUEDATE" name="CHEQUEDATE"  ng-disabled="FORM.READONLY || !FORM.CHEQUEBANKNAME" type="date"  ng-required="FORM.CHEQUEBANKNAME">
+                            <div ng-messages="formParent.CHEQUEDATE.$error" role="alert" md-auto-hide="false">
+                                <div ng-message="required">This is required.</div>
+                            </div>
+                        </md-input-container>
+                        <md-input-container>
+                            <label>Amount</label>
+                            <input ng-model="FORM.CHEQUEAMOUNT" name="CHEQUEAMOUNT" ng-change="Billing_Changed();" ng-disabled="FORM.READONLY || !FORM.CHEQUEBANKNAME" type="number"  ng-required="FORM.CHEQUEBANKNAME">
+                            <div ng-messages="formParent.CHEQUEAMOUNT.$error" role="alert" md-auto-hide="false">
+                                <div ng-message="required">This is required.</div>
+                            </div>
+                        </md-input-container>
+                    </div>
+
+                    <div layout="column" layout-gt-xs="row" >
+                        <md-input-container>
+                            <label>Account No.</label>
+                            <input ng-model="FORM.CHEQUEACCNO" name="CHEQUEACCNO"  ng-disabled="FORM.READONLY || !FORM.CHEQUEBANKNAME" type="text">
+                            <div ng-messages="formParent.CHEQUEACCNO.$error" role="alert" md-auto-hide="false">
+                                <div ng-message="required">This is required.</div>
+                            </div>
+                        </md-input-container>
+                        <md-input-container flex>
+                            <label>Account Name</label>
+                            <input ng-model="FORM.CHEQUEACCNAME" name="CHEQUEACCNAME"  ng-disabled="FORM.READONLY || !FORM.CHEQUEBANKNAME" type="text">
+                            <div ng-messages="formParent.CHEQUEACCNAME.$error" role="alert" md-auto-hide="false">
+                                <div ng-message="required">This is required.</div>
+                            </div>
+                        </md-input-container>
+                    </div>
+
+                    <md-button ng-click="Clear_Cheque()" class="md-warn m-0 md-mini">Clear</md-button>
+
+                 </md-content>
+            </md-tab>
+
+            <md-tab label="HMO">
+                <md-content class="md-padding">
+
+                    <div layout="row" layout-align="start center">
+                        <md-input-container flex="" >
+                            <label>HMO</label>
+                            <md-select ng-model="FORM.HMOID" name="HMOID" ng-disabled="FORM.READONLY">
+                                <md-option ng-value="A.ID" ng-bind="A.NAME" ng-repeat="A in HMO()"></md-option>
+                            </md-select>
+                            <div ng-messages="formParent.HMOID.$error" role="alert" md-auto-hide="false">
+                                <div ng-message="required">This is required.</div>
+                            </div>
+                        </md-input-container>
+                    </div>                    
+                    
+                    <div layout="column" layout-gt-xs="row"  layout-align-gt-xs="start center">
+                        <div flex>
+                            <md-checkbox ng-model="FORM.HMORECEIVED" ng-change="Toggle_HMO()" ng-disabled="!FORM.HMOID || FORM.HMOID == 0"  aria-label="HMO received"  class="md-primary">RECEIVED</md-checkbox>
+                        </div>
+                        <div flex>
+                            <md-input-container >
+                                <label>Date Received</label>
+                                <input ng-model="FORM.HMODATE" name="HMODATE" type="date"  ng-disabled="FORM.READONLY || !FORM.HMORECEIVED" ng-required="FORM.HMOID && FORM.HMORECEIVED">
+                                <div ng-messages="formParent.HMODATE.$error" role="alert" md-auto-hide="false">
+                                    <div ng-message="required">This is required.</div>
+                                </div>
+                            </md-input-container>                        
+                        </div>
+                    </div>
+
+                    <div layout="column" layout-gt-xs="row" >
+                        <md-input-container flex>
+                            <label>Cheque No.</label>
+                            <input ng-model="FORM.HMOCHEQUENO" name="HMOCHEQUENO"  ng-disabled="FORM.READONLY || !FORM.HMORECEIVED" type="text">
+                            <div ng-messages="formParent.HMOCHEQUENO.$error" role="alert" md-auto-hide="false">
+                                <div ng-message="required">This is required.</div>
+                            </div>
+                        </md-input-container>
+                        <md-input-container>
+                            <label>Date</label>
+                            <input ng-model="FORM.HMOCHEQUEDATE" name="HMOCHEQUEDATE"  ng-disabled="FORM.READONLY || !FORM.HMOCHEQUENO" type="date" ng-required="FORM.HMOCHEQUENO">
+                            <div ng-messages="formParent.HMOCHEQUEDATE.$error" role="alert" md-auto-hide="false">
+                                <div ng-message="required">This is required.</div>
+                            </div>
+                        </md-input-container>
+                        <md-input-container>
+                            <label>Amount</label>
+                            <input ng-model="FORM.HMOAMOUNT" name="HMOAMOUNT" ng-change="Billing_Changed();" ng-disabled="FORM.READONLY || !FORM.HMORECEIVED" required min="0" type="number" step="0.01"  class="text-right">
+                            <div ng-messages="formParent.HMOAMOUNT.$error" role="alert" md-auto-hide="false">
+                                <div ng-message="required">This is required.</div>
+                            </div>
+                        </md-input-container>
+                    </div>
+                   
+                    <md-button ng-click="Clear_Insurance()" class="md-warn m-0 md-mini">Clear</md-button>
+                </md-content>
+            </md-tab>
+
+            <md-tab label="PhilHealth">
+                <md-content class="md-padding">
+
+                    <div layout="row" layout-align="space-between center">
+                        <md-switch ng-model="FORM.PHILHEALTH" ng-change="Toggle_PhilHealth()" ng-disabled="FORM.READONLY"  aria-label="Appointment" class="md-primary">Applicable</md-switch>
+                        <md-checkbox ng-if="FORM.PHILHEALTH" ng-model="FORM.PHILHEALTHRECEIVED" ng-change="Toggle_PhilHealth()"  ng-disabled="!FORM.PHILHEALTH || FORM.READONLY" aria-label="PHILHEALTH RECEIVED" class="md-primary mb-0">RECEIVED</md-checkbox>
+                    </div>
+
+                    <div layout="column" layout-gt-xs="row" >
+                        <md-input-container>
+                            <label>Cheque No.</label>
+                            <input ng-model="FORM.PHILHEALTHCHEQUENO" name="PHILHEALTHCHEQUENO" type="text"   ng-disabled="FORM.READONLY || !FORM.PHILHEALTHRECEIVED" ng-required="FORM.PHILHEALTHRECEIVED">
+                            <div ng-messages="formParent.PHILHEALTHCHEQUENO.$error" role="alert" md-auto-hide="false">
+                                <div ng-message="required">This is required.</div>
+                            </div>
+                        </md-input-container>
+
+                        <md-input-container>
+                            <label>Date</label>
+                            <input ng-model="FORM.PHILHEALTHCHEQUEDATE" name="PHILHEALTHCHEQUEDATE" type="date"  ng-disabled="FORM.READONLY || !FORM.PHILHEALTHRECEIVED"  ng-required="FORM.PHILHEALTHRECEIVED">
+                            <div ng-messages="formParent.PHILHEALTHCHEQUEDATE.$error" role="alert" md-auto-hide="false">
+                                <div ng-message="required">This is required.</div>
+                            </div>
+                        </md-input-container>
+
+                        <md-input-container>
+                            <label>Amount</label>
+                            <input ng-model="FORM.PHILHEALTHAMOUNT" name="PHILHEALTHAMOUNT" ng-change="Billing_Changed();" ng-disabled="FORM.READONLY || !FORM.PHILHEALTHRECEIVED"   min="0" type="number" step="0.01"  class="text-right" ng-required="FORM.PHILHEALTHRECEIVED">
+                            <div ng-messages="formParent.PHILHEALTHAMOUNT.$error" role="alert" md-auto-hide="false">
+                                <div ng-message="required">This is required.</div>
+                            </div>
+                        </md-input-container>
+                    </div>
+
+                </md-content>
+            </md-tab>
+        </md-tabs>
+    </div>
+</div>

@@ -1,0 +1,21 @@
+<md-dialog aria-label="Video Chat" ng-init="Init();">
+	<md-toolbar>
+		<div class="md-toolbar-tools"> 
+			<h2 class="md-title">Video Chat</h2>
+			<span flex></span>
+         <md-button ng-click="Close()" class="md-icon-button" ng-click="Close()">
+				<md-icon class="material-icons" aria-label="Close dialog">close</md-icon>
+			</md-button>
+		</div>
+	</md-toolbar>
+	<md-dialog-content class="md-padding" >
+
+		<md-input-container class="md-block">
+			<input ng-model="FORM.NAME" name="NAME" placeholder="Name">
+			<div ng-messages="formParent.NAME.$error" role="alert" md-auto-hide="false">
+				<div ng-message="required">This is required.</div>
+			</div>
+		</md-input-container>
+      
+	</md-dialog-content>
+</md-dialog>

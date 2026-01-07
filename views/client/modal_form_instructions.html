@@ -1,0 +1,38 @@
+<md-dialog aria-label="Instructions Form" ng-init="Init();">
+	<md-toolbar>
+		<div class="md-toolbar-tools">
+			<h2 class="md-title">Instruction Form</h2>
+		</div>
+	</md-toolbar>
+	<md-dialog-content class="md-padding" >
+
+		<div ng-hide="isLoaded" class="loading-form">
+			<md-progress-circular md-mode="indeterminate" md-diameter="40"></md-progress-circular>
+		</div>
+
+		<form  name="formParent" ng-submit="Submit_Form()" role="form" layout="column" >
+
+			
+			<md-input-container class="md-block">
+				<label>Name</label>
+				<input ng-model="FORM.NAME" name="NAME" type="text" required autofocus>
+				<div ng-messages="formParent.NAME.$error" role="alert" md-auto-hide="false">
+					<div ng-message="required">This is required.</div>
+				</div>
+			</md-input-container>
+
+			<md-switch ng-model="FORM.ACTIVE" aria-label="Active" class="">Active</md-switch>	
+
+
+			<div layout="column" layout-gt-xs="row" layout-align="end" class="mt-3">
+				<md-button ng-disabled="FORM.isSubmit || formParent.$invalid || !isLoaded"  type="submit" class="md-raised md-primary">
+					<span ng-hide="FORM.isSubmit">Save</span>
+					<md-progress-circular ng-show="FORM.isSubmit" md-mode="indeterminate" md-diameter="20" class="mx-auto"></md-progress-circular>
+				</md-button>
+
+				<md-button ng-click="close();"  class="" >Cancel</md-button>
+			</div>
+
+		</form>
+	</md-dialog-content>
+</md-dialog>

@@ -1,0 +1,34 @@
+
+
+<div ng-show="FORM.ID > 0">
+
+    <md-input-container class="md-block">
+        <label>To:</label>
+        <input ng-model = "FORM.CLEARANCETO"  ng-disabled="FORM.READONLY"  >
+    </md-input-container>
+
+    <md-input-container class="md-block" >
+        <label>Message</label>
+        <textarea ng-model="FORM.CLEARANCEMSG" name="CLEARANCEMSG" ng-trim="false" md-maxlength="1000" ng-disabled="FORM.READONLY" ng-required="FORM.CLEARANCETO" ></textarea>
+        <div ng-messages="formParent.CLEARANCEMSG.$error" role="alert" md-auto-hide="false">
+            <div ng-message="required">This is required.</div>
+            <div ng-message="md-maxlength">character reach the max limit.</div>
+        </div>
+    </md-input-container>
+
+    <md-button ng-click="FORM.CLEARANCEMSG = MyClinic().CLEARANCEDEFAULTTEXT;" ng-disabled="FORM.READONLY" class="md-mini md-primary">
+        <md-tooltip md-direction="top">Default Clearance message</md-tooltip>
+        <md-icon class="material-icons">assignments</md-icon>
+    </md-button>
+
+    <md-button ng-click="Report_View('CLEARANCE')" class="md-mini md-primary">
+        <md-tooltip md-direction="top">Preview Clearance letter</md-tooltip>
+        <md-icon class="material-icons">print</md-icon>
+    </md-button>
+
+</div>
+
+<div ng-show="FORM.ID == 0" class="text-muted">
+    Please save first before editing clearance letter.
+</div>
+
