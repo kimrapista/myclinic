@@ -8,6 +8,7 @@ app.factory('SalesServices',function ($http, $q,  global) {
       CLINICS: [],
       TOTAL_HMO: 0,
       HMO: [],
+      HMO_POSTING: [],
       TOTAL_PHILHEALTH: 0,
       PHILHEALTH: [],
       SERVICES: [],
@@ -130,10 +131,11 @@ app.factory('SalesServices',function ($http, $q,  global) {
       Load_HMO: function(OPTIONS){
 
 			return $http.post( global.baseUrl + 'sales/hmo', OPTIONS, global.ajaxConfig) .then( function(response) {
-
+   console.log(response.data)
             data.TOTAL_HMO = 0;
             data.TOTAL_HMO_RECEIVED = 0;
             data.TOTAL_HMO_NOT_RECEIVED = 0;
+            data.TOTAL_HMO_AMOUNT = 0;
             data.HMO = [];
 
 				angular.forEach( response.data, function (v, k) { 
@@ -147,6 +149,40 @@ app.factory('SalesServices',function ($http, $q,  global) {
             });
 
             angular.forEach( data.HMO, function(v,k){
+               v.percentage = (v.RECORDS/ data.TOTAL_HMO) * 100;
+            });
+         
+				return true;
+				
+			}, 
+			function(err){ 
+				global.Alert( err.statusText, 'Error ' + err.status);
+				return false;
+			});
+
+      },
+
+            Load_HMO_POSTING: function(OPTIONS){
+
+			return $http.post( global.baseUrl + 'sales/hmo_posting', OPTIONS, global.ajaxConfig) .then( function(response) {
+                console.log(response.data)
+
+            data.TOTAL_HMO = 0;
+            data.TOTAL_HMO_RECEIVED = 0;
+            data.TOTAL_HMO_NOT_RECEIVED = 0;
+            data.HMO_POSTING = [];
+
+				angular.forEach( response.data, function (v, k) { 
+					v = Format_HMO(v);
+
+               data.TOTAL_HMO += v.RECORDS;
+               data.TOTAL_HMO_RECEIVED += v.RECEIVED_COUNT;
+               data.TOTAL_HMO_NOT_RECEIVED += v.NOT_RECEIVED_COUNT;
+
+               data.HMO_POSTING.push(v); 
+            });
+
+            angular.forEach( data.HMO_POSTING, function(v,k){
                v.percentage = (v.RECORDS/ data.TOTAL_HMO) * 100;
             });
          

@@ -62,6 +62,10 @@ app.controller('Sales', function($scope, $mdDialog, $location, SalesServices, Me
          $scope.search.isHMO = false;
       });
 
+         SalesServices.Load_HMO_POSTING(OPTION).then(function(data){
+         $scope.search.isHMO = false;
+      });
+
 
       SalesServices.Load_Services(OPTION).then(function(data){
          $scope.search.isServices = false;

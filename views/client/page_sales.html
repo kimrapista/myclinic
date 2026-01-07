@@ -317,6 +317,61 @@
                   </div>
                </md-tab>
 
+
+                              <md-tab label="HMO POSTING">
+                  <!-- <div ng-show="search.isHMO" class="loading-form">
+                     <div class="sk-folding-cube">
+                        <div class="sk-cube1 sk-cube"></div>
+                        <div class="sk-cube2 sk-cube"></div>
+                        <div class="sk-cube4 sk-cube"></div>
+                        <div class="sk-cube3 sk-cube"></div>
+                     </div>
+                  </div> -->
+
+                  <div class="table-detail padding scroll table-fixed" style="min-height: 300px; max-height: calc(100vh - 230px);">
+                     <table>
+                        <thead>
+                           <tr>
+                              <th>NAME</th>
+                              <th>Rcvd</th>
+                              <th>TOTAL</th>
+                              <th>PRINT</th>
+                           </tr>
+                        </thead>
+                        <tbody>
+                           <tr ng-repeat="(key, A) in Data().HMO_POSTING; track by $index">
+                              <td ng-bind="A.NAME"></td>
+                              <td ng-bind="A.RECEIVED_COUNT|number:0" class="text-center"></td>
+                              <td ng-bind="A.TOTAL_HMO_AMOUNT|number:2" class="text-center"></td>
+        
+                              <td class="action">
+                               
+                                 <md-button ng-click="$mdMenu.open();" class="md-primary md-icon-button" ng-disabled="!isLoaded">
+                                       <md-icon class="material-icons">print</md-icon>
+                                    </md-button>
+                              </td>
+										
+										
+                           </tr>
+                           <tr ng-if="Data().HMO.length == 0">
+                              <td colspan="10" class="text-center">No Data</td>
+                           </tr>
+                        </tbody>
+                        <tfoot>
+                           <tr ng-if="Data().HMO.length > 0">
+                              <td ng-bind="Data().HMO.length"></td>
+                              <td ng-bind="Data().TOTAL_HMO_RECEIVED|number:0" class="text-center"></td>
+                              <td ng-bind="Data().TOTAL_HMO_NOT_RECEIVED|number:0" class="text-center"></td>
+                              <td ng-bind="Data().TOTAL_HMO|number:0" class="text-center"></td>
+                              <td colspan="2"></td>
+                           </tr>
+                        </tfoot>
+                     </table>
+                  </div>
+
+               </md-tab>
+
+
             </md-tabs>
          </md-card>
 
