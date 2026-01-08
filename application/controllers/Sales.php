@@ -116,7 +116,7 @@ class Sales extends CI_Controller {
 			$this->M_sales_hmo->PDF();
 		}
 
-		else if( $i1 === 'sales-hmo-report1' && empty($e2) ){
+		else if( $i1 === 'sales-hmo-posting-report' && empty($e2) ){
 
 			$this->load->model('report/sales/M_sales_hmo');
 			$this->M_sales_hmo->PDF1();

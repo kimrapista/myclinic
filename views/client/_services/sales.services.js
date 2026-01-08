@@ -8,13 +8,21 @@ app.factory('SalesServices',function ($http, $q,  global) {
       CLINICS: [],
       TOTAL_HMO: 0,
       HMO: [],
-      HMO_POSTING: [],
       TOTAL_PHILHEALTH: 0,
       PHILHEALTH: [],
       SERVICES: [],
       PATIENTS: [],
-      NOCHARGES: []
+      NOCHARGES: [],
+   
    }
+   
+   var hmo_posting = {
+      TOTAL_HMO_AMOUNT: 0,
+      TOTAL_HMO_RECEIVED: 0,
+       HMO_POSTING: [],
+
+   }
+
 
 
 	function Format_Clinics(detail){
@@ -35,6 +43,18 @@ app.factory('SalesServices',function ($http, $q,  global) {
       detail.NOT_RECEIVED_COUNT = parseInt(detail.NOT_RECEIVED_COUNT);
       
       detail.percentage = 0;
+		return detail;
+   }
+   
+      function Format_HMO_POSTING(detail){
+
+      detail.RECORDS = parseInt(detail.RECORDS);
+      detail.RECEIVED_COUNT = parseInt(detail.RECEIVED_COUNT);
+      detail.NOT_RECEIVED_COUNT = parseInt(detail.NOT_RECEIVED_COUNT);
+    detail.TOTAL_HMO_AMOUNT = parseFloat(detail.TOTAL_HMO_AMOUNT);
+
+      
+  
 		return detail;
    }
    
@@ -131,7 +151,6 @@ app.factory('SalesServices',function ($http, $q,  global) {
       Load_HMO: function(OPTIONS){
 
 			return $http.post( global.baseUrl + 'sales/hmo', OPTIONS, global.ajaxConfig) .then( function(response) {
-   console.log(response.data)
             data.TOTAL_HMO = 0;
             data.TOTAL_HMO_RECEIVED = 0;
             data.TOTAL_HMO_NOT_RECEIVED = 0;
@@ -162,29 +181,25 @@ app.factory('SalesServices',function ($http, $q,  global) {
 
       },
 
-            Load_HMO_POSTING: function(OPTIONS){
+      Load_HMO_POSTING: function(OPTIONS){
 
 			return $http.post( global.baseUrl + 'sales/hmo_posting', OPTIONS, global.ajaxConfig) .then( function(response) {
-                console.log(response.data)
-
-            data.TOTAL_HMO = 0;
-            data.TOTAL_HMO_RECEIVED = 0;
-            data.TOTAL_HMO_NOT_RECEIVED = 0;
-            data.HMO_POSTING = [];
+            hmo_posting.TOTAL_HMO_AMOUNT = 0;
+            hmo_posting.TOTAL_HMO = 0;
+            hmo_posting.TOTAL_HMO_RECEIVED = 0;
+            hmo_posting.HMO_POSTING = [];
 
 				angular.forEach( response.data, function (v, k) { 
-					v = Format_HMO(v);
+					v = Format_HMO_POSTING(v);
 
-               data.TOTAL_HMO += v.RECORDS;
-               data.TOTAL_HMO_RECEIVED += v.RECEIVED_COUNT;
-               data.TOTAL_HMO_NOT_RECEIVED += v.NOT_RECEIVED_COUNT;
+               hmo_posting.TOTAL_HMO += v.RECORDS;
+               hmo_posting.TOTAL_HMO_RECEIVED += v.RECEIVED_COUNT;
+               hmo_posting.TOTAL_HMO_AMOUNT += v.TOTAL_HMO_AMOUNT;
 
-               data.HMO_POSTING.push(v); 
+               hmo_posting.HMO_POSTING.push(v); 
             });
 
-            angular.forEach( data.HMO_POSTING, function(v,k){
-               v.percentage = (v.RECORDS/ data.TOTAL_HMO) * 100;
-            });
+    
          
 				return true;
 				
@@ -299,8 +314,16 @@ app.factory('SalesServices',function ($http, $q,  global) {
 			else{
 				return [];
 			}
-      }
-		
+      },
+      HMO_Posting_Data: function(){
+
+            if( hmo_posting != undefined ){
+                return hmo_posting;
+            }
+            else{
+                return [];
+            }
+		}
 	}
 	
 });

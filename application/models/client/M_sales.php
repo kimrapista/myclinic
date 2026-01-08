@@ -89,6 +89,7 @@ class M_sales extends CI_Model
 			
 			FROM medicalrecords M 
 			INNER JOIN hmo H ON H.ID = M.HMOID
+            INNER JOIN patients P ON P.ID = M.PATIENTID
 			WHERE M.CLINICID = ? 
 			AND DATE(M.HMODATE) BETWEEN ? AND ?
 			AND M.CANCELLED = 'N'
