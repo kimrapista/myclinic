@@ -69,6 +69,11 @@ class Sales extends CI_Controller {
 			$this->load->model('client/m_sales');
 			echo json_encode( $this->m_sales->HMO() );
 		}
+        else if (  $i1 === 'hmo_posting' && empty($e2) ) {
+
+			$this->load->model('client/m_sales');
+			echo json_encode( $this->m_sales->HMO_POSTING() );
+		}
 		else if (  $i1 === 'services' && empty($e2) ) {
 			
 			$this->load->model('client/m_sales');
@@ -111,7 +116,7 @@ class Sales extends CI_Controller {
 			$this->M_sales_hmo->PDF();
 		}
 
-		else if( $i1 === 'sales-hmo-report1' && empty($e2) ){
+		else if( $i1 === 'sales-hmo-posting-report' && empty($e2) ){
 
 			$this->load->model('report/sales/M_sales_hmo');
 			$this->M_sales_hmo->PDF1();

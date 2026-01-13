@@ -43,7 +43,6 @@ class M_schedules extends CI_Model
 		return $app;
 	}
 
-
 	public function Appointments_Day_Summary(){
 		
 		$_POST += json_decode(file_get_contents('php://input'), true);
@@ -78,8 +77,6 @@ class M_schedules extends CI_Model
 		return $sql;
 	}
 
-
-
 	public function Appointments_Day(){
 
 		$_POST += json_decode(file_get_contents('php://input'), true);
@@ -97,7 +94,7 @@ class M_schedules extends CI_Model
 
 		$app = $this->db->query("SELECT MR.ID, MR.PATIENTID, P.FIRSTNAME, P.MIDDLENAME, P.LASTNAME, P.MOBILENO,
             MR.CHECKUPDATE, MR.AGE, MR.CHEIFCOMPLAINT, MR.FINDINGS, MR.DIAGNOSIS,
-            MR.APPOINTMENTDATE, MR.APPOINTMENTDESCRIPTION, MR.APPOINTMENTSERVED,
+            MR.APPOINTMENTDATE, MR.APPOINTMENTDESCRIPTION, MR.APPOINTMENTSERVED, MR.OLDAPPOINTMENTDATE,
 				U.NAME AS CREATEDNAME, 
             S.NAME AS FROMCLINIC,
             S1.NAME AS APPOINTCLINIC,
@@ -122,7 +119,6 @@ class M_schedules extends CI_Model
 
       return $app;
 	}
-	
 
 	public function No_Schedule_Day_Patients_Summary(){
 
@@ -146,7 +142,6 @@ class M_schedules extends CI_Model
 
 		return $sql;
 	}
-
 
 	public function No_Schedule_Day_Patients(){
 
@@ -173,8 +168,6 @@ class M_schedules extends CI_Model
 
 		return $sql;
 	}
-	
-
 
 	public function Notes(){
 
@@ -200,7 +193,6 @@ class M_schedules extends CI_Model
 		return $sql;
 
 	}
-
 
 	public function Schedule_Day($ID = NULL){
 
@@ -265,9 +257,6 @@ class M_schedules extends CI_Model
 		}
 	}
 
-
-
-
 	public function Schedule_Day_Patients(){
 
 		$_POST += json_decode(file_get_contents('php://input'), true);
@@ -295,13 +284,6 @@ class M_schedules extends CI_Model
 
 		return $sql;
 	}
-
-
-	
-
-
-	
-	
 
 	public function Schedule_Form(){
 
@@ -859,11 +841,21 @@ class M_schedules extends CI_Model
 					
 					foreach ($value['APPOINTMENTS'] as $key => $app) {
 
-						$this->db->update('medicalrecords',array(
-							'APPOINTMENTDATE' => date('Y-m-d',strtotime($value['date']))
-						),array('ID' => $app['ID']));
+						// $this->db->update('medicalrecords',array(
+						// 	'APPOINTMENTDATE' => date('Y-m-d',strtotime($value['date'])),
+						// 	'OLDAPPOINTMENTDATE' => date('Y-m-d',strtotime($app['APPOINTMENTDATE']))
+						// ),array('ID' => $app['ID']));
 
-						$this->Save_SMS_Rescheduled($app['PATIENTID'], $app['TITLE'], $app['MESSAGE']);
+						// $this->Save_SMS_Rescheduled($app['PATIENTID'], $app['TITLE'], $app['MESSAGE']);
+						$updateData = ['APPOINTMENTDATE' => date('Y-m-d', strtotime($value['date']))];
+
+						// update once
+						if (empty($app['OLDAPPOINTMENTDATE'])) {
+							$updateData['OLDAPPOINTMENTDATE'] = date('Y-m-d',strtotime($app['APPOINTMENTDATE']));
+						}
+
+						$this->db->update('medicalrecords',$updateData,['ID' => $app['ID']]);
+						$this->Save_SMS_Rescheduled($app['PATIENTID'],$app['TITLE'],$app['MESSAGE']);
 					}
  
 					foreach ($value['PATIENTS'] as $key => $pat) {

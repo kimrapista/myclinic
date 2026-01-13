@@ -31,6 +31,9 @@ app.controller('Sales', function($scope, $mdDialog, $location, SalesServices, Me
       return SalesServices.Data();
    }
 
+   $scope.HMO_Posting_Data = function(){
+      return SalesServices.HMO_Posting_Data();
+   }
 
    $scope.Submit_Search = function(){
 
@@ -59,6 +62,10 @@ app.controller('Sales', function($scope, $mdDialog, $location, SalesServices, Me
 
       
       SalesServices.Load_HMO(OPTION).then(function(data){
+         $scope.search.isHMO = false;
+      });
+
+         SalesServices.Load_HMO_POSTING(OPTION).then(function(data){
          $scope.search.isHMO = false;
       });
 
@@ -163,21 +170,21 @@ app.controller('Sales', function($scope, $mdDialog, $location, SalesServices, Me
    }
 
 	
-   $scope.Report_HMO_View1 = function (REPORTTYPE, hmoID, paidType) {
+           $scope.Report_HMO_POSTING = function ( hmoID) {
 			var OPTION = {
 				HMOID: hmoID,
 				DATEFROM: $scope.search.dateFrom,
 				DATETO: $scope.search.dateTo,
-				PAIDTYPE: paidType,
 			
 			};
 
 			Preview.Report(
-				global.baseUrl + "sales/sales-hmo-report1",
+				global.baseUrl + "sales/sales-hmo-posting-report",
 				"HMO Report",
 				OPTION
 			);
 		};
+
 
 
    $scope.Init = function(){

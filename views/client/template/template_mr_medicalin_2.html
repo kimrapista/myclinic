@@ -6,8 +6,8 @@
             <div ng-message="md-maxlength">character reach the max limit.</div>
         </div>
     </md-input-container>
-    <md-button ng-show="Me().isAssistant && FORM.CREATEDBY == 0" ng-click="Copy_Findings()" ng-disabled="FORM.READONLY" class="md-primary md-mini">
-        <md-tooltip md-direction="top">Copy Previous Findings</md-tooltip>
+    <!-- <md-button ng-show="Me().isAssistant && FORM.CREATEDBY == 0" ng-click="Copy_Findings()" ng-disabled="FORM.READONLY" class="md-primary md-mini"> -->
+          <md-button ng-show="Me().isAssistant" ng-click="Copy_Findings()" ng-disabled="FORM.READONLY" class="md-primary md-mini">
         <md-icon class="material-icons">filter_none</md-icon>
     </md-button>
 </div>
@@ -20,7 +20,8 @@
             <div ng-message="md-maxlength">character reach the max limit.</div>
         </div>
     </md-input-container>
-    <md-button ng-show="Me().isAssistant && FORM.CREATEDBY == 0" ng-click="Copy_Diagnosis()" ng-disabled="FORM.READONLY" class="md-primary md-mini">
+    <!-- <md-button ng-show="Me().isAssistant && FORM.CREATEDBY == 0" ng-click="Copy_Diagnosis()" ng-disabled="FORM.READONLY" class="md-primary md-mini"> -->
+         <md-button ng-show="Me().isAssistant" ng-click="Copy_Diagnosis()" ng-disabled="FORM.READONLY" class="md-primary md-mini">
         <md-tooltip md-direction="top">Copy Previous Diagnosis</md-tooltip>
         <md-icon class="material-icons">filter_none</md-icon>
     </md-button>
@@ -50,11 +51,14 @@
             <div ng-messages="formParent.PROCEDURE_DONE.$error" role="alert" md-auto-hide="false">
             </div>
         </md-input-container>
-        <md-button ng-show="Me().isAssistant && FORM.CREATEDBY == 0" ng-click="Copy_Procedure()" ng-disabled="FORM.READONLY" class="md-primary md-mini">
+        <!-- <md-button ng-show="Me().isAssistant && FORM.CREATEDBY == 0" ng-click="Copy_Procedure()" ng-disabled="FORM.READONLY" class="md-primary md-mini"> -->
+              <md-button ng-show="Me().isAssistant" ng-click="Copy_Procedure()" ng-disabled="FORM.READONLY" class="md-primary md-mini">
             <md-tooltip md-direction="top">Copy Previous Procedure/s Done</md-tooltip>
             <md-icon class="material-icons">filter_none</md-icon>
         </md-button>
     </div>
+
+    
 </div>
 
 <div layout="row" layout-align="start start">

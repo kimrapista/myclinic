@@ -26,7 +26,8 @@
         </div>
     </md-input-container>
     
-    <md-button ng-show="Me().isAssistant && FORM.CREATEDBY == 0" ng-click="Copy_CO_Morbidities()" ng-disabled="FORM.READONLY" class="md-primary md-mini">
+    <!-- <md-button ng-show="Me().isAssistant && FORM.CREATEDBY == 0" ng-click="Copy_CO_Morbidities()" ng-disabled="FORM.READONLY" class="md-primary md-mini"> -->
+        <md-button ng-show="Me().isAssistant" ng-click="Copy_CO_Morbidities()" ng-disabled="FORM.READONLY" class="md-primary md-mini">
         <md-tooltip md-direction="top">Copy Previous CO-Morbidities</md-tooltip>
         <md-icon class="material-icons">filter_none</md-icon>
     </md-button>
