@@ -197,7 +197,6 @@ app.controller('FormMedical',function ($scope, $http, $timeout, $filter, $rootSc
 						}
 					});
 
-
 					$scope.Calculate_Services();
 					$scope.Calculate_Discount();
 				}

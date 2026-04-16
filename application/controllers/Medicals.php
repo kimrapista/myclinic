@@ -185,6 +185,24 @@ class Medicals extends CI_Controller {
 			$this->m_medicals->Submit_Form();
 		}
 
+		else if ( $i1 === 'set-holder' && empty($e2) ) {			
+
+			$this->load->model('client/m_medicals');
+			$this->m_medicals->Set_Holder();
+		}
+
+		else if ( $i1 === 'clear-holder' && empty($e2) ) {			
+
+			$this->load->model('client/m_medicals');
+			$this->m_medicals->Clear_Holder();
+		}
+
+		else if ( $i1 === 'heartbeat-holder' && empty($e2) ) {			
+
+			$this->load->model('client/m_medicals');
+			$this->m_medicals->Heartbeat_Holder();
+		}
+
 		else if( $i1 == 'submit-upload' && is_numeric($i2) && empty($i3)){
 
 			$this->load->model('client/m_medicals');

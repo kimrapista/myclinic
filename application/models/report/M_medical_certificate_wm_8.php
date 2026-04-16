@@ -116,11 +116,13 @@ class PDF extends TCPDF{
         $this->SetFont('arial', '', 6);
         $this->SetTextColor(80, 80, 80);
         $this->MultiCell(0, 0, 'Tampering of any part of this document will invalidate its contents. Falsification of this document is a serious offense.', 0, 'J', false, 0, $this->mlr, $this->GetPageHeight() - 0.35);
-
+		
+		$this->Image( $this->imagePath.'qr_background.png', $this->getPageWidth() - 1, $currY + 0.1, 0.8, 0.8, 'PNG');
         //QR CODE IMAGE
 		if (!empty($this->qrImage)) {
-            $this->Image($this->qrImage, $this->getPageWidth() - 0.8, $currY + 0.3, 0.5, 0.5, 'PNG');
+            $this->Image($this->qrImage, $this->getPageWidth() - 0.9, $currY + 0.3, 0.6, 0.5, 'PNG');
         }
+		
 
         $this->Watermark();
     }

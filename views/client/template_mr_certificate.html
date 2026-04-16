@@ -46,12 +46,7 @@
             <div ng-message="md-maxlength">character reach the max limit.</div>
         </div>
     </md-input-container>
-	<div layout="row" layout-align="start stretch" layout-wrap="" class="-x my-3">
-		<md-button ng-click="Selected_Physical_Exam(A)" ng-repeat="(key,A) in Physical_Exam()" aria-label="{{A}}" class="md-raised md-primary">
-			<span ng-bind="A"></span>
-		</md-button>
-	</div>
-	
+
     <md-button ng-click="FORM.CONSULTATIONDATES = FORM.DEFAULTCONSULTATIONS" ng-disabled="FORM.READONLY" class="md-mini md-primary">
         <md-tooltip md-direction="top">All Consulation Dates</md-tooltip>
         <md-icon class="material-icons">assignments</md-icon>

@@ -37,7 +37,50 @@ app.controller('MRForm', function($scope, $http, $timeout, $filter, $routeParams
         change: false
     }
 
-  
+	var MRID = $routeParams.P2;
+	var ALLOWED_TO_EDIT = true;
+
+	// SET RECORD HOLDER WHEN PAGE OPEN
+	if (MRID > 0) {
+		$http.post(global.baseUrl + "medicals/set-holder",{ MRID: MRID, NAME: MeServices.Data().NAME, }, global.ajaxConfig,
+		).then(
+			function (response) {
+				if (response.data.status == "LOCKED") {
+					global.Alert(
+						"This record is currently being edited by " + response.data.name
+					);
+
+					$location.url("/patient/" + $routeParams.P1 + "/record");
+				}
+
+				lockInterval = setInterval(function () {
+					if (!ALLOWED_TO_EDIT || MRID <= 0) return;
+					$http.post(global.baseUrl + "medicals/heartbeat-holder",{MRID: MRID},global.ajaxConfig);
+				}, 15000);
+			},
+			function (err) {
+				global.Alert(err.statusText, "Error " + err.status);
+			},
+		);
+	}
+	
+	//CLEAR ON LEAVE THE PAGE
+	$scope.$on("$destroy", function () {
+		if (MRID > 0 && ALLOWED_TO_EDIT) {
+			$http.post(global.baseUrl + "medicals/clear-holder",{MRID: MRID,},global.ajaxConfig);
+		}
+		if (lockInterval) {
+			clearInterval(lockInterval);
+		}
+	});
+
+	//(TAB CLOSE)
+	window.addEventListener("beforeunload", function () {
+		if (MRID > 0 && ALLOWED_TO_EDIT) { 
+			navigator.sendBeacon( global.baseUrl + "medicals/clear-holder", JSON.stringify({ MRID: MRID }));
+		}
+
+	});
 
     $scope.Submit_Form = function(){
 
@@ -897,8 +940,16 @@ app.controller('MRForm', function($scope, $http, $timeout, $filter, $routeParams
         
         Preview.Report(url, title);
     }
+	
+	$scope.Physical_Exam = function () {
+		return ["The patient is physically FIT TO WORK", "Medical Assistance", 'The patient is advised to rest for'];
+	};
 
-   
+	$scope.Selected_Physical_Exam = function (PHYSICALEXAM) {
+		if ($scope.FORM.REMARKS == undefined) $scope.FORM.REMARKS = " ";
+
+		$scope.FORM.REMARKS = $scope.FORM.REMARKS + PHYSICALEXAM + " ";
+	};
 
     $scope.Email_Prescription = function(){
 
@@ -1390,9 +1441,4 @@ app.controller('MRForm', function($scope, $http, $timeout, $filter, $routeParams
 
         });
     }
-
-
-
-
-
 });

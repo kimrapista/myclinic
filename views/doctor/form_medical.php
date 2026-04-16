@@ -561,7 +561,7 @@
 											<div ng-message="md-maxlength">character reach the max limit.</div>
 										</div>
 									</md-input-container>
-
+									
 									<md-button ng-click="f.CONSULTATIONDATES = f.DEFAULTCONSULTATIONS" ng-disabled="f.READONLY" class="btn-icon md-primary">
 										<md-tooltip md-direction="top">All Consulation Dates</md-tooltip>
 										<md-icon class="material-icons">assignments</md-icon>

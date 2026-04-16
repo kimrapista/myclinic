@@ -831,7 +831,73 @@ class M_medicals extends CI_Model
         $data['err'] .=validation_errors(' ',' ');
         echo json_encode($data);
     }
-    
+
+    public function Set_Holder(){
+
+		$_POST += json_decode(file_get_contents('php://input'), true);
+
+		$MRID = $this->input->post('MRID');
+
+		$sql = $this->db->query("SELECT ID, RECORDHOLDERID, RECORDHOLDERNAME, RECORDHOLDERDATE
+			FROM medicalrecords
+			WHERE ID = ?
+		", array($MRID))->row();
+
+		if ($sql) {
+			if ($sql->RECORDHOLDERID  && $sql->RECORDHOLDERID != $this->session->USERID && strtotime($sql->RECORDHOLDERDATE) > strtotime('-30 seconds')) {
+
+				echo json_encode(array(
+					'status' => 'LOCKED',
+					'name'   => $sql->RECORDHOLDERNAME
+				));
+				return;
+			}
+
+			$this->db->update('medicalrecords', array(
+				'RECORDHOLDERID'   => $this->session->USERID,
+				'RECORDHOLDERNAME' => $this->input->post('NAME'),
+				'RECORDHOLDERDATE' => date('Y-m-d H:i:s')
+			), array(
+				'ID' => $MRID
+			));
+		}
+	}
+
+	public function Heartbeat_Holder(){
+		$_POST += json_decode(file_get_contents('php://input'), true);
+
+		$MRID = $this->input->post('MRID');
+
+		if (!$MRID) return;
+
+		$this->db->update('medicalrecords', array('RECORDHOLDERDATE' => date('Y-m-d H:i:s')), array('ID' => $MRID,'RECORDHOLDERID' => $this->session->USERID));
+	}
+
+	public function Clear_Holder(){
+
+		$raw = json_decode(file_get_contents('php://input'), true);
+		$MRID = $raw['MRID'] ?? $this->input->post('MRID');
+
+		if (!$MRID) return;
+
+		$row = $this->db->get_where('medicalrecords', [
+			'ID' => $MRID
+		])->row();
+
+		if (!$row) return;
+
+		if ($row->RECORDHOLDERID != $this->session->USERID) {
+			return;
+		}
+
+		$this->db->update('medicalrecords', array(
+			'RECORDHOLDERID'   => NULL,
+			'RECORDHOLDERNAME' => NULL,
+			'RECORDHOLDERDATE' => NULL
+		), array(
+			'ID' => $MRID
+		));
+	}
 
     private function Check_Instruction($INSTRUCTION){
         $q = $this->db->query("SELECT * FROM instruction WHERE NAME =? AND CLINICID=? LIMIT 1",array($INSTRUCTION,$this->session->CLINICID))->row();

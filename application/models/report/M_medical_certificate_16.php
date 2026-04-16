@@ -100,8 +100,8 @@ class M_medical_certificate_16 extends CI_Model
 		$pdf->SetXY($margL,$currentY);
 		$pdf->Cell(0,$CH,'','B',1);
 		$pdf->Cell(0,$CH,'','B',1);
-        $pdf->Cell(0,$CH,'','B',1);
-        $pdf->Cell(0,$CH,'','B',1);
+		$pdf->Cell(0,$CH,'','B',1);
+		$pdf->Cell(0,$CH,'','B',1);
 		$pdf->Ln(0.2);
 		
 		$currentY = $pdf->GetY();		
