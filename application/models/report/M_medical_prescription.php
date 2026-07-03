@@ -8,7 +8,7 @@ class M_medical_prescription extends CI_Model
 	function __construct(){ $this->load->database(); }
 
 
-	public function index($id, $return = FALSE){
+	public function index($id, $isEsig = 'FALSE', $return = FALSE){
 
 		if( isset($this->session->CLINICID) ){ 
 			
@@ -31,7 +31,7 @@ class M_medical_prescription extends CI_Model
 			}
 			else if( $this->session->CLINICID == 8 ){
 				$this->load->model('report/M_medical_prescription_wm_8');
-				$this->M_medical_prescription_wm_8->Index($id, $return); 
+				return $this->M_medical_prescription_wm_8->Index($id, $isEsig, $return); 
 			}
 			else if( $this->session->CLINICID == 11) {
 				$this->load->model('report/m_medical_prescription_11');

@@ -917,10 +917,38 @@ app.controller('MRForm', function($scope, $http, $timeout, $filter, $routeParams
         var url = '';
         var title = '';
 
-        if( REPORTTYPE == 'PRESCRIPTION' ){
-            url = global.baseUrl + 'medicals/report/' + $scope.FORM.ID + '/medical-prescription';
-            title = 'Prescription';
-        }
+        // if( REPORTTYPE == 'PRESCRIPTION' ){
+        //     url = global.baseUrl + 'medicals/report/' + $scope.FORM.ID + '/medical-prescription';
+        //     title = 'Prescription';
+        // }
+		if (REPORTTYPE == 'PRESCRIPTION') {
+
+			$mdDialog.show({
+				templateUrl: 'views/client/modal_prescription_isesig.html',
+				clickOutsideToClose: true,
+				fullscreen: false,
+				locals: {
+					FORMID: $scope.FORM.ID
+				},
+				controller: function ($scope, $mdDialog, FORMID) {
+
+					$scope.ISESIG = false;
+
+					$scope.Submit_Report = function () {
+						var url = global.baseUrl + 'medicals/report/' + FORMID + '/medical-prescription/' + ($scope.ISESIG ? 'TRUE' : 'FALSE');
+
+						Preview.Report(url, 'Prescription');
+						$mdDialog.hide();
+					};
+
+					$scope.Close = function () {
+						$mdDialog.cancel();
+					};
+				}
+			});
+
+			return;
+		}
         else if( REPORTTYPE == 'CERTIFICATE' ){
             url = global.baseUrl + 'medicals/report/' + $scope.FORM.ID + '/medical-certificate';
             title = 'Medical Certificate';

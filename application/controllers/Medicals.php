@@ -252,13 +252,19 @@ class Medicals extends CI_Controller {
 
 		}
 
-		else if ( $i1 === 'report' && is_numeric($i2) && $i3 === 'medical-prescription' && empty($e4) ) {
+		// else if ( $i1 === 'report' && is_numeric($i2) && $i3 === 'medical-prescription' && empty($e4) ) {
 
 
+
+		// 	$this->load->model('report/m_medical_prescription'); 
+
+		// 	$this->m_medical_prescription->index($i2);
+
+		// }
+		else if ( $i1 === 'report' && is_numeric($i2) && $i3 === 'medical-prescription' && ($i4 == 'TRUE' || $i4 == 'FALSE') && empty($e5) ) {
 
 			$this->load->model('report/m_medical_prescription'); 
-
-			$this->m_medical_prescription->index($i2);
+			$this->m_medical_prescription->index($i2, $i4);
 
 		}
 		else if ( $i1 === 'report' && is_numeric($i2) && $i3 === 'medical-prescription' && $i4 == 'output-data' && empty($e5) ) {

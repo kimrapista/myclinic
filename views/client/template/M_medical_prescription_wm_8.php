@@ -8,7 +8,6 @@ class PDF extends TCPDF{
     public $clinic;
     public $patient;
     public $doctor;
-    public $showEsig = 'FALSE';
 
     public $imagePath;
     public $mlr;
@@ -159,8 +158,7 @@ class PDF extends TCPDF{
             $this->MultiCell(0, 0, $this->doctor->NAME, 'B', 'C', false, 1, ($this->mlr + 2.3), $currY + 0.14);
             $this->Ln(0.05);
             
-            // if( $this->doctor->ISSIG == 'Y' && !is_null($this->doctor->ESIGNATURE) && !empty($this->doctor->ESIGNATURE) ){
-            if($this->showEsig && !is_null($this->doctor->ESIGNATURE) && !empty($this->doctor->ESIGNATURE) ){
+            if( $this->doctor->ISSIG == 'Y' && !is_null($this->doctor->ESIGNATURE) && !empty($this->doctor->ESIGNATURE) ){
                 $sig = str_replace('data:image/png;base64,','', $this->doctor->ESIGNATURE);
                 $sigData = base64_decode($sig);
                 $this->Image('@'.$sigData,  ($this->mlr + 2.5), $this->GetY() - 0.7, 2, 0, 'PNG');
@@ -196,14 +194,12 @@ class M_medical_prescription_wm_8 extends CI_Model {
 	}
 
 
-	public function Index($id, $isEsig = 'FALSE', $return = FALSE){
+	public function Index($id, $return = FALSE){
         
 		$pageSize = array(5.25, 8.20);
 
-		$pdf = new PDF('P', 'in', $pageSize, true, 'UTF-8', false, true);
-		$pdf->showEsig = ($isEsig == 'TRUE');
-
-		$this->Tpdf = $pdf;
+        $pdf = new PDF('P', 'in', $pageSize, true, 'UTF-8', false, true);
+        $this->Tpdf = $pdf;
 
         // set document information
         $pdf->SetTitle('Prescription');
@@ -239,21 +235,21 @@ class M_medical_prescription_wm_8 extends CI_Model {
         $pdf->clinic = $this->clinicInfo();
         
         $pdf->doctor = $this->db->query("SELECT U.NAME, U.PTR, U.LICENSENO, U.S2NO, U.ESIGNATURE, S.ISSIG
-		FROM users U
-		INNER JOIN medicalrecords MR ON MR.CREATEDBY = U.ID
-		LEFT JOIN subclinic S ON S.ID = MR.SUBCLINICID
-		WHERE MR.ID = ?   
-		LIMIT 1",array($id))->row();
+				FROM users U
+				INNER JOIN medicalrecords MR ON MR.CREATEDBY = U.ID
+                LEFT JOIN subclinic S ON S.ID = MR.SUBCLINICID
+				WHERE MR.ID = ?   
+				LIMIT 1",array($id))->row();
 
 		$pdf->patient = $this->db->query("SELECT p.ID, concat(p.FIRSTNAME,' ',p.MIDDLENAME,' ',p.LASTNAME) as NAME, concat(p.STREETNO) as ADDRESS,concat(p.CITY,' ',p.PROVINCE) as ADDRESS1, p.SEX ,
-		mr.APPOINTMENT, mr.APPOINTMENTDATE, mr.AGE, mr.INSTRUCTION,
-		c.MOBILENO
+                    mr.APPOINTMENT, mr.APPOINTMENTDATE, mr.AGE, mr.INSTRUCTION,
+                    c.MOBILENO
 
-		FROM patients p
-		INNER JOIN medicalrecords mr ON mr.PATIENTID = p.ID
-		INNER JOIN clinics c ON c.ID = mr.CLINICID
-		WHERE mr.ID = ?   
-		LIMIT 1",array($id))->row();
+			FROM patients p
+			INNER JOIN medicalrecords mr ON mr.PATIENTID = p.ID
+			INNER JOIN clinics c ON c.ID = mr.CLINICID
+			WHERE mr.ID = ?   
+			LIMIT 1",array($id))->row();
         
         if( $pdf->patient ){
             
