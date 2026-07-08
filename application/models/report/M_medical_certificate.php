@@ -62,11 +62,11 @@ class M_medical_certificate extends CI_Model
 
 	}
 
-	
-
+	public function public_view($id)
+	{
+		$this->load->model('report/M_medical_certificate_wm_8');
+		return $this->M_medical_certificate_wm_8->Index($id, TRUE);
+	}
 }
-
-
-
 
 ?>

@@ -16,20 +16,18 @@ class Medicals extends CI_Controller {
 
 	{	
 
-		if( ! isset($this->session->POSITION) )
+		if ($i1 === 'report' && is_numeric($i2) && $i3 === 'medical-certificate' && $i4 === 'view') {
+			$this->public_medical_certificate_view($i2);
+			return;
+		}
 
-		{
-
-			if( $this->input->is_ajax_request() ){
-
+		if (!isset($this->session->POSITION)) {
+			if ($this->input->is_ajax_request()) {
 				echo 'RELOGIN';
-
 			} else {
-
 				redirect(base_url());
-
 			}
-
+			return;
 		}
 
 		else if ( $this->session->POSITION === 'ADMINISTRATOR' ) {
@@ -66,8 +64,29 @@ class Medicals extends CI_Controller {
 
 	}
 
+	private function public_medical_certificate_view($id)
+	{
+		$this->load->model('report/m_medical_certificate');
+		$this->m_medical_certificate->public_view($id);
 
+		$pdfPath = FCPATH . 'temp_files_pdf/Certificate_'.$id.'_.pdf';
 
+		if (!file_exists($pdfPath)) {
+			show_404();
+			return;
+		}
+
+		if (ob_get_length()) {
+			ob_end_clean();
+		}
+
+		header('Content-Type: application/pdf');
+		header('Content-Disposition: inline; filename="Certificate_'.$id.'.pdf"');
+		header('Content-Length: ' . filesize($pdfPath));
+
+		readfile($pdfPath);
+		exit;
+	}
 
 
 	private function admin($i1 = '', $i2 = '', $i3 = '', $i4 = '', $i5 = ''){

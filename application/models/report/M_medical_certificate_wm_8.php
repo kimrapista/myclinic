@@ -139,8 +139,12 @@ class M_medical_certificate_wm_8 extends CI_Model {
 	}
 
 
-	private function clinicInfo(){
-		$sql = $this->db->query("SELECT * FROM clinics where ID=? LIMIT 1",array($this->session->CLINICID));
+	// private function clinicInfo(){
+	// 	$sql = $this->db->query("SELECT * FROM clinics where ID=? LIMIT 1",array($this->session->CLINICID));
+	// 	return $sql->row();
+	// }
+	private function clinicInfo($id){
+		$sql = $this->db->query("SELECT C.* FROM clinics C INNER JOIN medicalrecords MR ON MR.CLINICID = C.ID WHERE MR.ID = ? LIMIT 1", array($id));
 		return $sql->row();
 	}
 
@@ -183,7 +187,7 @@ class M_medical_certificate_wm_8 extends CI_Model {
         }
     
 
-        $pdf->clinic = $this->clinicInfo();
+        $pdf->clinic = $this->clinicInfo($id);
         
         $pdf->doctor = $this->db->query("SELECT U.NAME, U.PTR, U.LICENSENO, U.S2NO, U.ESIGNATURE, S.ISSIG
 				FROM users U
@@ -193,7 +197,7 @@ class M_medical_certificate_wm_8 extends CI_Model {
 				LIMIT 1",array($id))->row();
 
         $pdf->patient = $this->db->query("SELECT p.ID,concat(p.FIRSTNAME,' ',p.MIDDLENAME,' ',p.LASTNAME) as NAME, p.SEX,p.OCCUPATION,p.STREETNO,p.CITY,p.PROVINCE, 
-                mr.AGE, mr.DIAGNOSIS, mr.CHECKUPDATE, mr.REMARKS,.mr.CONFINEMENT_DATE_FROM, mr.CONFINEMENT_DATE_TO, mr.CONSULTATIONDATES
+                mr.AGE, mr.DIAGNOSIS, mr.CHECKUPDATE, mr.REMARKS,mr.CONFINEMENT_DATE_FROM, mr.CONFINEMENT_DATE_TO, mr.CONSULTATIONDATES
             FROM patients p 
             INNER JOIN medicalrecords mr ON mr.PATIENTID = p.ID 
             WHERE mr.ID = ? 
@@ -201,7 +205,7 @@ class M_medical_certificate_wm_8 extends CI_Model {
         
         //QR CODE GENERATION
 		$pdfPath = '/temp_files_pdf/Certificate_'.$id.'_.pdf';
-        $qrData = base_url(trim($pdfPath,'/'));
+		$qrData = base_url('medicals/report/'.$id.'/medical-certificate/view');
         $barcodeobj = new TCPDF2DBarcode($qrData, 'QRCODE,H');
         $barcodeImage = $barcodeobj->getBarcodePngData(4, 4, [0,0,0]);
         $tmpFile = tempnam(sys_get_temp_dir(), 'qr_') . '.png';
