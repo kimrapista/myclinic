@@ -216,6 +216,7 @@ class M_medicals extends CI_Model
                 'DISCOUNTS' => array(),
                 'MEDICINES' => array(),
                 'LABORATORIES' => array(),
+                'PROCEDURES' => array(),
                 'MRLABMONITORING' => array(),
                 'PREV_MRLABMONITORING' => $this->PREV_MRLABMONITORING($patient->ID, 0),
                 'CONFINEMENT_DATE_FROM' => date('Y-m-d',time()),
@@ -276,7 +277,7 @@ class M_medicals extends CI_Model
                 $data['SERVICES'] = $this->SERVICES($medid);
                 $data['DISCOUNTS'] = $this->DISCOUNTS($medid);
                 $data['MEDICINES'] = $this->MEDICINES($medid);
-                $data['LABORATORIES'] = $this->LABORATORIES($medid);
+                $data['PROCEDURES'] = $this->PROCEDURES($medid);
                 $data['MRLABMONITORING'] = $this->MRLABMONITORING($medid);
                 $data['PREV_MRLABMONITORING'] = $this->PREV_MRLABMONITORING($data['PATIENTID'], $medid);
                 $data['PREVIOUS'] = $this->Get_Previous_MR($data['PATIENTID'], $data['ID'], $data['CHECKUPDATE']);
@@ -358,6 +359,11 @@ class M_medicals extends CI_Model
 
     private function LABORATORIES($medid){
         $data = $this->db->query("SELECT * From mr_laboratory WHERE MEDICALRECORDID=? AND CANCELLED='N' ",array($medid))->result();
+        return $data;
+    }
+
+    private function PROCEDURES($medid){
+        $data = $this->db->query("SELECT * From mr_procedures WHERE MEDICALRECORDID=? AND CANCELLED='N' ",array($medid))->result();
         return $data;
     }
 
@@ -812,6 +818,53 @@ class M_medicals extends CI_Model
                             )); 
                         }
                     }
+
+					foreach ($this->input->post('PROCEDURES[]') as $key => $v) {
+
+						$id = (int)$v['ID'];
+						$fixed = (Boolean)$v['FIXED'] ? 'Y' : 'N';
+						$cancelled = (Boolean)$v['CANCELLED'] ? 'Y' : 'N';
+						$name = trim($v['NAME']);
+						$description = trim($v['DESCRIPTION']);
+
+						if ($id == 0 && $fixed == 'Y') {
+
+							$existing = $this->db->where('MEDICALRECORDID', $MEDID)->where('NAME', $v['NAME'])->get('mr_procedures')->row();
+
+							if ($existing) {
+								$id = (int)$existing->ID;
+							}
+						}
+
+						if ($id > 0) {
+
+							$this->db->update('mr_procedures', array(
+								'NAME'          => $name,
+								'DESCRIPTION'   => $description,
+								'FIXED'         => $fixed,
+								'UPDATEDBY'     => $this->session->USERID,
+								'UPDATEDTIME'   => date('Y-m-d H:i:s'),
+								'CANCELLED'     => $cancelled
+							), array(
+								'ID' => $id
+							));
+
+						} 
+						elseif (!(Boolean)$v['CANCELLED'] && ($fixed == 'N' || ($fixed == 'Y' && $description != ''))) {
+
+							$this->db->insert('mr_procedures', array(
+								'MEDICALRECORDID' => $MEDID,
+								'NAME'            => $name,
+								'DESCRIPTION'     => $description,
+								'FIXED'           => $fixed,
+								'CREATEDBY'       => $this->session->USERID,
+								'CREATEDTIME'     => date('Y-m-d H:i:s'),
+								'CANCELLED'       => 'N'
+							));
+
+							$id = $this->db->insert_id();
+						}
+					}
                 }
                 
 
@@ -823,6 +876,7 @@ class M_medicals extends CI_Model
                 $data['suc']['MEDICINES'] = $this->MEDICINES($MEDID);
                 $data['suc']['SERVICES'] = $this->SERVICES($MEDID);
                 $data['suc']['DISCOUNTS'] = $this->DISCOUNTS($MEDID);
+                $data['suc']['PROCEDURES'] = $this->PROCEDURES($MEDID);
             }
             else {
                 $data['err'] .='Expired request. Please refresh the page.';

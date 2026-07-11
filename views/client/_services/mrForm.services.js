@@ -150,6 +150,7 @@ app.factory('MRFormServices',function ($http, $q, $filter, $timeout, $interval, 
 		detail.MEDICINES = Format_Medicines(detail.MEDICINES);
 		detail.SERVICES = Format_Services(detail.SERVICES);
 		detail.DISCOUNTS = Format_Discounts(detail.DISCOUNTS);
+		detail.PROCEDURES = Format_Procedures(detail.PROCEDURES);
 
 		if( detail.PREVIOUS ){ 
 			detail.PREVIOUS.CHECKUPDATE =  global.Date(detail.PREVIOUS.CHECKUPDATE);
@@ -194,8 +195,7 @@ app.factory('MRFormServices',function ($http, $q, $filter, $timeout, $interval, 
 		
 		return detail;
 	}
-	
-	
+
 	function Format_MRLabMonitoring(detail){
 		
 		angular.forEach( detail, function(v,k){ 
@@ -277,6 +277,20 @@ app.factory('MRFormServices',function ($http, $q, $filter, $timeout, $interval, 
 		return detail;
 	}
 
+	function Format_Procedures(detail) {
+		angular.forEach(detail, function (v, k) {
+			v.ID = parseInt(v.ID);
+			
+			if (typeof v.FIXED != "boolean")
+				v.FIXED = v.FIXED == "Y" ? true : false;
+
+			if (typeof v.CANCELLED != "boolean")
+				v.CANCELLED = v.CANCELLED == "Y" ? true : false;
+		});
+
+		return detail;
+	}
+
 	function Is_PDF_File(EXTENSION){
 		if( EXTENSION == '.pdf'){ return true; }
 		else{ return false; }
@@ -325,6 +339,10 @@ app.factory('MRFormServices',function ($http, $q, $filter, $timeout, $interval, 
 		Format_Discounts: function(detail){
 
 			return Format_Discounts(detail);
+		},
+		Format_Procedures: function(detail){
+
+			return Format_Procedures(detail);
 		},
 		Form_Images: function(MRID){
 

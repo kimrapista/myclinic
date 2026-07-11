@@ -39,6 +39,7 @@ app.controller('MRForm', function($scope, $http, $timeout, $filter, $routeParams
 
 	var MRID = $routeParams.P2;
 	var ALLOWED_TO_EDIT = true;
+	var lockInterval = null;
 
 	// SET RECORD HOLDER WHEN PAGE OPEN
 	if (MRID > 0) {
@@ -160,6 +161,7 @@ app.controller('MRForm', function($scope, $http, $timeout, $filter, $routeParams
                         $scope.FORM.MEDICINES = MRFormServices.Format_Medicines(response.data.suc.MEDICINES);
                         $scope.FORM.SERVICES = MRFormServices.Format_Services(response.data.suc.SERVICES);
                         $scope.FORM.DISCOUNTS = MRFormServices.Format_Discounts(response.data.suc.DISCOUNTS);
+                        $scope.FORM.PROCEDURES = MRFormServices.Format_Procedures(response.data.suc.PROCEDURES);
 
                     }
 
@@ -332,43 +334,43 @@ app.controller('MRForm', function($scope, $http, $timeout, $filter, $routeParams
         });
     }
 
-    $scope.Medicines_Filter = function(detail){
+    // $scope.Medicines_Filter = function(detail){
 
-        var data = [];
-        var deferred = $q.defer();
+    //     var data = [];
+    //     var deferred = $q.defer();
 
-        $timeout(function () {
+    //     $timeout(function () {
 
-            if( detail.searchMeds != '' ){
+    //         if( detail.searchMeds != '' ){
 
-                data = $filter('filter')( MedicinesServices.Data(), {NAME: detail.searchMeds});
-            }
-            else{
+    //             data = $filter('filter')( MedicinesServices.Data(), {NAME: detail.searchMeds});
+    //         }
+    //         else{
 
-                data = $filter('filter')( MedicinesServices.Data(), {ID: detail.MEDICINEID});
-            }
-            data = $filter('limitTo')( data, 50,0);  
+    //             data = $filter('filter')( MedicinesServices.Data(), {ID: detail.MEDICINEID});
+    //         }
+    //         data = $filter('limitTo')( data, 50,0);  
 
-            deferred.resolve(data);
+    //         deferred.resolve(data);
 
-        }, 50, false);
+    //     }, 50, false);
 
-        return deferred.promise;
-    }
-    $scope.Medicines_Selected = function(medInfo, detail){
-        if( medInfo ){
-            detail.MEDICINEID = medInfo.ID;
-            detail.searchMeds = medInfo.NAME;
-            detail.searchMedsPrev = medInfo.NAME;
-        }
-        else{
-            if( detail.MEDICINEID > 0 )
-                detail.searchMeds = detail.searchMedsPrev;
-        }
-    }
-    $scope.Medicines = function(){
-        return MedicinesServices.Data();
-    }
+    //     return deferred.promise;
+    // }
+    // $scope.Medicines_Selected = function(medInfo, detail){
+    //     if( medInfo ){
+    //         detail.MEDICINEID = medInfo.ID;
+    //         detail.searchMeds = medInfo.NAME;
+    //         detail.searchMedsPrev = medInfo.NAME;
+    //     }
+    //     else{
+    //         if( detail.MEDICINEID > 0 )
+    //             detail.searchMeds = detail.searchMedsPrev;
+    //     }
+    // }
+    // $scope.Medicines = function(){
+    //     return MedicinesServices.Data();
+    // }
 
     $scope.Durations = function(){
         return [{NAME: '1 Day'}, {NAME: '2 Days'}, {NAME: '3 Days'}, {NAME: '4 Days'}, {NAME: '5 Days'}, {NAME: '6 Days'}, {NAME: '7 Days'}, {NAME: '1 Week'}, {NAME: '2 Weeks'}, {NAME: '3 Weeks'}, {NAME: '1 Month'}];
@@ -410,6 +412,23 @@ app.controller('MRForm', function($scope, $http, $timeout, $filter, $routeParams
             $scope.FORM.MEDICINES.splice(k,1); 
         }
     }
+
+	$scope.Add_Procedures = function () {
+		$scope.FORM.PROCEDURES.push({
+			ID: 0,
+			NAME: '',
+			DESCRIPTION: '',
+			FIXED: false
+		});
+	};
+
+	$scope.Remove_Procedures = function (k) {
+		if ($scope.FORM.PROCEDURES[k].ID > 0) {
+			$scope.FORM.PROCEDURES[k].CANCELLED = !$scope.FORM.PROCEDURES[k].CANCELLED;
+		} else {
+			$scope.FORM.PROCEDURES.splice(k, 1);
+		}
+	};
 
     $scope.Procedures = function(){
         return ProceduresServices.Data();
@@ -1266,6 +1285,36 @@ app.controller('MRForm', function($scope, $http, $timeout, $filter, $routeParams
 
             $scope.FORM = data;
 
+			$scope.FORM.PROCEDURES = $scope.FORM.PROCEDURES || [];
+
+			[
+				"2Decho",
+				"Calcium Score",
+				"CXR PA",
+				"ECG",
+				"Eye Screening",
+				"Fibroscan",
+				"UTZ WA",
+				"UTZ KUB",
+			].forEach(function (name) {
+				var existing = $scope.FORM.PROCEDURES.find(function (procedure) {
+					return procedure.NAME == name;
+				});
+
+				if (existing) {
+					existing.FIXED = true;
+				} else {
+					$scope.FORM.PROCEDURES.push({
+						ID: 0,
+						MEDICALRECORDID: $scope.FORM.ID || 0,
+						NAME: name,
+						DESCRIPTION: "",
+						FIXED: true,
+						CANCELLED: false,
+					});
+				}
+			});
+
             if( $scope.FORM.SUBCLINICID == 0 || $scope.FORM.SUBCLINICID == null )
                 $scope.FORM.SUBCLINICID = $scope.Me().SUBCLINICID;
             
@@ -1330,16 +1379,22 @@ app.controller('MRForm', function($scope, $http, $timeout, $filter, $routeParams
 
 
                     // if detail laboratories is exist apply the reference
-                    if( $scope.FORM.LABORATORIES.length > 0 ){
-                        angular.forEach( LaboratoryServices.Data(), function(v,k){
-                            angular.forEach( $scope.FORM.LABORATORIES, function(v1,k1){
-                                if( v.ID == v1.LABORATORYID ){
-                                    v1.REF = v;
-                                }
-                            });  
-                        });
-                    }
-
+                    // if( $scope.FORM.LABORATORIES.length > 0 ){
+                    //     angular.forEach( LaboratoryServices.Data(), function(v,k){
+                    //         angular.forEach( $scope.FORM.LABORATORIES, function(v1,k1){
+                    //             if( v.ID == v1.LABORATORYID ){
+                    //                 v1.REF = v;
+                    //             }
+                    //         });  
+                    //     });
+                    // }
+					angular.forEach($scope.FORM.LABORATORIES || [], function (v1) {
+						angular.forEach(LaboratoryServices.Data(), function (v) {
+							if (v.ID == v1.LABORATORYID) {
+								v1.REF = v;
+							}
+						});
+					});
                     
                     // auto add lab monitoring if not found
 

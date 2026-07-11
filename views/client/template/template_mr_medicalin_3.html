@@ -1,13 +1,50 @@
-<div layout="row" layout-align="start start">
-    <md-input-container flex>
+<!-- <div layout="row" layout-align="start start"> -->
+    <!-- <md-input-container flex>
         <label>Medication</label>
         <textarea ng-model="FORM.MEDICATION" name="MEDICATION" md-maxlength="500" ng-disabled="FORM.READONLY" ></textarea>
         <div ng-messages="formParent.MEDICATION.$error" role="alert" md-auto-hide="false">
             <div ng-message="md-maxlength">character reach the max limit.</div>
         </div>
-    </md-input-container>
-    <md-button ng-show="Me().isAssistant && FORM.CREATEDBY == 0" ng-click="Copy_Medication()" ng-disabled="FORM.READONLY" class="md-primary md-mini">
+    </md-input-container> -->
+    <!-- <md-button ng-show="Me().isAssistant && FORM.CREATEDBY == 0" ng-click="Copy_Medication()" ng-disabled="FORM.READONLY" class="md-primary md-mini">
         <md-tooltip md-direction="top">Copy Previous Medication</md-tooltip>
         <md-icon class="material-icons">filter_none</md-icon>
     </md-button>
-</div> 
+</div>  -->
+<div class="table-detail">
+    <table>
+		<thead>
+			<tr>
+				<th style="width:100px;"></th>
+				<th style="width:300px;">Next Procedures</th>
+				<th class="action">
+					<md-button ng-click="Add_Procedures();"  ng-disabled="FORM.READONLY" class="md-primary ">
+						<md-tooltip md-direction="top">Add prescription</md-tooltip>
+						<md-icon class="material-icons">add</md-icon>
+					</md-button>
+				</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr ng-repeat="(key,A) in FORM.PROCEDURES" ng-if="!A.CANCELLED">
+				<td style="vertical-align: bottom; padding-left:20px;">
+					<label ng-if="A.FIXED">{{ A.NAME }}</label>
+					<md-input-container class="md-block" ng-if="!A.FIXED">
+						<input ng-model="A.NAME" type="text" ng-disabled="A.CANCELLED">
+					</md-input-container>
+				</td>
+				<td>
+					<md-input-container class="md-block">
+						<input ng-model="A.DESCRIPTION" type="text" ng-disabled="A.CANCELLED">
+					</md-input-container>
+				</td>
+				<td class="action">
+                    <md-button ng-click="Remove_Procedures(key);" ng-disabled="FORM.READONLY || A.FIXED" class="md-warn">
+                        <md-icon ng-hide="A.CANCELLED" class="material-icons">remove</md-icon>
+                        <md-icon ng-show="A.CANCELLED" class="material-icons">replay</md-icon>
+                    </md-button>
+                </td>
+			</tr>
+		</tbody>
+	</table> 
+</div>
