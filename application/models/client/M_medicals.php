@@ -827,9 +827,9 @@ class M_medicals extends CI_Model
 						$name = trim($v['NAME']);
 						$description = trim($v['DESCRIPTION']);
 
-						if ($id == 0 && $fixed == 'Y') {
+						if ($id == 0 && $name != '') {
 
-							$existing = $this->db->where('MEDICALRECORDID', $MEDID)->where('NAME', $v['NAME'])->get('mr_procedures')->row();
+							$existing = $this->db->where('MEDICALRECORDID', $MEDID)->where('NAME', $name)->where('CANCELLED', 'N')->get('mr_procedures')->row();
 
 							if ($existing) {
 								$id = (int)$existing->ID;
@@ -850,7 +850,7 @@ class M_medicals extends CI_Model
 							));
 
 						} 
-						elseif (!(Boolean)$v['CANCELLED'] && ($fixed == 'N' || ($fixed == 'Y' && $description != ''))) {
+						elseif (!(Boolean)$v['CANCELLED'] &&  $name != '' && ($fixed == 'N' || ($fixed == 'Y' && $description != ''))) {
 
 							$this->db->insert('mr_procedures', array(
 								'MEDICALRECORDID' => $MEDID,

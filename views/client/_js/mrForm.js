@@ -162,6 +162,8 @@ app.controller('MRForm', function($scope, $http, $timeout, $filter, $routeParams
                         $scope.FORM.SERVICES = MRFormServices.Format_Services(response.data.suc.SERVICES);
                         $scope.FORM.DISCOUNTS = MRFormServices.Format_Discounts(response.data.suc.DISCOUNTS);
                         $scope.FORM.PROCEDURES = MRFormServices.Format_Procedures(response.data.suc.PROCEDURES);
+						
+						$scope.FixedProcedures();
 
                     }
 
@@ -1276,6 +1278,52 @@ app.controller('MRForm', function($scope, $http, $timeout, $filter, $routeParams
         document.location = link;
         console.log(url);
     }
+
+	$scope.FixedProcedures = function () {
+		var fixedNames = [
+			"2Decho",
+			"Calcium Score",
+			"CXR PA",
+			"ECG",
+			"Eye Screening",
+			"Fibroscan",
+			"UTZ WA",
+			"UTZ KUB",
+		];
+
+		$scope.FORM.PROCEDURES = $scope.FORM.PROCEDURES || [];
+
+		var fixedList = [];
+		var otherList = [];
+
+		fixedNames.forEach(function (name) {
+			var existing = $scope.FORM.PROCEDURES.find(function (p) {
+				return p.NAME === name;
+			});
+
+			if (existing) {
+				existing.FIXED = true;
+				fixedList.push(existing);
+			} else {
+				fixedList.push({
+					ID: 0,
+					MEDICALRECORDID: $scope.FORM.ID || 0,
+					NAME: name,
+					DESCRIPTION: "",
+					FIXED: true,
+					CANCELLED: false,
+				});
+			}
+		});
+
+		$scope.FORM.PROCEDURES.forEach(function (p) {
+			if (fixedNames.indexOf(p.NAME) === -1) {
+				otherList.push(p);
+			}
+		});
+
+		$scope.FORM.PROCEDURES = fixedList.concat(otherList);
+	};
     
     $scope.Init = function(){
 
@@ -1285,35 +1333,7 @@ app.controller('MRForm', function($scope, $http, $timeout, $filter, $routeParams
 
             $scope.FORM = data;
 
-			$scope.FORM.PROCEDURES = $scope.FORM.PROCEDURES || [];
-
-			[
-				"2Decho",
-				"Calcium Score",
-				"CXR PA",
-				"ECG",
-				"Eye Screening",
-				"Fibroscan",
-				"UTZ WA",
-				"UTZ KUB",
-			].forEach(function (name) {
-				var existing = $scope.FORM.PROCEDURES.find(function (procedure) {
-					return procedure.NAME == name;
-				});
-
-				if (existing) {
-					existing.FIXED = true;
-				} else {
-					$scope.FORM.PROCEDURES.push({
-						ID: 0,
-						MEDICALRECORDID: $scope.FORM.ID || 0,
-						NAME: name,
-						DESCRIPTION: "",
-						FIXED: true,
-						CANCELLED: false,
-					});
-				}
-			});
+			$scope.FixedProcedures();
 
             if( $scope.FORM.SUBCLINICID == 0 || $scope.FORM.SUBCLINICID == null )
                 $scope.FORM.SUBCLINICID = $scope.Me().SUBCLINICID;
