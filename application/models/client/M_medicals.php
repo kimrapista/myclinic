@@ -277,6 +277,7 @@ class M_medicals extends CI_Model
                 $data['SERVICES'] = $this->SERVICES($medid);
                 $data['DISCOUNTS'] = $this->DISCOUNTS($medid);
                 $data['MEDICINES'] = $this->MEDICINES($medid);
+                $data['LABORATORIES'] = $this->LABORATORIES($medid);
                 $data['PROCEDURES'] = $this->PROCEDURES($medid);
                 $data['MRLABMONITORING'] = $this->MRLABMONITORING($medid);
                 $data['PREV_MRLABMONITORING'] = $this->PREV_MRLABMONITORING($data['PATIENTID'], $medid);

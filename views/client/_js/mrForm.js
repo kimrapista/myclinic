@@ -336,43 +336,43 @@ app.controller('MRForm', function($scope, $http, $timeout, $filter, $routeParams
         });
     }
 
-    // $scope.Medicines_Filter = function(detail){
+    $scope.Medicines_Filter = function(detail){
 
-    //     var data = [];
-    //     var deferred = $q.defer();
+        var data = [];
+        var deferred = $q.defer();
 
-    //     $timeout(function () {
+        $timeout(function () {
 
-    //         if( detail.searchMeds != '' ){
+            if( detail.searchMeds != '' ){
 
-    //             data = $filter('filter')( MedicinesServices.Data(), {NAME: detail.searchMeds});
-    //         }
-    //         else{
+                data = $filter('filter')( MedicinesServices.Data(), {NAME: detail.searchMeds});
+            }
+            else{
 
-    //             data = $filter('filter')( MedicinesServices.Data(), {ID: detail.MEDICINEID});
-    //         }
-    //         data = $filter('limitTo')( data, 50,0);  
+                data = $filter('filter')( MedicinesServices.Data(), {ID: detail.MEDICINEID});
+            }
+            data = $filter('limitTo')( data, 50,0);  
 
-    //         deferred.resolve(data);
+            deferred.resolve(data);
 
-    //     }, 50, false);
+        }, 50, false);
 
-    //     return deferred.promise;
-    // }
-    // $scope.Medicines_Selected = function(medInfo, detail){
-    //     if( medInfo ){
-    //         detail.MEDICINEID = medInfo.ID;
-    //         detail.searchMeds = medInfo.NAME;
-    //         detail.searchMedsPrev = medInfo.NAME;
-    //     }
-    //     else{
-    //         if( detail.MEDICINEID > 0 )
-    //             detail.searchMeds = detail.searchMedsPrev;
-    //     }
-    // }
-    // $scope.Medicines = function(){
-    //     return MedicinesServices.Data();
-    // }
+        return deferred.promise;
+    }
+    $scope.Medicines_Selected = function(medInfo, detail){
+        if( medInfo ){
+            detail.MEDICINEID = medInfo.ID;
+            detail.searchMeds = medInfo.NAME;
+            detail.searchMedsPrev = medInfo.NAME;
+        }
+        else{
+            if( detail.MEDICINEID > 0 )
+                detail.searchMeds = detail.searchMedsPrev;
+        }
+    }
+    $scope.Medicines = function(){
+        return MedicinesServices.Data();
+    }
 
     $scope.Durations = function(){
         return [{NAME: '1 Day'}, {NAME: '2 Days'}, {NAME: '3 Days'}, {NAME: '4 Days'}, {NAME: '5 Days'}, {NAME: '6 Days'}, {NAME: '7 Days'}, {NAME: '1 Week'}, {NAME: '2 Weeks'}, {NAME: '3 Weeks'}, {NAME: '1 Month'}];
