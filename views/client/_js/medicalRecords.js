@@ -119,7 +119,6 @@ app.controller('MedicalRecords', function($scope, $mdDialog, $q, $location, $tim
         $location.url('/patient/'+ PATIENTID +'/record');
     }
 
-    
     $scope.Init = function(){
         
         $q.all([

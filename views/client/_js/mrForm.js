@@ -221,7 +221,6 @@ app.controller('MRForm', function($scope, $http, $timeout, $filter, $routeParams
         }
     }
 
-
     $scope.Calc_Pirani_Scoring = function(){
 
         $scope.FORM.MIDFOOT_SCORE_L = 0;
@@ -281,10 +280,6 @@ app.controller('MRForm', function($scope, $http, $timeout, $filter, $routeParams
         $scope.FORM.TOTAL_SCORE_L = $scope.FORM.MIDFOOT_SCORE_L +  $scope.FORM.HINDFOOT_SCORE_L;
         $scope.FORM.TOTAL_SCORE_R = $scope.FORM.MIDFOOT_SCORE_R +  $scope.FORM.HINDFOOT_SCORE_R;
     }
-
-   
-
-    
 
     $scope.SubClinics = function(){
         return SubClinicServices.Data();
@@ -359,6 +354,7 @@ app.controller('MRForm', function($scope, $http, $timeout, $filter, $routeParams
 
         return deferred.promise;
     }
+
     $scope.Medicines_Selected = function(medInfo, detail){
         if( medInfo ){
             detail.MEDICINEID = medInfo.ID;
@@ -370,6 +366,7 @@ app.controller('MRForm', function($scope, $http, $timeout, $filter, $routeParams
                 detail.searchMeds = detail.searchMedsPrev;
         }
     }
+
     $scope.Medicines = function(){
         return MedicinesServices.Data();
     }
@@ -404,7 +401,6 @@ app.controller('MRForm', function($scope, $http, $timeout, $filter, $routeParams
         });
     }
 
-
     $scope.Remove_Prescription = function(k){
 
         if ($scope.FORM.MEDICINES[k].ID > 0) { 
@@ -432,9 +428,15 @@ app.controller('MRForm', function($scope, $http, $timeout, $filter, $routeParams
 		}
 	};
 
-    $scope.Procedures = function(){
-        return ProceduresServices.Data();
-    }
+	$scope.SELECTED_OLD_RECORD = null;
+
+	$scope.View_Old_Record = function (record) {
+		$scope.SELECTED_OLD_RECORD = record;
+	};
+
+	$scope.Close_Old_Record = function () {
+		$scope.SELECTED_OLD_RECORD = null;
+	};
 
     $scope.Procedures_Import_Description = function(){
         

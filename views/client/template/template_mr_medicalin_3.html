@@ -11,40 +11,92 @@
         <md-icon class="material-icons">filter_none</md-icon>
     </md-button>
 </div> 
-<div class="table-detail">
-    <table>
-		<thead>
-			<tr>
-				<th style="width:100px;"></th>
-				<th style="width:300px;">Next Procedures</th>
-				<th class="action">
-					<md-button ng-click="Add_Procedures();"  ng-disabled="FORM.READONLY" class="md-primary ">
-						<md-tooltip md-direction="top">Add prescription</md-tooltip>
-						<md-icon class="material-icons">add</md-icon>
-					</md-button>
-				</th>
-			</tr>
-		</thead>
-		<tbody>
-			<tr ng-repeat="(key,A) in FORM.PROCEDURES" ng-if="!A.CANCELLED">
-				<td style="vertical-align: bottom; padding-left:20px;">
-					<label ng-if="A.FIXED">{{ A.NAME }}</label>
-					<md-input-container class="md-block" ng-if="!A.FIXED">
-						<input ng-model="A.NAME" type="text" ng-disabled="A.CANCELLED">
-					</md-input-container>
-				</td>
-				<td>
-					<md-input-container class="md-block">
-						<input ng-model="A.DESCRIPTION" type="text" ng-disabled="A.CANCELLED">
-					</md-input-container>
-				</td>
-				<td class="action">
-					<md-button ng-click="Remove_Procedures(key);" ng-disabled="FORM.READONLY || A.FIXED" class="md-warn">
-						<md-icon ng-hide="A.CANCELLED" class="material-icons">remove</md-icon>
-						<md-icon ng-show="A.CANCELLED" class="material-icons">replay</md-icon>
-					</md-button>
-				</td>
-			</tr>
-		</tbody>
-	</table> 
+
+<div layout="row" layout-wrap class="procedure-layout">
+
+	<!-- NEXT PROCEDURES -->
+	<div class="table-detail next-procedure-panel" ng-class="{ 'with-previous': FORM.PREVIOUS_PROCEDURES && FORM.PREVIOUS_PROCEDURES.length > 0, 'full-width': !FORM.PREVIOUS_PROCEDURES || FORM.PREVIOUS_PROCEDURES.length == 0 }">
+		<table>
+			<thead>
+				<tr>
+					<th style="width:100px;"></th>
+					<th style="width:300px;">NEXT PROCEDURES</th>
+					<th class="action">
+						<md-button ng-click="Add_Procedures()" ng-disabled="FORM.READONLY" class="md-primary">
+							<md-tooltip md-direction="top">Add procedure</md-tooltip>
+							<md-icon class="material-icons">add</md-icon>
+						</md-button>
+					</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr ng-repeat="(key,A) in FORM.PROCEDURES" ng-if="!A.CANCELLED">
+					<td style="vertical-align:bottom;padding-left:20px;">
+						<label ng-if="A.FIXED">{{A.NAME}}</label>
+						<md-input-container class="md-block" ng-if="!A.FIXED">
+							<input ng-model="A.NAME" type="text" ng-disabled="A.CANCELLED">
+						</md-input-container>
+					</td>
+					<td>
+						<md-input-container class="md-block">
+							<input ng-model="A.DESCRIPTION" type="text" ng-disabled="A.CANCELLED">
+						</md-input-container>
+					</td>
+					<td class="action">
+						<md-button ng-click="Remove_Procedures(key)" ng-disabled="FORM.READONLY || A.FIXED" class="md-warn">
+							<md-icon ng-hide="A.CANCELLED" class="material-icons">remove</md-icon>
+							<md-icon ng-show="A.CANCELLED" class="material-icons">replay</md-icon>
+						</md-button>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+
+	<!-- PREVIOUS RECORDS -->
+	<div class="table-detail previous-record-panel" ng-if="FORM.PREVIOUS_PROCEDURES && FORM.PREVIOUS_PROCEDURES.length > 0">
+		<div class="previous-record-scroll">
+			<table ng-if="!SELECTED_OLD_RECORD">
+				<thead>
+					<tr>
+						<th>PREVIOUS RECORDS</th>
+						<th class="action"></th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr ng-repeat="A in FORM.PREVIOUS_PROCEDURES track by A.MEDICALRECORDID">
+						<td>{{A.CHECKUPDATE | date:'MM/dd/yyyy'}}</td>
+						<td class="action">
+							<md-button ng-click="View_Old_Record(A)" class="md-primary md-mini-font">View</md-button>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+
+			<table ng-if="SELECTED_OLD_RECORD">
+				<thead>
+					<tr>
+						<th colspan="2">{{SELECTED_OLD_RECORD.CHECKUPDATE | date:'MM/dd/yyyy'}}</th>
+						<th class="action">
+							<md-button ng-click="Close_Old_Record()" class="md-primary md-icon-button">
+								<md-icon class="material-icons">arrow_back</md-icon>
+							</md-button>
+						</th>
+					</tr>
+					<tr>
+						<th>Procedure</th>
+						<th>Description</th>
+						<th></th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr ng-repeat="P in SELECTED_OLD_RECORD.PROCEDURES track by P.ID">
+						<td>{{P.NAME}}</td>
+						<td>{{P.DESCRIPTION}}</td>
+						<td></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
 </div>

@@ -217,6 +217,7 @@ class M_medicals extends CI_Model
                 'MEDICINES' => array(),
                 'LABORATORIES' => array(),
                 'PROCEDURES' => array(),
+				'PREVIOUS_PROCEDURES' => $this->PREVIOUS_PROCEDURES($patient->ID, 0),
                 'MRLABMONITORING' => array(),
                 'PREV_MRLABMONITORING' => $this->PREV_MRLABMONITORING($patient->ID, 0),
                 'CONFINEMENT_DATE_FROM' => date('Y-m-d',time()),
@@ -279,6 +280,7 @@ class M_medicals extends CI_Model
                 $data['MEDICINES'] = $this->MEDICINES($medid);
                 $data['LABORATORIES'] = $this->LABORATORIES($medid);
                 $data['PROCEDURES'] = $this->PROCEDURES($medid);
+				$data['PREVIOUS_PROCEDURES'] = $this->PREVIOUS_PROCEDURES($data['PATIENTID'],$medid);
                 $data['MRLABMONITORING'] = $this->MRLABMONITORING($medid);
                 $data['PREV_MRLABMONITORING'] = $this->PREV_MRLABMONITORING($data['PATIENTID'], $medid);
                 $data['PREVIOUS'] = $this->Get_Previous_MR($data['PATIENTID'], $data['ID'], $data['CHECKUPDATE']);
@@ -367,6 +369,37 @@ class M_medicals extends CI_Model
         $data = $this->db->query("SELECT * From mr_procedures WHERE MEDICALRECORDID=? AND CANCELLED='N' ",array($medid))->result();
         return $data;
     }
+
+	private function PREVIOUS_PROCEDURES($patientId, $medid){
+		$sql = $this->db->query("SELECT MR.ID AS MEDICALRECORDID, MR.CHECKUPDATE, P.ID, P.NAME, P.DESCRIPTION
+			FROM medicalrecords MR
+			INNER JOIN mr_procedures P ON P.MEDICALRECORDID = MR.ID
+			WHERE MR.PATIENTID = ? AND MR.ID != ? AND MR.CANCELLED = 'N' AND P.CANCELLED = 'N'
+			ORDER BY MR.CHECKUPDATE DESC, MR.ID DESC, P.ID ", array($patientId, $medid))->result();
+
+		$data = array();
+
+		foreach ($sql as $value) {
+
+			$recordId = $value->MEDICALRECORDID;
+
+			if (!isset($data[$recordId])) {
+				$data[$recordId] = (object) array(
+					'MEDICALRECORDID' => $recordId,
+					'CHECKUPDATE'      => $value->CHECKUPDATE,
+					'PROCEDURES'       => array()
+				);
+			}
+
+			$data[$recordId]->PROCEDURES[] = (object) array(
+				'ID'          => $value->ID,
+				'NAME'        => $value->NAME,
+				'DESCRIPTION' => $value->DESCRIPTION
+			);
+		}
+
+		return array_values($data);
+	}
 
     private function MRLABMONITORING($medid){
         $data = $this->db->query("SELECT * From mr_lab_monitoring WHERE MEDICALRECORDID=? AND CANCELLED='N'",array($medid))->result();

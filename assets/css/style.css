@@ -2916,3 +2916,94 @@ text-align: center !important;
   .mx-auto {
     margin-left: auto !important;
   }
+
+  .procedure-layout {
+	width: 100%;
+	align-items: flex-start;
+	gap: 0;
+  }
+
+  .next-procedure-panel.with-previous {
+	flex: 0 0 60%;
+	max-width: 60%;
+  }
+
+  .next-procedure-panel.full-width {
+	flex: 0 0 100%;
+	max-width: 100%;
+  }
+
+  .previous-record-panel {
+	flex: 0 0 40%;
+	max-width: 40%;
+	min-width: 0;
+  }
+
+  .next-procedure-panel,
+  .previous-record-panel {
+	box-sizing: border-box;
+	margin: 0;
+  }
+
+  .next-procedure-panel table,
+  .previous-record-panel table {
+	width: 100%;
+	border-collapse: collapse;
+  }
+
+  .previous-record-scroll {
+	height: 405px;
+	max-height: 420px;
+	overflow-y: auto;
+	overflow-x: hidden;
+	scrollbar-width: thin;
+	scrollbar-color: #00a896 #3f3f3f; 
+  }
+
+  .previous-record-scroll::-webkit-scrollbar {
+	width: 10px;
+  }
+
+  .previous-record-scroll::-webkit-scrollbar-track {
+	background: #3f3f3f;
+  }
+
+  .previous-record-scroll::-webkit-scrollbar-thumb {
+	background: #00a896;
+	border-radius: 10px;
+	border: 2px solid #3f3f3f;
+  }
+
+  .previous-record-scroll::-webkit-scrollbar-thumb:hover {
+	background: #00c9ad;
+  }
+
+  .next-procedure-panel thead th,
+  .previous-record-panel thead th {
+	height: 38px;
+	vertical-align: middle;
+	text-align: center;
+  }
+
+  .next-procedure-panel tbody tr,
+  .previous-record-panel tbody tr {
+	min-height: 44px;
+  }
+
+  .previous-record-panel tbody td:first-child {
+	font-weight: 500;
+  }
+
+  .previous-record-panel .action {
+	width: 80px;
+	text-align: right;
+  }
+
+  @media (max-width: 959px) {
+	.next-procedure-panel.with-previous,
+	.next-procedure-panel.full-width,
+	.previous-record-panel {
+		flex: 0 0 100%;
+		max-width: 100%;
+	}
+  }
