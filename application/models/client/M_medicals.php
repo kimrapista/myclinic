@@ -454,22 +454,39 @@ class M_medicals extends CI_Model
     // }
 
     public function Get_Latest_Prescription($PATIENTID, $MRID){
-    // Find the latest medical record that has medicines
-    $sql = $this->db->query("SELECT MR.ID
-        FROM medicalrecords MR
-        INNER JOIN mr_medicines MM ON MM.MEDICALRECORDID = MR.ID AND MM.CANCELLED='N'
-        WHERE MR.CLINICID=? AND MR.PATIENTID=? AND MR.ID != ? AND MR.CANCELLED='N'  
-        GROUP BY MR.ID
-        ORDER BY MR.CHECKUPDATE DESC, MR.ID DESC
-        LIMIT 1", array($this->session->CLINICID, $PATIENTID, $MRID))->row();
+		// Find the latest medical record that has medicines
+		$sql = $this->db->query("SELECT MR.ID
+			FROM medicalrecords MR
+			INNER JOIN mr_medicines MM ON MM.MEDICALRECORDID = MR.ID AND MM.CANCELLED='N'
+			WHERE MR.CLINICID=? AND MR.PATIENTID=? AND MR.ID != ? AND MR.CANCELLED='N'  
+			GROUP BY MR.ID
+			ORDER BY MR.CHECKUPDATE DESC, MR.ID DESC
+			LIMIT 1", array($this->session->CLINICID, $PATIENTID, $MRID))->row();
 
-    if( $sql ){
-        return $this->MEDICINES($sql->ID);    
-    }
-    else{
-        return array();
-    } 
-}
+		if( $sql ){
+			return $this->MEDICINES($sql->ID);    
+		}
+		else{
+			return array();
+		} 
+	}
+
+    public function Get_Latest_Procedures($PATIENTID, $MRID){
+		
+		$sql = $this->db->query("SELECT MR.ID
+		FROM medicalrecords MR
+		INNER JOIN mr_procedures MP ON MP.MEDICALRECORDID = MR.ID AND MP.CANCELLED='N'
+		WHERE MR.CLINICID=? AND MR.PATIENTID=? AND MR.ID != ? AND MR.CANCELLED='N'
+		GROUP BY MR.ID ORDER BY MR.CHECKUPDATE DESC, MR.ID DESC
+		LIMIT 1", array($this->session->CLINICID, $PATIENTID, $MRID))->row();
+
+		if( $sql ){
+			return $this->PROCEDURES($sql->ID);    
+		}
+		else{
+			return array();
+		} 
+	}
 
     public function Submit_Form() {
 

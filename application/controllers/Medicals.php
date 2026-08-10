@@ -198,6 +198,16 @@ class Medicals extends CI_Controller {
 
 		}
 
+		else if ( $i1 === 'get-latest-procedures' && is_numeric($i2) && is_numeric($i3) && empty($e4) )
+
+		{
+
+			$this->load->model('client/m_medicals');
+
+			echo json_encode( $this->m_medicals->Get_Latest_Procedures($i2,$i3));
+
+		}
+
 		else if ( $i1 === 'submit-form' && empty($e2) ) {			
 
 			$this->load->model('client/m_medicals');

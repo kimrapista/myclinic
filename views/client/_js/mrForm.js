@@ -331,6 +331,39 @@ app.controller('MRForm', function($scope, $http, $timeout, $filter, $routeParams
         });
     }
 
+    $scope.Get_Lastest_Procedures = function () {
+		$http.get(global.baseUrl + "medicals/get-latest-procedures/" + $scope.FORM.PATIENT.ID + "/" + $scope.FORM.ID, global.ajaxConfig, )
+			.then(function (response) {
+				if (response.data == "RELOGIN") {
+					global.Alert("Please try again");
+				} 
+				else {
+					if (response.data.length > 0) {
+						var tempDetail = MRFormServices.Format_Procedures(response.data);
+						angular.forEach(tempDetail, function (v, k) {
+							var existingProcedure = $filter("filter")(
+								$scope.FORM.PROCEDURES,
+								function (item) {
+									return (
+										item.NAME && v.NAME && item.NAME.trim().toLowerCase() == v.NAME.trim().toLowerCase()
+									);
+								},
+							)[0];
+							if (existingProcedure) {
+								existingProcedure.DESCRIPTION = v.DESCRIPTION;
+							}
+						});
+					} else {
+						global.Alert("No previous procedures found.");
+					}
+				}
+			},
+			function (err) {
+				global.Alert(err.statusText, "Error " + err.status);
+			},
+		);
+	};
+
     $scope.Medicines_Filter = function(detail){
 
         var data = [];

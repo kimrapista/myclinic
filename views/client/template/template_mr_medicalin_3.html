@@ -15,7 +15,8 @@
 <div layout="row" layout-wrap class="procedure-layout">
 
 	<!-- NEXT PROCEDURES -->
-	<div class="table-detail next-procedure-panel" ng-class="{ 'with-previous': FORM.PREVIOUS_PROCEDURES && FORM.PREVIOUS_PROCEDURES.length > 0, 'full-width': !FORM.PREVIOUS_PROCEDURES || FORM.PREVIOUS_PROCEDURES.length == 0 }">
+	<!-- ng-class="{ 'with-previous': FORM.PREVIOUS_PROCEDURES && FORM.PREVIOUS_PROCEDURES.length > 0, 'full-width': !FORM.PREVIOUS_PROCEDURES || FORM.PREVIOUS_PROCEDURES.length == 0 }" -->
+	<div class="table-detail next-procedure-panel">
 		<table>
 			<thead>
 				<tr>
@@ -25,6 +26,10 @@
 						<md-button ng-click="Add_Procedures()" ng-disabled="FORM.READONLY" class="md-primary">
 							<md-tooltip md-direction="top">Add procedure</md-tooltip>
 							<md-icon class="material-icons">add</md-icon>
+						</md-button>
+						<md-button ng-disabled="FORM.READONLY" ng-click="Get_Lastest_Procedures($event)">
+							<md-tooltip md-direction="top">Copy previous procedures</md-tooltip>
+							<md-icon class="material-icons">filter_none</md-icon>
 						</md-button>
 					</th>
 				</tr>
@@ -54,7 +59,7 @@
 	</div>
 
 	<!-- PREVIOUS RECORDS -->
-	<div class="table-detail previous-record-panel" ng-if="FORM.PREVIOUS_PROCEDURES && FORM.PREVIOUS_PROCEDURES.length > 0">
+	<!-- <div class="table-detail previous-record-panel" ng-if="FORM.PREVIOUS_PROCEDURES && FORM.PREVIOUS_PROCEDURES.length > 0">
 		<div class="previous-record-scroll">
 			<table ng-if="!SELECTED_OLD_RECORD">
 				<thead>
@@ -98,5 +103,5 @@
 				</tbody>
 			</table>
 		</div>
-	</div>
+	</div> -->
 </div>
